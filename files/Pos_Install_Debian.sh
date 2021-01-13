@@ -1,19 +1,33 @@
 #!/usr/bin/env bash
-### Script para Debian Testing EM DESENVOLVIMENTO. NÃO UTILIZAR. ###
+# ------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------ CABEÇALHO -------------------------------------------------- #
+## AUTOR:
+### 	Ciro Mota <contato.ciromota@outlook.com>
+## NOME:
+### 	Pos_Install.
+## DESCRIÇÃO:
+###			Script de pós instalação desenvolvido para base o Debian Testing, 
+###			baseado no meu uso de programas, configurações e personalizações.
+## LICENÇA:
+###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
+## CHANGELOG:
+### 		Última edição 13/01/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
-# --------------------------------------------------------------------- #
-# ---------------------- VARIÁVEIS E REQUISITOS ----------------------- #
+### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
+
+# ------------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
 
 ### PPA's e links de donwload dinâmicos. ###
 url_lutris="http://download.opensuse.org/repositories/home:/strycore/Debian_10/  ./"
 url_ppa_lutris="https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key"
-url_vivaldi="https://downloads.vivaldi.com/stable/vivaldi-stable_3.5.2115.81-1_amd64.deb"
-url_vscodium="https://github.com/VSCodium/vscodium/releases/download/1.52.0/codium_1.52.0-1607733487_amd64.deb"
+url_vivaldi="https://downloads.vivaldi.com/stable/vivaldi-stable_3.5.2115.87-1_amd64.deb"
+url_vscodium="https://github.com/VSCodium/vscodium/releases/download/1.52.1/codium_1.52.1-1608165473_amd64.deb"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
 url_dck_key="https://download.docker.com/linux/debian/gpg"
 url_ppa_dck="https://download.docker.com/linux/debian"
 url_vgrt="https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_linux_amd64.zip"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/84.0/linux-x86_64/pt-BR/firefox-84.0.tar.bz2"
+url_firefox="https://ftp.mozilla.org/pub/firefox/releases/84.0.2/linux-x86_64/pt-BR/firefox-84.0.2.tar.bz2"
 url_theme="https://github.com/Michedev/Ant-Dracula-Blue/archive/master.zip"
 url_icon="https://github.com/daniruiz/flat-remix-gtk/archive/master.zip"
 url_shell="https://github.com/Jannomag/Yaru-Colors/archive/master.zip"
@@ -63,8 +77,19 @@ flatpak=(com.spotify.Client
 
 diretorio_downloads="$HOME/Downloads/programas"
 
-# ---------------------------------------------------------------------- #
-# ----------------------- APLICANDO REQUISITOS ------------------------- #
+# ------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------- TESTE --------------------------------------------------- #
+### Check se a distribuição é a correta.
+if [[ $(lsb_release -cs) = 'bullseye' ]] then;
+	echo -e "\e[32;1mDebian Testing. Prosseguindo com o script...\e[m"
+	echo ""
+else
+	echo -e "\e[31;1mDistribuição não homologada para uso com este script.\e[m"
+	exit 1
+fi
+
+# ------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
 ### Adicionando/Confirmando arquitetura de 32 bits. ###
 sudo dpkg --add-architecture i386
 
@@ -86,8 +111,8 @@ sudo add-apt-repository "deb [arch=amd64] $url_ppa_dck buster stable"
 ### Atualizando listas e sistema após adição de novos repositórios. ###
 sudo apt update -y && sudo apt upgrade -y
 
-# ---------------------------------------------------------------------- #
-# ----------------------------- EXECUÇÃO ------------------------------- #
+# ------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
 ### Instalação do ambiente gráfico minimo. ###
 
 sudo apt install gnome-core xorg gdm3 --no-install-recommends -y
@@ -111,14 +136,14 @@ for nome_do_flatpak in ${flatpak[@]}; do
   fi
 done
 
-### Download e instalação de programas .deb. ###
+### Download de programas .deb. ###
 mkdir "$diretorio_downloads"
 wget -c "$url_vivaldi"      -P "$diretorio_downloads"
 wget -c "$url_vscodium"     -P "$diretorio_downloads"
 wget -c "$url_dbox"	    	-P "$diretorio_downloads"
 wget -c "$url_vgrt"			-P "$diretorio_downloads"
 
-### Instalando pacotes ###
+### Instalando pacotes .deb. ###
 sudo apt install -y $diretorio_downloads/*.deb
 unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
 sudo mv $diretorio_downloads/vagrant /usr/local/bin
@@ -127,10 +152,9 @@ sudo mv $diretorio_downloads/vagrant /usr/local/bin
 sudo rm $diretorio_downloads/*.* -f
 
 ### Instalação do Firefox Release. ###
-sudo mkdir /opt/firefox
 wget -c "$url_firefox"      -P "$diretorio_downloads"
-sudo tar xjf $diretorio_downloads/firefox*.bz2 -C /opt/firefox/
-sudo ln -s /opt/firefox/firefox/firefox /usr/bin/firefox
+sudo tar xjf $diretorio_downloads/firefox*.bz2 -C /opt
+sudo ln -s /opt/firefox/firefox /usr/bin/firefox
 sudo chown -R $(whoami):$(whoami) /opt/firefox*
 
 sudo sh -c 'cat <<EOF > /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop
@@ -191,8 +215,8 @@ gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
 flatpak --user override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
 
-# ---------------------------------------------------------------------- #
-# ----------------------------- PÓS-INSTALAÇÃO ------------------------- #
+# ------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 
 ### Ativando ZRAM ###
 sudo sh -c 'echo zram > /etc/modules-load.d/zram.conf'

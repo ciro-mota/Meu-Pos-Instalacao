@@ -79,13 +79,12 @@ diretorio_downloads="$HOME/Downloads/programas"
 
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
-
-### Checka se a distribuição é a correta.
-if [[ `lsb_release -cs` = 'focal' ]] then;
-	echo "Ubuntu Focal 20.04. Prosseguindo o script..."
+### Check se a distribuição é a correta.
+if [[ $(lsb_release -cs) = 'focal' ]] then;
+	echo -e "\e[32;1mUbuntu Focal 20.04. Prosseguindo com o script...\e[m"
 	echo ""
 else
-	echo "Distribuição não homologada para uso com este script."
+	echo -e "\e[31;1mDistribuição não homologada para uso com este script.\e[m"
 	exit 1
 fi
 
@@ -140,14 +139,14 @@ for nome_do_flatpak in ${flatpak[@]}; do
   fi
 done
 
-### Download e instalação de programas .deb.
+### Download de programas .deb.
 mkdir "$diretorio_downloads"
 wget -c "$url_vivaldi"  -P "$diretorio_downloads"
 wget -c "$url_vscodium" -P "$diretorio_downloads"
 wget -c "$url_dbox"		-P "$diretorio_downloads"
 wget -c "$url_vgrt"		-P "$diretorio_downloads"
 
-### Instalando pacotes.
+### Instalando pacotes .deb.
 sudo apt install -y $diretorio_downloads/*.deb
 unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
 sudo mv $diretorio_downloads/vagrant /usr/local/bin
