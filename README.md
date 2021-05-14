@@ -31,4 +31,4 @@ Atalhos para PWA criados nativamente no Google Chrome através da opção `Mais 
 ![](files/screenshot.png)
 
 ### Ultima Modificação:
->09 Jan 2021
+>14 Mai 2021

@@ -7,12 +7,12 @@
 ## NOME:
 ### 	Pos_Install.
 ## DESCRIÇÃO:
-###			Script de pós instalação desenvolvido para base Ubuntu versão 20.04.1, 
+###			Script de pós instalação desenvolvido para base Ubuntu versão 20.04.2, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 09/01/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 14/05/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -22,25 +22,41 @@
 ### PPA's e links de donwload dinâmicos.
 ppa_celluloid="ppa:xuzhen666/gnome-mpv"
 ppa_lutris="ppa:lutris-team/lutris"
-url_vivaldi="https://downloads.vivaldi.com/stable/vivaldi-stable_3.5.2115.87-1_amd64.deb"
-url_vscodium="https://github.com/VSCodium/vscodium/releases/download/1.52.1/codium_1.52.1-1608165473_amd64.deb"
-url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
+url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-core.asc"
+url_ppa_brave="https://brave-browser-apt-release.s3.brave.com/"
+url_ppa_vivaldi="https://repo.vivaldi.com/archive/linux_signing_key.pub"
+url_key_vivaldi="https://repo.vivaldi.com/archive/deb/"
+url_key_code="https://packages.microsoft.com/keys/microsoft.asc"
+url_ppa_code="https://packages.microsoft.com/repos/vscode"
+url_ppa_obs="ppa:obsproject/obs-studio"
+url_ppa_dbox="https://linux.dropbox.com/ubuntu"
 url_dck_key="https://download.docker.com/linux/ubuntu/gpg"
 url_ppa_dck="https://download.docker.com/linux/ubuntu"
-url_vgrt="https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_linux_amd64.zip"
-url_theme="https://github.com/Michedev/Ant-Dracula-Blue/archive/master.zip"
-url_icon="https://github.com/daniruiz/flat-remix-gtk/archive/master.zip"
-url_shell="https://github.com/Jannomag/Yaru-Colors/archive/master.zip"
+# url_theme="https://github.com/Michedev/Ant-Dracula-Blue/archive/master.zip"
+# url_icon="https://github.com/daniruiz/flat-remix-gtk/archive/master.zip"
+# url_shell="https://github.com/Jannomag/Yaru-Colors/archive/master.zip"
+url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(popularity-contest 
-				snapd 
-				gnome-software-plugin-snap)	
+	snapd 
+	gnome-software-plugin-snap)
 
-apps=(chrome-gnome-shell
+apps_requerimentos=(apt-transport-https 
+		ca-certificates 
+		curl 
+		flatpak 
+		gnupg-agent 
+		gnome-software-plugin-flatpak 
+		software-properties-common)		
+
+apps=(brave-browser 
+		code 
+		chrome-gnome-shell
 		cowsay 
 		default-jre 
-		docker-ce 
+		docker-ce
+		dropbox  
 		exfat-fuse 
 		fastboot 
 		ffmpegthumbnailer 
@@ -63,10 +79,12 @@ apps=(chrome-gnome-shell
 		lolcat 
 		lutris 
 		neofetch 
+		obs-studio 
 		qbittorrent 
 		terminator 
 		ubuntu-restricted-extras 
-		vim-runtime 
+		vim-runtime
+		vivaldi-stable  
 		zsh)
 
 flatpak=(com.spotify.Client 
@@ -95,26 +113,34 @@ sudo dpkg --add-architecture i386
 
 ### Desinstalando apps desnecessários.
 for nome_do_programa in ${apps_remover[@]}; do
-  if dpkg -l | grep -q $nome_do_programa; then
     sudo apt purge "$nome_do_programa" -y
-  fi
 done
 
 ### Instalando requerimentos.
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-	flatpak \
-    gnupg-agent \
-	gnome-software-plugin-flatpak \
-    software-properties-common -y
+for nome_do_appreq in ${apps_requerimentos[@]}; do
+  if ! dpkg -l | grep -q $nome_do_appreq; then
+    sudo apt install "$nome_do_appreq" -y
+  else
+    echo "[INSTALADO] - $nome_do_appreq"
+  fi
+done
 
 ### Adicionando repositórios de terceiros (Wine e Lutris).
 sudo add-apt-repository "$ppa_celluloid"
 sudo add-apt-repository "$ppa_lutris"
+sudo add-apt-repository "$url_ppa_obs"
 curl -fsSL "$url_dck_key" | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] $url_ppa_dck $(lsb_release -cs) stable"
+curl -fsSL "$url_key_code" | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] $url_ppa_code stable main"
+curl -fsSL "$url_key_brave" | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] $url_ppa_brave stable main"
+curl -fsSL "$url_key_brave" | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] $url_ppa_brave stable main"
+wget -qO- "$url_key_vivaldi" | sudo apt-key add -
+sudo add-apt-repository "deb $url_ppa_vivaldi stable main"
+sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
+sudo add-apt-repository "deb $url_ppa_dbox $(lsb_release -cs) main"
 
 ### Atualizando sistema após adição de novos repositórios.
 sudo apt update && sudo apt upgrade -y
@@ -141,54 +167,45 @@ done
 
 ### Download de programas .deb.
 mkdir "$diretorio_downloads"
-wget -c "$url_vivaldi"  -P "$diretorio_downloads"
-wget -c "$url_vscodium" -P "$diretorio_downloads"
-wget -c "$url_dbox"		-P "$diretorio_downloads"
-wget -c "$url_vgrt"		-P "$diretorio_downloads"
-
-### Instalando pacotes .deb.
-sudo apt install -y $diretorio_downloads/*.deb
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-sudo mv $diretorio_downloads/vagrant /usr/local/bin
-sudo rm $diretorio_downloads/*.* -f
 
 ### Procedimentos e otimizações.
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
-#gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'
-gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-#sudo ln -s /usr/share/hunspell/* ~/.config/VSCodium/Dictionaries
 sudo usermod -aG docker $(whoami)
+
+### Instalação do Jopplin
+wget -O - $url_jopplin | bash
 
 ### Instalação de ícones e temas.
 mkdir $HOME/.icons
 mkdir $HOME/.themes
 
-wget -c "$url_theme"	-P "$diretorio_downloads"
+wget -cq --show-progress "$url_theme"	-P "$diretorio_downloads"
 unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
 mv $diretorio_downloads/Ant-Dracula-Blue-master $diretorio_downloads/Ant-Dracula-Blue
 mv $diretorio_downloads/Ant-Dracula-Blue $HOME/.themes
 sudo rm $diretorio_downloads/*.* -f
 
-wget -c "$url_icon"		-P "$diretorio_downloads"
+wget -cq --show-progress "$url_icon"	-P "$diretorio_downloads"
 unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
 mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-GTK-Blue-Dark $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark
 mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark -C $HOME/.icons
 sudo rm $diretorio_downloads/*.* -f
 
-wget -c "$url_shell"	-P "$diretorio_downloads"
+wget -cq --show-progress "$url_shell"	-P "$diretorio_downloads"
 unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
 sleep 10s
 mv $diretorio_downloads/Themes/Yaru-Deepblue-dark $HOME/.themes
 sudo rm $diretorio_downloads/*.* -f
 
+gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.interface gtk-theme 'Ant-Dracula-Blue'
 gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
-flatpak --user override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
-flatpak --user override com.spotify.Client --filesystem=/home/$USER/.icons/:ro
+flatpak --system override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
+flatpak --system override com.spotify.Client --filesystem=/home/$USER/.icons/:ro
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -224,3 +241,9 @@ sudo apt autoremove
 sudo apt autoclean
 sudo rm -rf /var/cache/snapd
 sudo rm -rf ~/snap
+
+# ------------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------- PÓS-REBOOT ----------------------------------------------- #
+### Linhas que deverão ser executadas após o reboot e carregamento do ambiente gráfico.
+
+# ln -s /usr/share/hunspell/* ~/.config/VSCodium/Dictionaries
