@@ -32,15 +32,17 @@ url_ppa_obs="ppa:obsproject/obs-studio"
 url_ppa_dbox="https://linux.dropbox.com/ubuntu"
 url_dck_key="https://download.docker.com/linux/ubuntu/gpg"
 url_ppa_dck="https://download.docker.com/linux/ubuntu"
+url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
+url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 # url_theme="https://github.com/Michedev/Ant-Dracula-Blue/archive/master.zip"
 # url_icon="https://github.com/daniruiz/flat-remix-gtk/archive/master.zip"
 # url_shell="https://github.com/Jannomag/Yaru-Colors/archive/master.zip"
-url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
+
 
 ### Programas para instalação e desinstalação.
 apps_remover=(popularity-contest 
-	snapd 
-	gnome-software-plugin-snap)
+		snapd 
+		gnome-software-plugin-snap)
 
 apps_requerimentos=(apt-transport-https 
 		ca-certificates 
@@ -91,7 +93,19 @@ flatpak=(com.spotify.Client
 		com.valvesoftware.Steam 
 		org.libreoffice.LibreOffice 
 		org.remmina.Remmina 
-		org.telegram.desktop)		
+		org.telegram.desktop)
+
+code_extensions=(CoenraadS.bracket-pair-colorizer-2
+		dendron.dendron-markdown-shortcuts
+		ms-azuretools.vscode-docker
+		eamodio.gitlens
+		zhuangtongfa.Material-theme
+		Shan.code-settings-sync
+		ban.spellright
+		vscode-icons-team.vscode-icons
+		snyk-security.vscode-vuln-cost
+		ms-kubernetes-tools.vscode-kubernetes-tools
+		HashiCorp.terraform)				
 
 diretorio_downloads="$HOME/Downloads/programas"
 
@@ -157,7 +171,7 @@ for nome_do_app in ${apps[@]}; do
 done
 
 ### Instalação de pacotes Flatpak.
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remote-add --if-not-exists flathub $url_flathub
 
 for nome_do_flatpak in ${flatpak[@]}; do
   if ! flatpak list | grep -q $nome_do_flatpak; then
@@ -165,47 +179,51 @@ for nome_do_flatpak in ${flatpak[@]}; do
   fi
 done
 
-### Download de programas .deb.
-mkdir "$diretorio_downloads"
+### Instalação do Jopplin.
+wget -O - $url_jopplin | bash
 
-### Procedimentos e otimizações.
-sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
-sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
-sudo usermod -aG docker $(whoami)
+### Instalação extensões do Code.
+for code_ext in ${code_extensions[@]}; do
+    code --install-extension "$code_ext" -y
+  fi
+done
 
 ### Instalação do Jopplin
 wget -O - $url_jopplin | bash
 
+### Criação de pasta de download temporário.
+mkdir "$diretorio_downloads"
+
 ### Instalação de ícones e temas.
-mkdir $HOME/.icons
-mkdir $HOME/.themes
+if [ -d "$HOME/.icons" ]; then
+  echo "Pasta já existe."
+else
+  mkdir $HOME/.icons
+fi
 
-wget -cq --show-progress "$url_theme"	-P "$diretorio_downloads"
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-mv $diretorio_downloads/Ant-Dracula-Blue-master $diretorio_downloads/Ant-Dracula-Blue
-mv $diretorio_downloads/Ant-Dracula-Blue $HOME/.themes
-sudo rm $diretorio_downloads/*.* -f
+if [ -d "$HOME/.themes" ]; then
+  echo "Pasta já existe."
+else
+  mkdir $HOME/.themes
+fi
 
-wget -cq --show-progress "$url_icon"	-P "$diretorio_downloads"
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-GTK-Blue-Dark $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark
-mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark -C $HOME/.icons
-sudo rm $diretorio_downloads/*.* -f
+# wget -cq --show-progress "$url_theme"	-P "$diretorio_downloads"
+# unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
+# mv $diretorio_downloads/Ant-Dracula-Blue-master $diretorio_downloads/Ant-Dracula-Blue
+# mv $diretorio_downloads/Ant-Dracula-Blue $HOME/.themes
+# sudo rm $diretorio_downloads/*.* -f
 
-wget -cq --show-progress "$url_shell"	-P "$diretorio_downloads"
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-sleep 10s
-mv $diretorio_downloads/Themes/Yaru-Deepblue-dark $HOME/.themes
-sudo rm $diretorio_downloads/*.* -f
+# wget -cq --show-progress "$url_icon"	-P "$diretorio_downloads"
+# unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
+# mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-GTK-Blue-Dark $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark
+# mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark -C $HOME/.icons
+# sudo rm $diretorio_downloads/*.* -f
 
-gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-gsettings set org.gnome.desktop.interface gtk-theme 'Ant-Dracula-Blue'
-gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
-gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
-flatpak --system override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
-flatpak --system override com.spotify.Client --filesystem=/home/$USER/.icons/:ro
+# wget -cq --show-progress "$url_shell"	-P "$diretorio_downloads"
+# unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
+# sleep 10s
+# mv $diretorio_downloads/Themes/Yaru-Deepblue-dark $HOME/.themes
+# sudo rm $diretorio_downloads/*.* -f
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -235,6 +253,21 @@ WantedBy=multi-user.target
 EOF'
 
 sudo systemctl enable zram
+
+### Procedimentos e otimizações.
+sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
+sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
+sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
+sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
+sudo usermod -aG docker $(whoami)
+sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+# sudo gsettings set org.gnome.desktop.interface gtk-theme 'Ant-Dracula-Blue'
+# sudo gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
+# sudo gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
+sudo flatpak --system override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
+sudo flatpak --system override com.spotify.Client --filesystem=/home/$USER/.icons/:ro
+sudo flatpak --system override com.valvesoftware.Steam --filesystem=/home/$USER/.icons/:ro
+sudo update-alternatives --config x-terminal-emulator
 
 ### Finalização e limpeza.
 sudo apt autoremove
