@@ -1,10 +1,12 @@
 # Pós-Instalação-Ubuntu #
 
-Este Script foi desenvolvido para ser utilizado na base 20.04 do Ubuntu, sendo seu uso testado e homologado para o **Ubuntu 20.04.1 Focal Fossa**.
+<img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge"> <img src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
+
+Este Script foi desenvolvido para ser utilizado na base 20.04 do Ubuntu, sendo seu uso testado e homologado para o **Ubuntu 20.04.2 Focal Fossa**.
 
 ### Observações:
 
-* Recomendado instalação do Ubuntu 20.04.1 no modo "Instalação Mínima".
+* Recomendado instalação do Ubuntu 20.04.2 no modo "Instalação Mínima".
 
 ![](files/minimal.png)
 
@@ -14,21 +16,18 @@ Este Script foi desenvolvido para ser utilizado na base 20.04 do Ubuntu, sendo s
 
 ### Extensões GNOME:
 
-- Vitals   
-- Clock Override   
-- Dash to Dock   
-- Smart Transparent Topbar   
-- User Themes   
-- Remove Dropdown Arrows  
-- Desktop Icons NG (DING)
-
-### PWA
-
-Atalhos para PWA criados nativamente no Google Chrome através da opção `Mais ferramentas` >> `Criar atalho`.
-
+- Vitals.
+- Clock Override (String: %d %B %Y  |  %H:%M).
+- Dash to Dock.
+- Hide Activities Button.
+- Impatience.
+- User Themes.
+- Remove Dropdown Arrows.
+- Desktop Icons NG (DING).
+- Pop Shell.
 ### Aparência final:
 
 ![](files/screenshot.png)
 
 ### Ultima Modificação:
->14 Mai 2021
+>18 Ago 2021

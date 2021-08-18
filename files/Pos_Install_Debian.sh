@@ -11,69 +11,103 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 13/01/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 18/08/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
+
+### ESTE SCRIPT ESTÁ EM CONSTRUÇÃO, É ESPERADO FALHAS. TENTE NÃO UTILIZÁ-LO.
 
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
 
-### PPA's e links de donwload dinâmicos.
-url_lutris="http://download.opensuse.org/repositories/home:/strycore/Debian_10/  ./"
+### PPA's e links de download dinâmicos.
+url_lutris="http://download.opensuse.org/repositories/home:/strycore/Debian_10/"
 url_ppa_lutris="https://download.opensuse.org/repositories/home:/strycore/Debian_10/Release.key"
-url_vivaldi="https://downloads.vivaldi.com/stable/vivaldi-stable_3.5.2115.87-1_amd64.deb"
-url_vscodium="https://github.com/VSCodium/vscodium/releases/download/1.52.1/codium_1.52.1-1608165473_amd64.deb"
-url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
 url_dck_key="https://download.docker.com/linux/debian/gpg"
 url_ppa_dck="https://download.docker.com/linux/debian"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/84.0.2/linux-x86_64/pt-BR/firefox-84.0.2.tar.bz2"
-url_theme="https://github.com/Michedev/Ant-Dracula-Blue/archive/master.zip"
-url_icon="https://github.com/daniruiz/flat-remix-gtk/archive/master.zip"
-url_shell="https://github.com/Jannomag/Yaru-Colors/archive/master.zip"
+url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-core.asc"
+url_ppa_brave="https://brave-browser-apt-release.s3.brave.com/"
+url_key_code="https://packages.microsoft.com/keys/microsoft.asc"
+url_ppa_code="https://packages.microsoft.com/repos/vscode"
+url_ppa_obs="ppa:obsproject/obs-studio"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
+url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
+url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
+url_firefox="https://ftp.mozilla.org/pub/firefox/releases/91.0.1/linux-x86_64/pt-BR/firefox-91.0.1.tar.bz2"
+# url_backup"https://github.com/ciro-mota/conf-backup.git"
+
 
 ### Programas para instalação.
-apps=(celluloid 
-		cowsay 
-		default-jre 
-		docker-ce 
-		exfat-fuse 
-		fastboot 
-		figlet 
-		ffmpegthumbnailer 
-		flatpak 
-		font-manager 
-		fortune 
-		gnome-tweaks 
-		gufw 
-		hugo 
-		hunspell-pt-br 
-		libgnutls30:i386 
-		libldap-2.4-2:i386 
-		libgpg-error0:i386 
-		libxml2:i386 
-		libasound2-plugins:i386 
-		libsdl2-2.0-0:i386 
-		libsqlite3-0:i386 
-		lolcat
-		lutris 
-		mesa-vulkan-drivers 
-		neofetch 
-		network-manager-gnome 
-		p7zip-full 
-		plymouth 
-		plymouth-themes 
-		qbittorrent 
-		terminator 
-		vim-runtime 
-		zsh)
+apps=(brave-browser 
+	celluloid 
+	containerd.io 
+	cowsay 
+	cups 
+	default-jre 
+	docker-ce 
+	docker-ce-cli 
+	exfat-fuse 
+	fastboot 
+	ffmpegthumbnailer 
+	flatpak 
+	font-manager 
+	fortune 
+	gir1.2-gtop-2.0 
+	gnome-tweaks 
+	gstreamer1.0-libav 
+	gstreamer1.0-plugins-ugly 
+	gstreamer1.0-vaapi 
+	gufw 
+	hugo 
+	hunspell-pt-br 
+	libavcodec-extra 
+	libgnutls30:i386 
+	libldap-2.4-2:i386 
+	libgpg-error0:i386 
+	libxml2:i386 
+	libasound2-plugins:i386 
+	libsdl2-2.0-0:i386 
+	libsqlite3-0:i386 
+	lm-sensors 
+	lolcat
+	lutris 
+	mesa-vulkan-drivers 
+	neofetch 
+	network-manager-gnome 
+	p7zip-full 
+	plymouth 
+	plymouth-themes 
+	obs-studio 
+	onlyoffice-desktopeditors 
+	qbittorrent 
+	terminator 
+	vim-runtime
+	winbind 
+	zsh)
 	
 flatpak=(com.spotify.Client 
-			com.valvesoftware.Steam 
-			org.ksnip.ksnip 
-			org.onlyoffice.desktopeditors 
-			org.remmina.Remmina 			
-			org.telegram.desktop)			
+	com.valvesoftware.Steam 
+	com.valvesoftware.Steam.Utility.MangoHud 
+	nl.hjdskes.gcolor3 
+	org.gimp.GIMP 
+	org.libreoffice.LibreOffice 
+	org.remmina.Remmina 
+	org.telegram.desktop)
+
+code_extensions=(CoenraadS.bracket-pair-colorizer-2 
+	dendron.dendron-markdown-shortcuts 
+	eamodio.gitlens
+	HashiCorp.terraform
+	ms-azuretools.vscode-docker 
+	MS-CEINTL.vscode-language-pack-pt-BR
+	ms-kubernetes-tools.vscode-kubernetes-tools
+	shakram02.bash-beautify 
+	Shan.code-settings-sync 
+	snyk-security.vscode-vuln-cost 
+	streetsidesoftware.code-spell-checker 
+	streetsidesoftware.code-spell-checker-portuguese-brazilian 
+	timonwong.shellcheck 
+	zhuangtongfa.Material-theme)					
 
 diretorio_downloads="$HOME/Downloads/programas"
 
@@ -90,6 +124,11 @@ else
 fi
 
 # ------------------------------------------------------------------------------------------------------------- #
+# -------------------------------------- ATIVANDO CONTRIB E NON-FREE ------------------------------------------ #
+sudo sed -i 's/#.*$//;/^$/d' /etc/apt/sources.list
+sudo sed -i 's/main/main non-free contrib/g' /etc/apt/sources.list
+
+# ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
 ### Adicionando/Confirmando arquitetura de 32 bits.
 sudo dpkg --add-architecture i386
@@ -104,10 +143,26 @@ sudo apt-get install \
     gnome-software-plugin-flatpak -y
 
 ### Adicionando repositórios de terceiros.
-echo "deb $url_lutris" | sudo tee /etc/apt/sources.list.d/lutris.list
-wget -qc $url_ppa_lutris -O- | sudo apt-key add -
-curl -fsSL "$url_dck_key" | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] $url_ppa_dck buster stable"
+echo "deb $url_lutris ./" | sudo tee /etc/apt/sources.list.d/lutris.list
+wget -qc "$url_ppa_lutris" -O- | sudo apt-key add -
+
+curl -fsSL "$url_dck_key" | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "$url_ppa_dck" \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+wget -qO- "$url_key_code" | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] '$url_ppa_code' stable main" > /etc/apt/sources.list.d/vscode.list'
+rm -f packages.microsoft.gpg
+
+sudo add-apt-repository "$url_ppa_obs"
+
+curl -fsSL "$url_key_brave" | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] $url_ppa_brave stable main"
+
+sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
+echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
 
 ### Atualizando listas e sistema após adição de novos repositórios.
 sudo apt update -y && sudo apt upgrade -y
@@ -115,11 +170,9 @@ sudo apt update -y && sudo apt upgrade -y
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
 ### Instalação do ambiente gráfico minimo.
-
 sudo apt install gnome-core xorg gdm3 --no-install-recommends -y
 
 ### Instalação de programas.
-
 for nome_do_app in ${apps[@]}; do
   if ! dpkg -l | grep -q $nome_do_app; then
     sudo apt install "$nome_do_app" -y
@@ -133,21 +186,23 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 
 for nome_do_flatpak in ${flatpak[@]}; do
   if ! flatpak list | grep -q $nome_do_flatpak; then
-    sudo flatpak install flathub --system "$nome_do_flatpak" -y
+    flatpak install flathub --system "$nome_do_flatpak" -y
   fi
 done
 
 ### Download de programas .deb.
 mkdir -p "$diretorio_downloads"
-wget -cq --show-progress "$url_vivaldi"    -P "$diretorio_downloads"
-wget -cq --show-progress "$url_vscodium"   -P "$diretorio_downloads"
-wget -cq --show-progress "$url_dbox"	   -P "$diretorio_downloads"
+wget -cq --show-progress "$url_dbox"    -P "$diretorio_downloads"
+wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
 ### Instalando pacotes .deb.
 sudo apt install -y $diretorio_downloads/*.deb
 
 ### Limpando pasta temporária dos downloads.
 sudo rm $diretorio_downloads/*.* -f
+
+### Instalação do Jopplin
+wget -O - $url_jopplin | bash
 
 ### Instalação do Firefox Release.
 wget -cq --show-progress "$url_firefox"   -P "$diretorio_downloads"
@@ -183,30 +238,30 @@ sudo update-grub
 sed -i 's/logo-text-version-128.png/logo-text-64.png/g' /etc/gdm3/greeter.dconf-defaults
 sudo dpkg-reconfigure gdm3
 
-### Instalação do Jopplin
-wget -O - $url_jopplin | bash
+### Instalação de ícones, temas e configurações.
+if [ -d "$HOME/.icons" ]; then
+  echo "Pasta já existe."
+else
+  mkdir $HOME/.icons
+fi
 
-### Instalação de ícones e temas.
-mkdir $HOME/.icons
-mkdir $HOME/.themes
+if [ -d "$HOME/.themes" ]; then
+  echo "Pasta já existe."
+else
+  mkdir $HOME/.themes
+fi
 
-wget -cq --show-progress "$url_theme"	-P "$diretorio_downloads"
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-mv $diretorio_downloads/Ant-Dracula-Blue-master $diretorio_downloads/Ant-Dracula-Blue
-mv $diretorio_downloads/Ant-Dracula-Blue $HOME/.themes
-sudo rm $diretorio_downloads/*.* -f
+# git clone https://github.com/ciro-mota/conf-backup.git
 
-wget -cq --show-progress "$url_icon"	-P "$diretorio_downloads"
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-GTK-Blue-Dark $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark
-mv $diretorio_downloads/flat-remix-gtk-master/Flat-Remix-Blue-Dark -C $HOME/.icons
-sudo rm $diretorio_downloads/*.* -f
-
-wget -cq --show-progress "$url_shell"	-P "$diretorio_downloads"
-unzip $diretorio_downloads/*.zip -d "$diretorio_downloads"
-sleep 10s
-mv $diretorio_downloads/Themes/Yaru-Deepblue-dark $HOME/.themes
-sudo rm $diretorio_downloads/*.* -f
+# mv $HOME/conf-backup/Dracula-Blue $HOME/.themes
+# mv $HOME/conf-backup/Yaru-Deepblue-dark $HOME/.themes
+# mv $HOME/conf-backup/Flat-Remix-Blue-Dark $HOME/.icons
+# mv $HOME/conf-backup/volantes_cursors $HOME/.icons
+# mv $HOME/conf-backup/neofetch/config.conf $HOME/.config/neofetch
+# mv $HOME/conf-backup/terminator $HOME/.config/terminator
+# mv $HOME/conf-backup/.zsh_aliases $HOME
+# mv $HOME/conf-backup/.zshrc $HOME
+# mv $HOME/conf-backup/.vim $HOME
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -247,8 +302,12 @@ sudo apt autoclean
 # -------------------------------------------------- PÓS-REBOOT ----------------------------------------------- #
 ### Linhas que deverão ser executadas após o reboot e carregamento do ambiente gráfico.
 
-# gsettings set org.gnome.desktop.interface gtk-theme 'Ant-Dracula-Blue'
+# gsettings set org.gnome.desktop.interface gtk-theme 'Dracula-Blue'
 # gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 # gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
-# flatpak --system override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
-# ln -s /usr/share/hunspell/* ~/.config/VSCodium/Dictionaries
+# gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
+# gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
+# sudo flatpak --system override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
+# sudo flatpak --system override com.spotify.Client --filesystem=/home/$USER/.icons/:ro
+# sudo flatpak --system override com.valvesoftware.Steam --filesystem=/home/$USER/.icons/:ro
+# ln -s /usr/share/hunspell/* ~/.config/Code/Dictionaries
