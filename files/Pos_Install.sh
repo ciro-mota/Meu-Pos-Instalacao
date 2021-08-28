@@ -7,12 +7,12 @@
 ## NOME:
 ### 	Pos_Install.
 ## DESCRIÇÃO:
-###			Script de pós instalação desenvolvido para base Ubuntu versão 20.04.2, 
+###			Script de pós instalação desenvolvido para base Ubuntu versão 20.04.3, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 18/08/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 28/08/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -22,12 +22,9 @@
 ### PPA's e links de download dinâmicos.
 ppa_celluloid="ppa:xuzhen666/gnome-mpv"
 ppa_lutris="ppa:lutris-team/lutris"
-url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-core.asc"
-url_ppa_brave="https://brave-browser-apt-release.s3.brave.com/"
-url_key_code="https://packages.microsoft.com/keys/microsoft.asc"
-url_ppa_code="https://packages.microsoft.com/repos/vscode"
 url_ppa_obs="ppa:obsproject/obs-studio"
-url_ppa_dbox="https://linux.dropbox.com/ubuntu"
+url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+url_ppa_brave="https://brave-browser-apt-release.s3.brave.com/"
 url_dck_key="https://download.docker.com/linux/ubuntu/gpg"
 url_ppa_dck="https://download.docker.com/linux/ubuntu"
 url_key_only="hkp://keyserver.ubuntu.com:80"
@@ -35,29 +32,27 @@ url_ppa_only="https://download.onlyoffice.com/repo/debian"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-# url_backup"https://github.com/ciro-mota/conf-backup.git"
-
+url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa/code_1.59.1-1629375198_amd64.deb"
+# url_backup="https://github.com/ciro-mota/conf-backup.git"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(popularity-contest 
 	snapd 
 	gnome-software-plugin-snap)
 
-apps_requerimentos=(apt-transport-https 
-	ca-certificates 
+apps_requerimentos=(apt-transport-https
 	curl 
 	flatpak 
+	git 
 	gnupg-agent 
-	gnome-software-plugin-flatpak 
-	software-properties-common)		
+	gnome-software-plugin-flatpak)		
 
 apps=(brave-browser 
-	code 
 	chrome-gnome-shell
 	cowsay 
 	default-jre 
-	docker-ce
-	dropbox  
+	docker-ce 
 	exfat-fuse 
 	fastboot 
 	ffmpegthumbnailer 
@@ -77,14 +72,13 @@ apps=(brave-browser
 	libasound2-plugins:i386 
 	libsdl2-2.0-0:i386 
 	libfreetype6:i386 
-	lm-sensors 
 	lolcat 
 	lutris 
 	neofetch 
 	obs-studio 
 	onlyoffice-desktopeditors 
-	qbittorrent 
 	terminator 
+	transmission 
 	ubuntu-restricted-extras 
 	vim-runtime  
 	zsh)
@@ -113,13 +107,17 @@ code_extensions=(CoenraadS.bracket-pair-colorizer-2
 	timonwong.shellcheck 
 	zhuangtongfa.Material-theme)	
 
-diretorio_downloads="$HOME/Downloads/programas"				
+diretorio_downloads="$HOME/Downloads/programas"
 
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(lsb_release -cs) = 'focal' ]] then;
-	echo -e "\e[32;1mUbuntu Focal 20.04.2. Prosseguindo com o script...\e[m"
+if [[ $(lsb_release -cs) = 'focal' ]] 
+then
+	echo ""
+	echo ""
+	echo -e "\e[32;1mUbuntu Focal 20.04.3. Prosseguindo com o script...\e[m"
+	echo ""
 	echo ""
 else
 	echo -e "\e[31;1mDistribuição não homologada para uso com este script.\e[m"
@@ -128,39 +126,6 @@ fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
-### Adicionando/Confirmando arquitetura de 32 bits.
-sudo dpkg --add-architecture i386
-
-### Adicionando repositórios de terceiros.
-sudo add-apt-repository "$ppa_celluloid"
-sudo add-apt-repository "$ppa_lutris"
-sudo add-apt-repository "$url_ppa_obs"
-
-curl -fsSL "$url_dck_key" | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] $url_ppa_dck $(lsb_release -cs) stable"
-
-curl -fsSL "$url_key_code" | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] $url_ppa_code stable main"
-
-curl -fsSL "$url_key_brave" | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] $url_ppa_brave stable main"
-
-sudo add-apt-repository "deb $url_ppa_dbox $(lsb_release -cs) main"
-sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
-
-sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
-echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
-
-### Atualizando sistema após adição de novos repositórios.
-sudo apt update && sudo apt upgrade -y
-
-# ------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
-### Desinstalando apps desnecessários.
-for nome_do_programa in ${apps_remover[@]}; do
-    sudo apt purge "$nome_do_programa" -y
-done
-
 ### Instalando requerimentos.
 for nome_do_appreq in ${apps_requerimentos[@]}; do
   if ! dpkg -l | grep -q $nome_do_appreq; then
@@ -170,6 +135,35 @@ for nome_do_appreq in ${apps_requerimentos[@]}; do
   fi
 done
 
+### Desinstalando apps desnecessários.
+for nome_do_programa in ${apps_remover[@]}; do
+    sudo apt purge "$nome_do_programa" -y
+done
+
+### Adicionando/Confirmando arquitetura de 32 bits.
+sudo dpkg --add-architecture i386
+
+### Adicionando repositórios de terceiros.
+sudo add-apt-repository "$ppa_celluloid" -y
+sudo add-apt-repository "$ppa_lutris" -y
+sudo add-apt-repository "$url_ppa_obs" -y
+
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$url_key_brave"
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
+	$url_ppa_brave stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list > /dev/null
+
+curl -fsSL "$url_dck_key" | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $url_ppa_dck \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
+echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
+
+### Atualizando sistema após adição de novos repositórios.
+sudo apt update && sudo apt upgrade -y
+
+# ------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
 ### Instalação da lista de apps.
 for nome_do_app in ${apps[@]}; do
   if ! dpkg -l | grep -q $nome_do_app; then
@@ -184,7 +178,7 @@ flatpak remote-add --if-not-exists flathub $url_flathub
 
 for nome_do_flatpak in ${flatpak[@]}; do
   if ! flatpak list | grep -q $nome_do_flatpak; then
-    flatpak install flathub --system "$nome_do_flatpak" -y
+    sudo flatpak install flathub --system "$nome_do_flatpak"
   fi
 done
 
@@ -193,44 +187,44 @@ wget -O - $url_jopplin | bash
 
 ### Download de programas .deb.
 mkdir -p "$diretorio_downloads"
+wget -cq --show-progress "$url_code" 	-P "$diretorio_downloads"
+wget -cq --show-progress "$url_dbox" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
 ### Instalando pacotes .deb.
 sudo apt install -y $diretorio_downloads/*.deb
 
-### Limpando pasta temporária dos downloads.
-sudo rm $diretorio_downloads/*.* -f
-
 ### Instalação extensões do Code.
 for code_ext in ${code_extensions[@]}; do
-    code --install-extension "$code_ext" -y
-  fi
+    code --install-extension "$code_ext" 2> /dev/null
 done
 
 ### Instalação de ícones, temas e configurações.
-if [ -d "$HOME/.icons" ]; then
+if [ -d $HOME/.icons ]
+then
   echo "Pasta já existe."
 else
-  mkdir $HOME/.icons
+  mkdir -p $HOME/.icons
 fi
 
-if [ -d "$HOME/.themes" ]; then
+if [ -d $HOME/.themes ]
+then
   echo "Pasta já existe."
 else
-  mkdir $HOME/.themes
+  mkdir -p $HOME/.themes
 fi
 
 # git clone https://github.com/ciro-mota/conf-backup.git
 
-# mv $HOME/conf-backup/Dracula-Blue $HOME/.themes
-# mv $HOME/conf-backup/Yaru-Deepblue-dark $HOME/.themes
-# mv $HOME/conf-backup/Flat-Remix-Blue-Dark $HOME/.icons
-# mv $HOME/conf-backup/volantes_cursors $HOME/.icons
-# mv $HOME/conf-backup/neofetch $HOME/.config/neofetch
-# mv $HOME/conf-backup/terminator $HOME/.config/terminator
-# mv $HOME/conf-backup/.zsh_aliases $HOME
-# mv $HOME/conf-backup/.zshrc $HOME
-# mv $HOME/conf-backup/.vim $HOME
+# cp -r $HOME/conf-backup/Dracula-Blue $HOME/.themes
+# cp -r $HOME/conf-backup/Yaru-Deepblue-dark $HOME/.themes
+# cp -r $HOME/conf-backup/Flat-Remix-Blue-Dark $HOME/.icons
+# cp -r $HOME/conf-backup/volantes_cursors $HOME/.icons
+# cp -r $HOME/conf-backup/neofetch $HOME/.config/neofetch
+# cp -r $HOME/conf-backup/terminator $HOME/.config/terminator
+# cp -r $HOME/conf-backup/.zsh_aliases $HOME
+# cp -r $HOME/conf-backup/.zshrc $HOME
+# cp -r $HOME/conf-backup/.vim $HOME
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -272,10 +266,9 @@ sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 # gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 # gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
 # gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
-# gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
-sudo flatpak --system override org.telegram.desktop --filesystem=/home/$USER/.icons/:ro
-sudo flatpak --system override com.spotify.Client --filesystem=/home/$USER/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem=/home/$USER/.icons/:ro
+sudo flatpak --system override org.telegram.desktop --filesystem=$HOME/.icons/:ro
+sudo flatpak --system override com.spotify.Client --filesystem=$HOME/.icons/:ro
+sudo flatpak --system override com.valvesoftware.Steam --filesystem=$HOME/.icons/:ro
 sudo update-alternatives --config x-terminal-emulator
 
 ### Finalização e limpeza.
@@ -283,6 +276,9 @@ sudo apt autoremove
 sudo apt autoclean
 sudo rm -rf /var/cache/snapd
 sudo rm -rf ~/snap
+
+### Limpando pasta temporária dos downloads.
+sudo rm $diretorio_downloads/ -rf
 
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------------------- PÓS-REBOOT ----------------------------------------------- #
