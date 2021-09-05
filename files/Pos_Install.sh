@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 28/08/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 05/09/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -29,6 +29,9 @@ url_dck_key="https://download.docker.com/linux/ubuntu/gpg"
 url_ppa_dck="https://download.docker.com/linux/ubuntu"
 url_key_only="hkp://keyserver.ubuntu.com:80"
 url_ppa_only="https://download.onlyoffice.com/repo/debian"
+url_key_albert="https://build.opensuse.org/projects/home:manuelschneid3r/public_key"
+url_ppa_albert="http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/"
+url_rlk_albert="https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
@@ -48,7 +51,8 @@ apps_requerimentos=(apt-transport-https
 	gnupg-agent 
 	gnome-software-plugin-flatpak)		
 
-apps=(brave-browser 
+apps=(albert 
+	brave-browser 
 	chrome-gnome-shell
 	cowsay 
 	default-jre 
@@ -158,6 +162,10 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
 
 sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
 echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
+
+curl $url_key_albert | sudo apt-key add -
+echo "deb $url_ppa_albert /" | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+sudo wget -nv $url_rlk_albert -O "/etc/apt/trusted.gpg.d/home:manuelschneid3r.asc"
 
 ### Atualizando sistema após adição de novos repositórios.
 sudo apt update && sudo apt upgrade -y

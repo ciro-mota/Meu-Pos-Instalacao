@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 01/09/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 05/09/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -27,6 +27,9 @@ url_dck_key="https://download.docker.com/linux/debian/gpg"
 url_ppa_dck="https://download.docker.com/linux/debian"
 url_key_only="hkp://keyserver.ubuntu.com:80"
 url_ppa_only="https://download.onlyoffice.com/repo/debian"
+url_key_albert="https://build.opensuse.org/projects/home:manuelschneid3r/public_key"
+url_ppa_albert="http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/"
+url_rlk_albert="https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
@@ -37,7 +40,8 @@ url_firefox="https://ftp.mozilla.org/pub/firefox/releases/91.0.1/linux-x86_64/pt
 
 
 ### Programas para instalação.
-apps=(brave-browser 
+apps=(albert 
+	brave-browser 
 	celluloid 
 	containerd.io 
 	cowsay 
@@ -127,7 +131,8 @@ fi
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------- ATIVANDO CONTRIB E NON-FREE ------------------------------------------ #
 sudo sed -i 's/#.*$//;/^$/d' /etc/apt/sources.list
-sudo sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list
+sudo sed -i '/deb-src/d' /etc/apt/sources.list
+sudo sed -i 's/bullseye/testing/g' /etc/apt/sources.list
 sudo sed -i 's/main/main non-free contrib/g' /etc/apt/sources.list
 sudo apt update -y
 
@@ -137,7 +142,7 @@ sudo apt update -y
 sudo dpkg --add-architecture i386
 
 ### Instalando requerimentos. ###
-sudo apt-get install \
+sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -160,6 +165,10 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=
 
 sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
 echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
+
+curl $url_key_albert | sudo apt-key add -
+echo "deb $url_ppa_albert /" | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+sudo wget -nv $url_rlk_albert -O "/etc/apt/trusted.gpg.d/home:manuelschneid3r.asc"
 
 ### Atualizando listas e sistema após adição de novos repositórios.
 sudo apt update -y && sudo apt upgrade -y

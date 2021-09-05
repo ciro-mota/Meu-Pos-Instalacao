@@ -24,10 +24,9 @@ Este Script foi desenvolvido para ser utilizado na base 20.04 do Ubuntu, sendo s
 - User Themes.
 - Remove Dropdown Arrows.
 - Desktop Icons NG (DING).
-- Pop Shell.
 ### Aparência final:
 
 ![](files/screenshot.png)
 
 ### Ultima Modificação:
->28 Ago 2021
+>05 Set 2021
