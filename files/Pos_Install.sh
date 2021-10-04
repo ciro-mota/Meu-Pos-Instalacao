@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 05/09/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 04/10/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -23,15 +23,13 @@
 ppa_celluloid="ppa:xuzhen666/gnome-mpv"
 ppa_lutris="ppa:lutris-team/lutris"
 url_ppa_obs="ppa:obsproject/obs-studio"
+url_ppa_ulauncher="ppa:agornostal/ulauncher"
 url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
 url_ppa_brave="https://brave-browser-apt-release.s3.brave.com/"
 url_dck_key="https://download.docker.com/linux/ubuntu/gpg"
 url_ppa_dck="https://download.docker.com/linux/ubuntu"
 url_key_only="hkp://keyserver.ubuntu.com:80"
 url_ppa_only="https://download.onlyoffice.com/repo/debian"
-url_key_albert="https://build.opensuse.org/projects/home:manuelschneid3r/public_key"
-url_ppa_albert="http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/"
-url_rlk_albert="https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
@@ -51,8 +49,7 @@ apps_requerimentos=(apt-transport-https
 	gnupg-agent 
 	gnome-software-plugin-flatpak)		
 
-apps=(albert 
-	brave-browser 
+apps=(brave-browser 
 	chrome-gnome-shell
 	cowsay 
 	default-jre 
@@ -84,6 +81,7 @@ apps=(albert
 	terminator 
 	transmission 
 	ubuntu-restricted-extras 
+	ulauncher 
 	vim-runtime  
 	zsh)
 
@@ -131,8 +129,8 @@ fi
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
 ### Instalando requerimentos.
-for nome_do_appreq in ${apps_requerimentos[@]}; do
-  if ! dpkg -l | grep -q $nome_do_appreq; then
+for nome_do_appreq in "${apps_requerimentos[@]}"; do
+  if ! dpkg -l | grep -q "$nome_do_appreq"; then
     sudo apt install "$nome_do_appreq" -y
   else
     echo "[INSTALADO] - $nome_do_appreq"
@@ -140,7 +138,7 @@ for nome_do_appreq in ${apps_requerimentos[@]}; do
 done
 
 ### Desinstalando apps desnecessários.
-for nome_do_programa in ${apps_remover[@]}; do
+for nome_do_programa in "${apps_remover[@]}"; do
     sudo apt purge "$nome_do_programa" -y
 done
 
@@ -151,6 +149,7 @@ sudo dpkg --add-architecture i386
 sudo add-apt-repository "$ppa_celluloid" -y
 sudo add-apt-repository "$ppa_lutris" -y
 sudo add-apt-repository "$url_ppa_obs" -y
+sudo add-apt-repository "$url_ppa_ulauncher" -y
 
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$url_key_brave"
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
@@ -163,18 +162,14 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
 sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
 echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
 
-curl $url_key_albert | sudo apt-key add -
-echo "deb $url_ppa_albert /" | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
-sudo wget -nv $url_rlk_albert -O "/etc/apt/trusted.gpg.d/home:manuelschneid3r.asc"
-
 ### Atualizando sistema após adição de novos repositórios.
 sudo apt update && sudo apt upgrade -y
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
 ### Instalação da lista de apps.
-for nome_do_app in ${apps[@]}; do
-  if ! dpkg -l | grep -q $nome_do_app; then
+for nome_do_app in "${apps[@]}"; do
+  if ! dpkg -l | grep -q "$nome_do_app"; then
     sudo apt install "$nome_do_app" -y
   else
     echo "$nome_do_app ==> [JÁ INSTALADO]"
@@ -184,8 +179,8 @@ done
 ### Instalação de apps Flatpak.
 flatpak remote-add --if-not-exists flathub $url_flathub
 
-for nome_do_flatpak in ${flatpak[@]}; do
-  if ! flatpak list | grep -q $nome_do_flatpak; then
+for nome_do_flatpak in "${flatpak[@]}"; do
+  if ! flatpak list | grep -q "$nome_do_flatpak"; then
     sudo flatpak install flathub --system "$nome_do_flatpak"
   fi
 done
@@ -200,26 +195,26 @@ wget -cq --show-progress "$url_dbox" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
 ### Instalando pacotes .deb.
-sudo apt install -y $diretorio_downloads/*.deb
+sudo apt install -y "$diretorio_downloads"/*.deb
 
 ### Instalação extensões do Code.
-for code_ext in ${code_extensions[@]}; do
+for code_ext in "${code_extensions[@]}"; do
     code --install-extension "$code_ext" 2> /dev/null
 done
 
 ### Instalação de ícones, temas e configurações.
-if [ -d $HOME/.icons ]
+if [ -d "$HOME"/.icons ]
 then
   echo "Pasta já existe."
 else
-  mkdir -p $HOME/.icons
+  mkdir -p "$HOME"/.icons
 fi
 
-if [ -d $HOME/.themes ]
+if [ -d "$HOME"/.themes ]
 then
   echo "Pasta já existe."
 else
-  mkdir -p $HOME/.themes
+  mkdir -p "$HOME"/.themes
 fi
 
 # git clone https://github.com/ciro-mota/conf-backup.git
@@ -268,15 +263,15 @@ sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
-sudo usermod -aG docker $(whoami)
+sudo usermod -aG docker "$(whoami)"
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 # gsettings set org.gnome.desktop.interface gtk-theme 'Dracula-Blue'
 # gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 # gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
 # gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
-sudo flatpak --system override org.telegram.desktop --filesystem=$HOME/.icons/:ro
-sudo flatpak --system override com.spotify.Client --filesystem=$HOME/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem=$HOME/.icons/:ro
+sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo update-alternatives --config x-terminal-emulator
 
 ### Finalização e limpeza.
@@ -286,7 +281,7 @@ sudo rm -rf /var/cache/snapd
 sudo rm -rf ~/snap
 
 ### Limpando pasta temporária dos downloads.
-sudo rm $diretorio_downloads/ -rf
+sudo rm "$diretorio_downloads"/ -rf
 
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------------------- PÓS-REBOOT ----------------------------------------------- #

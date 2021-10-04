@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 05/09/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 04/10/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -27,9 +27,7 @@ url_dck_key="https://download.docker.com/linux/debian/gpg"
 url_ppa_dck="https://download.docker.com/linux/debian"
 url_key_only="hkp://keyserver.ubuntu.com:80"
 url_ppa_only="https://download.onlyoffice.com/repo/debian"
-url_key_albert="https://build.opensuse.org/projects/home:manuelschneid3r/public_key"
-url_ppa_albert="http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/"
-url_rlk_albert="https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_20.04/Release.key"
+url_ppa_ulauncher="ppa:agornostal/ulauncher"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
@@ -40,8 +38,7 @@ url_firefox="https://ftp.mozilla.org/pub/firefox/releases/91.0.1/linux-x86_64/pt
 
 
 ### Programas para instalação.
-apps=(albert 
-	brave-browser 
+apps=(brave-browser 
 	celluloid 
 	containerd.io 
 	cowsay 
@@ -84,6 +81,7 @@ apps=(albert
 	seahorse  
 	terminator 
 	transmission 
+	ulauncher 
 	vim-runtime 
 	zsh)
 	
@@ -156,7 +154,7 @@ wget -qc "$url_ppa_lutris" -O- | sudo apt-key add -
 
 curl -fsSL "$url_dck_key" | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
-  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "$url_ppa_dck" \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $url_ppa_dck \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$url_key_brave"
@@ -166,9 +164,7 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=
 sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
 echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
 
-curl $url_key_albert | sudo apt-key add -
-echo "deb $url_ppa_albert /" | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
-sudo wget -nv $url_rlk_albert -O "/etc/apt/trusted.gpg.d/home:manuelschneid3r.asc"
+sudo add-apt-repository "$url_ppa_ulauncher" -y
 
 ### Atualizando listas e sistema após adição de novos repositórios.
 sudo apt update -y && sudo apt upgrade -y
@@ -182,8 +178,8 @@ sudo apt install gnome-core \
 		gnome-software-plugin-flatpak --no-install-recommends -y
 
 ### Instalação de programas.
-for nome_do_app in ${apps[@]}; do
-  if ! dpkg -l | grep -q $nome_do_app; then
+for nome_do_app in "${apps[@]}"; do
+  if ! dpkg -l | grep -q "$nome_do_app"; then
     sudo apt install "$nome_do_app" -y
   else
     echo "[INSTALADO] - $nome_do_app"
@@ -193,8 +189,8 @@ done
 ### Instalação de pacotes Flatpak.
 flatpak remote-add --if-not-exists flathub $url_flathub
 
-for nome_do_flatpak in ${flatpak[@]}; do
-  if ! flatpak list | grep -q $nome_do_flatpak; then
+for nome_do_flatpak in "${flatpak[@]}"; do
+  if ! flatpak list | grep -q "$nome_do_flatpak"; then
     sudo flatpak install flathub --system "$nome_do_flatpak" -y
   fi
 done
@@ -209,18 +205,18 @@ wget -cq --show-progress "$url_dbox"    -P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
 ### Instalando pacotes .deb.
-sudo apt install -y $diretorio_downloads/*.deb
+sudo apt install -y "$diretorio_downloads"/*.deb
 
 ### Instalação extensões do Code.
-for code_ext in ${code_extensions[@]}; do
+for code_ext in "${code_extensions[@]}"; do
     code --install-extension "$code_ext" 2> /dev/null
 done
 
 ### Instalação do Firefox Release.
 wget -cq --show-progress "$url_firefox"   -P "$diretorio_downloads"
-sudo tar xjf $diretorio_downloads/firefox*.bz2 -C /opt
+sudo tar xjf "$diretorio_downloads"/firefox*.bz2 -C /opt
 sudo ln -s /opt/firefox/firefox /usr/bin/firefox
-sudo chown -R $(whoami):$(whoami) /opt/firefox*
+sudo chown -R "$(whoami)":"$(whoami)" /opt/firefox*
 
 sudo sh -c 'cat <<EOF > /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop
 [Desktop Entry]
@@ -235,7 +231,7 @@ MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vn
 StartupNotify=true
 EOF'
 
-sudo chown $(whoami):$(whoami) $HOME/.local/share/applications/firefox-stable.desktop
+sudo chown "$(whoami)":"$(whoami)" "$HOME"/.local/share/applications/firefox-stable.desktop
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -273,11 +269,11 @@ sudo apt autoremove
 sudo apt autoclean
 
 ### Limpando pasta temporária dos downloads.
-sudo rm $diretorio_downloads/*.* -f
+sudo rm "$diretorio_downloads"/*.* -f
 
 ### Reiniciará o PC ou encerrará a execução do scrip.
 echo -e "Digite S para reiniciar, ou N para sair do Script:"
-read  reinicia
+read -r reinicia
 
 case $reinicia in
     S|s)
@@ -285,7 +281,7 @@ case $reinicia in
 		;;
     N|n)
     	exit 0
-		;;s
+		;;
 esac
 
 # ------------------------------------------------------------------------------------------------------------- #
@@ -340,8 +336,8 @@ esac
 # sudo update-grub
 # sudo sed -i 's/logo-text-version-64.png/logo-text-64.png/g' /etc/gdm3/greeter.dconf-defaults
 # sudo dpkg-reconfigure gdm3
-# sudo flatpak --system override org.telegram.desktop --filesystem=$HOME/.icons/:ro
-# sudo flatpak --system override com.spotify.Client --filesystem=$HOME/.icons/:ro
-# sudo flatpak --system override com.valvesoftware.Steam --filesystem=$HOME/.icons/:ro
+# sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
+# sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
+# sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 # ln -s /usr/share/hunspell/* ~/.config/Code/Dictionaries
 # sudo dpkg-reconfigure gdm3
