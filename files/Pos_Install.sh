@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 04/10/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 10/10/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -36,6 +36,7 @@ url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
 url_code="https://az764295.vo.msecnd.net/stable/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa/code_1.59.1-1629375198_amd64.deb"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
+# url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(popularity-contest 
@@ -216,6 +217,11 @@ then
 else
   mkdir -p "$HOME"/.themes
 fi
+
+# wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
+# mkdir -p .local/share/fonts
+# mv *.ttf ~/.local/share/fonts/
+# fc-cache -f -v >/dev/null
 
 # git clone https://github.com/ciro-mota/conf-backup.git
 

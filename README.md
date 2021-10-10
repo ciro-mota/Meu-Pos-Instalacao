@@ -29,4 +29,4 @@ Este Script foi desenvolvido para ser utilizado na base 20.04 do Ubuntu, sendo s
 ![](files/screenshot.png)
 
 ### Ultima Modificação:
->04 Out 2021
+>10 Out 2021
