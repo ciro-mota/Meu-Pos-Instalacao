@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 10/10/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 07/11/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -34,7 +34,7 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa/code_1.59.1-1629375198_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/b3318bc0524af3d74034b8bb8a64df0ccf35549a/code_1.62.0-1635954068_amd64.deb"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 # url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
@@ -64,6 +64,7 @@ apps=(brave-browser
 	gnome-shell-extensions 
 	gnome-shell-extension-gamemode 
 	gufw 
+	hplip 
 	hugo 
 	hunspell-pt-br
 	libvulkan1:i386 
@@ -80,7 +81,6 @@ apps=(brave-browser
 	obs-studio 
 	onlyoffice-desktopeditors 
 	terminator 
-	transmission 
 	ubuntu-restricted-extras 
 	ulauncher 
 	vim-runtime  
@@ -92,6 +92,7 @@ flatpak=(com.spotify.Client
 	nl.hjdskes.gcolor3 
 	org.gimp.GIMP 
 	org.libreoffice.LibreOffice 
+	org.qbittorrent.qBittorrent 
 	org.remmina.Remmina 
 	org.telegram.desktop)
 
@@ -166,6 +167,9 @@ echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/only
 ### Atualizando sistema após adição de novos repositórios.
 sudo apt update && sudo apt upgrade -y
 
+### Instalação do repo Flatpak.
+flatpak remote-add --if-not-exists flathub $url_flathub
+
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
 ### Instalação da lista de apps.
@@ -177,12 +181,9 @@ for nome_do_app in "${apps[@]}"; do
   fi
 done
 
-### Instalação de apps Flatpak.
-flatpak remote-add --if-not-exists flathub $url_flathub
-
 for nome_do_flatpak in "${flatpak[@]}"; do
   if ! flatpak list | grep -q "$nome_do_flatpak"; then
-    sudo flatpak install flathub --system "$nome_do_flatpak"
+    sudo flatpak install flathub --system "$nome_do_flatpak" -y
   fi
 done
 
@@ -217,23 +218,6 @@ then
 else
   mkdir -p "$HOME"/.themes
 fi
-
-# wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
-# mkdir -p .local/share/fonts
-# mv *.ttf ~/.local/share/fonts/
-# fc-cache -f -v >/dev/null
-
-# git clone https://github.com/ciro-mota/conf-backup.git
-
-# cp -r $HOME/conf-backup/Dracula-Blue $HOME/.themes
-# cp -r $HOME/conf-backup/Yaru-Deepblue-dark $HOME/.themes
-# cp -r $HOME/conf-backup/Flat-Remix-Blue-Dark $HOME/.icons
-# cp -r $HOME/conf-backup/volantes_cursors $HOME/.icons
-# cp -r $HOME/conf-backup/neofetch $HOME/.config/neofetch
-# cp -r $HOME/conf-backup/terminator $HOME/.config/terminator
-# cp -r $HOME/conf-backup/.zsh_aliases $HOME
-# cp -r $HOME/conf-backup/.zshrc $HOME
-# cp -r $HOME/conf-backup/.vim $HOME
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -271,14 +255,33 @@ sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
 sudo usermod -aG docker "$(whoami)"
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-# gsettings set org.gnome.desktop.interface gtk-theme 'Dracula-Blue'
-# gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
-# gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
-# gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo update-alternatives --config x-terminal-emulator
+
+### Bloco de personalizações pessoais.
+# wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
+# mkdir -p .local/share/fonts
+# mv *.ttf ~/.local/share/fonts/
+# fc-cache -f -v >/dev/null
+
+# git clone "$url_backup"
+
+# cp -r $HOME/conf-backup/Dracula-Blue $HOME/.themes
+# cp -r $HOME/conf-backup/Yaru-Deepblue-dark $HOME/.themes
+# cp -r $HOME/conf-backup/Flat-Remix-Blue-Dark $HOME/.icons
+# cp -r $HOME/conf-backup/volantes_cursors $HOME/.icons
+# cp -r $HOME/conf-backup/neofetch $HOME/.config/neofetch
+# cp -r $HOME/conf-backup/terminator $HOME/.config/terminator
+# cp -r $HOME/conf-backup/.zsh_aliases $HOME
+# cp -r $HOME/conf-backup/.zshrc $HOME
+# cp -r $HOME/conf-backup/.vim $HOME
+
+# gsettings set org.gnome.desktop.interface gtk-theme 'Dracula-Blue'
+# gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
+# gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
+# gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
 
 ### Finalização e limpeza.
 sudo apt autoremove

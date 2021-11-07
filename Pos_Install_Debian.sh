@@ -4,16 +4,16 @@
 ## AUTOR:
 ### 	Ciro Mota <contato.ciromota@outlook.com>
 ## NOME:
-### 	Pos_Install.
+### 	Pos_Install_Debian.
 ## DESCRIÇÃO:
-###			Script de pós instalação desenvolvido para base o Debian Testing, 
+###			Script de pós instalação desenvolvido para base Debian Testing, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
 ## CHANGELOG:
-### 		Última edição 10/10/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 07/11/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
 
-### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
+### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
@@ -31,18 +31,16 @@ url_ppa_ulauncher="ppa:agornostal/ulauncher"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa/code_1.59.1-1629375198_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/b3318bc0524af3d74034b8bb8a64df0ccf35549a/code_1.62.0-1635954068_amd64.deb"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/91.0.1/linux-x86_64/pt-BR/firefox-91.0.1.tar.bz2"
-# url_backup="https://github.com/ciro-mota/conf-backup.git"
-# url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
-
+url_firefox="https://ftp.mozilla.org/pub/firefox/releases/94.0.1/linux-x86_64/pt-BR/firefox-94.0.1.tar.bz2"
 
 ### Programas para instalação.
 apps=(brave-browser 
 	celluloid 
 	containerd.io 
 	cowsay 
+	cups-pk-helper 
 	default-jre 
 	docker-ce 
 	exfat-fuse 
@@ -58,6 +56,7 @@ apps=(brave-browser
 	gstreamer1.0-plugins-ugly 
 	gstreamer1.0-vaapi 
 	gufw 
+	hplip 
 	hugo 
 	hunspell-pt-br 
 	libavcodec-extra 
@@ -71,6 +70,7 @@ apps=(brave-browser
 	lolcat
 	lutris 
 	neofetch 
+	neovim 
 	network-manager-gnome 
 	plymouth 
 	plymouth-themes 
@@ -81,9 +81,7 @@ apps=(brave-browser
 	printer-driver-pxljr 
 	seahorse  
 	terminator 
-	transmission 
 	ulauncher 
-	vim-runtime 
 	zsh)
 	
 flatpak=(com.spotify.Client 
@@ -92,6 +90,7 @@ flatpak=(com.spotify.Client
 	nl.hjdskes.gcolor3 
 	org.gimp.GIMP 
 	org.libreoffice.LibreOffice 
+	org.qbittorrent.qBittorrent 
 	org.remmina.Remmina 
 	org.telegram.desktop)
 
@@ -115,7 +114,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(lsb_release -cs) = "bullseye" ]]
+if [[ $(lsb_release -cs) = "bookworm" ]]
 then
 	echo ""
 	echo ""
@@ -128,7 +127,7 @@ else
 fi
 
 ### Check se há conexão com à internet.
-if ping -q -c 1 -W 1 8.8.8.8 >/dev/null;
+if ping -q -c 1 -W 1 1.1.1.1 >/dev/null;
 then
   	echo ""
 	echo ""
@@ -321,7 +320,7 @@ esac
 #   mkdir -p $HOME/.themes
 # fi
 
-# wget -cq --show-progress "$url_fantasque" 	-P "$diretorio_downloads"
+# wget -O Fantasque_Sans_Mono_Regular_Nerd_Font_Complete.ttf -cq --show-progress "https://git.io/JX8Ed" -P "$diretorio_downloads"
 # mkdir -p .local/share/fonts
 # mv *.ttf ~/.local/share/fonts/
 # fc-cache -f -v >/dev/null
@@ -351,6 +350,8 @@ esac
 # sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
 # sudo mv /etc/network/interfaces /etc/network/interfaces.old
 # sudo usermod -aG docker $(whoami)
+# sudo usermod -aG lp $(whoami)
+# sudo usermod -aG lpadmin $(whoami)
 # sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 # sudo sed -ie 's/GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 splash"/' /etc/default/grub
 # sudo update-grub
