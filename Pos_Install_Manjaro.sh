@@ -9,11 +9,17 @@
 ###			Script de pós instalação desenvolvido para base Manjaro, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
-###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
+###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/11/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 14/11/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
+
+### Você pode substituir o Pulseaudio pelo Pipewire, executando o procedimento de remoção e instalação a seguir:
+
+### sudo pacman -Rdd manjaro-pulse pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-ctl pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf
+### sudo pacman -S manjaro-pipewire
+
 
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
@@ -62,7 +68,6 @@ apps=(bootsplash-manager
 
 apps_do_aur=(brave-bin 
 	dropbox 
-	hunspell-pt-br 
 	teamviewer 
 	ulauncher 
 	xiaomi-adb-fastboot-tools)  
@@ -217,9 +222,3 @@ sudo pacman -R "$(pacman -Qdtq)" --noconfirm
 
 ### Limpando pasta temporária dos downloads.
 # sudo rm "$diretorio_downloads"/ -rf
-
-# ------------------------------------------------------------------------------------------------------------- #
-# -------------------------------------------------- PÓS-REBOOT ----------------------------------------------- #
-### Linhas que deverão ser executadas após o reboot e carregamento do ambiente gráfico.
-
-# ln -s /usr/share/hunspell/* ~/.config/Code/Dictionaries

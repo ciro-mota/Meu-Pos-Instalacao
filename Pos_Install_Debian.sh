@@ -9,9 +9,9 @@
 ###			Script de pós instalação desenvolvido para base Debian Testing, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
-###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
+###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/11/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 14/11/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -58,7 +58,6 @@ apps=(brave-browser
 	gufw 
 	hplip 
 	hugo 
-	hunspell-pt-br 
 	libavcodec-extra 
 	libgnutls30:i386 
 	libldap-2.4-2:i386 
@@ -360,5 +359,4 @@ esac
 # sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
 # sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 # sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
-# ln -s /usr/share/hunspell/* ~/.config/Code/Dictionaries
 # sudo dpkg-reconfigure gdm3

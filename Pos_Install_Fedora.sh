@@ -10,9 +10,9 @@
 ###			Script de pós instalação desenvolvido para base Fedora 35, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
-###		  GPLv3. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/blob/master/LICENSE>
+###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/11/2021. <https://github.com/ciro-mota/Pos-Instalacao-Ubuntu/commits/master>
+### 		Última edição 14/11/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -33,12 +33,15 @@ url_code="https://az764295.vo.msecnd.net/stable/b3318bc0524af3d74034b8bb8a64df0c
 
 ### Programas para instalação e desinstalação.
 apps_remover=(cheese 
+	gnome-abrt 
 	gnome-boxes 
 	gnome-connections 
 	gnome-maps 
 	gnome-photos 
+	gnome-software 
 	gnome-tour 
 	mediawriter 
+	PackageKit 
 	totem 
 	rhythmbox)	
 

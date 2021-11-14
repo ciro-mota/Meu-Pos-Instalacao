@@ -2,7 +2,7 @@
 
 <img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge"> <img src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white"> <img src="https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white"> <img src="https://img.shields.io/badge/manjaro-35BF5C?style=for-the-badge&logo=manjaro&logoColor=white">
 
-Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC em quatro distros (3 principais bases) Linux.
+Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC em quatro distros (3 principais bases) Linux. O intuito é construir uma instalação mínima dessas distros e ir personalizando à medida da necessidade de uso.
 
 É inteiramente livre a cópia caso opte por executá-lo de forma integral ou adaptação para sua necessidade, modificando programas que serão instalados nas instâncias de repositório, .deb/.rpm, Flatpak e AUR (para Distro Manjaro).
 
