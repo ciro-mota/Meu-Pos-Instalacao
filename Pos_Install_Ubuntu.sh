@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 14/11/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -34,14 +34,14 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/b3318bc0524af3d74034b8bb8a64df0ccf35549a/code_1.62.0-1635954068_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/899d46d82c4c95423fb7e10e68eba52050e30ba3/code_1.63.2-1639562499_amd64.deb"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 # url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(popularity-contest 
 	snapd 
-	gnome-software-plugin-snap)
+	gnome-software)
 
 apps_requerimentos=(apt-transport-https
 	curl 
@@ -258,6 +258,8 @@ sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/
 sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo update-alternatives --config x-terminal-emulator
+sudo systemctl stop packagekit
+sudo systemctl disable packagekit
 
 ### Bloco de personalizações pessoais.
 # wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"

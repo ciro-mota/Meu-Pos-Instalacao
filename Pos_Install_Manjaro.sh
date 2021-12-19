@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 14/11/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
 
@@ -39,7 +39,8 @@ apps_remover=(bmenu
 	touche 
 	totem)
 
-apps=(bootsplash-manager 
+apps=(brave-browser 
+	bootsplash-manager 
 	bootsplash-theme-manjaro 
 	celluloid 
 	code 
@@ -66,8 +67,8 @@ apps=(bootsplash-manager
 	seahorse 
 	terminator)
 
-apps_do_aur=(brave-bin 
-	dropbox 
+apps_do_aur=(dropbox 
+	google-chrome
 	teamviewer 
 	ulauncher 
 	xiaomi-adb-fastboot-tools)  
@@ -101,7 +102,7 @@ code_extensions=(CoenraadS.bracket-pair-colorizer-2
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(lsb_release -cs) = "Pahvo" ]]
+if [[ $(lsb_release -cs) = "Qonos" ]]
 then
 	echo ""
 	echo ""
@@ -116,7 +117,9 @@ fi
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
 ### Atualizando listas e sistema após adição de novos repositórios.
-sudo pamac update --no-confirm && sudo pamac upgrade -a --no-confirm
+sudo sed -i '/EnableAUR/s/^#//' /etc/pamac.conf
+sudo pacman-mirrors -c United_States -m rank
+sudo pamac update --no-confirm --force-refresh && sudo pamac upgrade -a --no-confirm
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
@@ -175,7 +178,6 @@ sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-def
 sudo systemctl enable --now systemd-swap
 
 ### Procedimentos e otimizações.
-sudo sed -i '/EnableAUR/s/^#//' /etc/pamac.conf
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'

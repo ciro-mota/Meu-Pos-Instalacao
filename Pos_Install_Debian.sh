@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 14/11/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -31,9 +31,9 @@ url_ppa_ulauncher="ppa:agornostal/ulauncher"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/b3318bc0524af3d74034b8bb8a64df0ccf35549a/code_1.62.0-1635954068_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/899d46d82c4c95423fb7e10e68eba52050e30ba3/code_1.63.2-1639562499_amd64.deb"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/94.0.1/linux-x86_64/pt-BR/firefox-94.0.1.tar.bz2"
+url_firefox="https://ftp.mozilla.org/pub/firefox/releases/95.0.2/linux-x86_64/pt-BR/firefox-95.0.2.tar.bz2"
 
 ### Programas para instalação.
 apps=(brave-browser 
@@ -228,7 +228,7 @@ done
 ### Instalação do Firefox Release.
 wget -cq --show-progress "$url_firefox"   -P "$diretorio_downloads"
 sudo tar xjf "$diretorio_downloads"/firefox*.bz2 -C /opt
-sudo ln -s /opt/firefox/firefox /usr/bin/firefox
+sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
 sudo chown -R "$(whoami)":"$(whoami)" /opt/firefox*
 
 sudo sh -c 'cat <<EOF > /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop
@@ -277,6 +277,7 @@ sudo systemctl enable zram
 
 ### Finalização e limpeza.
 sudo apt purge totem -y
+sudo apt purge gnome-software -y
 sudo apt purge firefox-esr -y
 sudo apt autoremove
 sudo apt autoclean
@@ -360,3 +361,5 @@ esac
 # sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 # sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 # sudo dpkg-reconfigure gdm3
+# sudo systemctl stop packagekit
+# sudo systemctl disable packagekit
