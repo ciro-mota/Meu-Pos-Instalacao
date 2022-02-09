@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 09/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
 
@@ -43,6 +43,7 @@ apps=(brave-browser
 	bootsplash-manager 
 	bootsplash-theme-manjaro 
 	celluloid 
+	chromium
 	code 
 	containerd 
 	cowsay 
@@ -62,13 +63,12 @@ apps=(brave-browser
 	neofetch 
 	neovim 
 	obs-studio 
-	onlyoffice-desktopeditors 
 	qbittorrent 
 	seahorse 
+	telegram-desktop
 	terminator)
 
 apps_do_aur=(dropbox 
-	google-chrome
 	teamviewer 
 	ulauncher 
 	xiaomi-adb-fastboot-tools)  
@@ -79,8 +79,7 @@ flatpak=(com.spotify.Client
 	nl.hjdskes.gcolor3 
 	org.gimp.GIMP 
 	org.libreoffice.LibreOffice 
-	org.remmina.Remmina 
-	org.telegram.desktop)
+	org.remmina.Remmina)
 
 code_extensions=(CoenraadS.bracket-pair-colorizer-2 
 	dendron.dendron-markdown-shortcuts 

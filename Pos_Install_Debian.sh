@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 09/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -31,9 +31,9 @@ url_ppa_ulauncher="ppa:agornostal/ulauncher"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/899d46d82c4c95423fb7e10e68eba52050e30ba3/code_1.63.2-1639562499_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/code_1.64.1-1644255817_amd64.deb"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/95.0.2/linux-x86_64/pt-BR/firefox-95.0.2.tar.bz2"
+url_firefox="https://ftp.mozilla.org/pub/firefox/releases/97.0/linux-x86_64/pt-BR/firefox-97.0.tar.bz2"
 
 ### Programas para instalação.
 apps=(brave-browser 

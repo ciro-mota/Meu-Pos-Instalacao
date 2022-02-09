@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 09/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -34,7 +34,7 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/899d46d82c4c95423fb7e10e68eba52050e30ba3/code_1.63.2-1639562499_amd64.deb"
+url_code="https://az764295.vo.msecnd.net/stable/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/code_1.64.1-1644255817_amd64.deb"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 # url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
@@ -129,6 +129,9 @@ fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
+### Mudança para o mirror global
+sudo sed -i 's/http:\/\/br./http:\/\//g' /etc/apt/sources.list
+
 ### Instalando requerimentos.
 for nome_do_appreq in "${apps_requerimentos[@]}"; do
   if ! dpkg -l | grep -q "$nome_do_appreq"; then

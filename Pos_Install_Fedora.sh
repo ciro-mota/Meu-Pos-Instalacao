@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/12/2021. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 09/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -27,7 +27,7 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 url_dbox="https://www.dropbox.com/download?dl=packages/fedora/nautilus-dropbox-2020.03.04-1.fedora.x86_64.rpm"
-url_code="https://az764295.vo.msecnd.net/stable/899d46d82c4c95423fb7e10e68eba52050e30ba3/code-1.63.2-1639562596.el7.x86_64.rpm"
+url_code="https://az764295.vo.msecnd.net/stable/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/code-1.64.1-1644255919.el7.x86_64.rpm"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 # url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
@@ -64,6 +64,8 @@ apps=(android-tools
 	obs-studio 
 	terminator 
 	ulauncher 
+	zram-generator 
+	zram-generator-defaults 
 	zsh)
 
 flatpak=(com.spotify.Client 
@@ -182,8 +184,6 @@ fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
-### Ativando ZRAM.
-sudo systemctl enable zram-swap.service
 
 ### Procedimentos e otimizações.
 sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf

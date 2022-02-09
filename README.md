@@ -11,24 +11,23 @@ Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu
 - Recomendado instalação do Ubuntu 20.04.3 LTS no modo **"Instalação Mínima"**.
 - Recomendado instalação do Debian Testing no modo **"Net Install"**.
 - Recomendado instalação do Fedora Workstation ou Fedora Server escolhendo a opção **"Fedora Workstation"**.
-- Recomendado a instalação do Manjaro Linux com a .iso de instalação mínima.
+- Recomendado a instalação do Manjaro Linux com a **.iso de instalação mínima**.
 
 ![](assets/compiled.gif)
 ### Extensões GNOME:
 
-- Vitals.
-- Clock Override (String: %d %B %Y  |  %H:%M) (Ainda não compatível com GNOME +40).
-- Dash to Dock.
-- Hide Activities Button.
-- Impatience.
-- User Themes.
-- Remove Dropdown Arrows.
-- Desktop Icons NG (DING).
-- No overview at start-up (para GNOME +40).
+- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
+- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y  |  k:m)
+- [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
+- [Hide Activities Button](https://extensions.gnome.org/extension/744/hide-activities-button/)
+- [Impatience](https://extensions.gnome.org/extension/277/impatience/)
+- [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
+- [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/)
+- [No overview at start-up](https://extensions.gnome.org/extension/4099/no-overview/)
 
 ### Aparência final:
 
 ![](assets/screenshot.png)
 
 ### Ultima Modificação:
->19 Dez 2021
+>09 Fev 2022
