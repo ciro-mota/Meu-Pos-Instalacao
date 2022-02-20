@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 09/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 19/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -95,14 +95,14 @@ flatpak=(com.spotify.Client
 	org.remmina.Remmina 
 	org.telegram.desktop)
 
-code_extensions=(CoenraadS.bracket-pair-colorizer-2 
-	dendron.dendron-markdown-shortcuts 
+code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
+	foxundermoon.shell-format
 	HashiCorp.terraform
+	ritwickdey.LiveServer
 	ms-azuretools.vscode-docker 
 	MS-CEINTL.vscode-language-pack-pt-BR
 	ms-kubernetes-tools.vscode-kubernetes-tools
-	shakram02.bash-beautify 
 	Shan.code-settings-sync 
 	snyk-security.vscode-vuln-cost 
 	streetsidesoftware.code-spell-checker 

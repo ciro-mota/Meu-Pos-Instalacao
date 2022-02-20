@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 09/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 20/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
 
@@ -39,12 +39,10 @@ apps_remover=(bmenu
 	touche 
 	totem)
 
-apps=(brave-browser 
-	bootsplash-manager 
+apps=(bootsplash-manager 
 	bootsplash-theme-manjaro 
 	celluloid 
-	chromium
-	code 
+	chromium 
 	containerd 
 	cowsay 
 	docker 
@@ -62,33 +60,36 @@ apps=(brave-browser
 	lutris 
 	neofetch 
 	neovim 
-	obs-studio 
+	pass 
 	qbittorrent 
 	seahorse 
-	telegram-desktop
 	terminator)
 
-apps_do_aur=(dropbox 
+apps_do_aur=(brave-browser 
+	dropbox 
 	teamviewer 
 	ulauncher 
-	xiaomi-adb-fastboot-tools)  
+	xiaomi-adb-fastboot-tools 
+	vscodium-bin)  
 	
-flatpak=(com.spotify.Client 
+flatpak=(com.obsproject.Studio
+	com.spotify.Client 
 	com.valvesoftware.Steam 
 	com.valvesoftware.Steam.Utility.MangoHud 
 	nl.hjdskes.gcolor3 
 	org.gimp.GIMP 
 	org.libreoffice.LibreOffice 
-	org.remmina.Remmina)
+	org.remmina.Remmina 
+	org.telegram.desktop)
 
-code_extensions=(CoenraadS.bracket-pair-colorizer-2 
-	dendron.dendron-markdown-shortcuts 
+code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
+	foxundermoon.shell-format
 	HashiCorp.terraform
+	ritwickdey.LiveServer
 	ms-azuretools.vscode-docker 
 	MS-CEINTL.vscode-language-pack-pt-BR
 	ms-kubernetes-tools.vscode-kubernetes-tools
-	shakram02.bash-beautify 
 	Shan.code-settings-sync 
 	snyk-security.vscode-vuln-cost 
 	streetsidesoftware.code-spell-checker 
@@ -152,7 +153,7 @@ wget -O - $url_jopplin | bash
 
 ### Instalação extensões do Code.
 for code_ext in "${code_extensions[@]}"; do
-    code --install-extension "$code_ext" 2> /dev/null
+    codium --install-extension "$code_ext" 2> /dev/null
 done
 
 ### Instalação de ícones, temas e configurações.
