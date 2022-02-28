@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 28/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -286,7 +286,7 @@ sudo apt autoclean
 ### Limpando pasta temporária dos downloads.
 sudo rm "$diretorio_downloads"/*.* -f
 
-### Reiniciará o PC ou encerrará a execução do scrip.
+### Reiniciará o PC ou encerrará a execução do script.
 echo -e "Digite S para reiniciar, ou N para sair do Script:"
 read -r reinicia
 
