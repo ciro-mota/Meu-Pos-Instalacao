@@ -70,9 +70,9 @@ apps=(android-tools
 
 flatpak=(com.obsproject.Studio 
 	com.spotify.Client 
-	com.valvesoftware.Steam 
-	com.valvesoftware.Steam.Utility.MangoHud 
+	com.valvesoftware.Steam  
 	nl.hjdskes.gcolor3 
+	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.onlyoffice.desktopeditors 
 	org.qbittorrent.qBittorrent 

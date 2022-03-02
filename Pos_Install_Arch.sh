@@ -4,14 +4,14 @@
 ## AUTOR:
 ### 	Ciro Mota <contato.ciromota@outlook.com>
 ## NOME:
-### 	Pos_Install_Manjaro.
+### 	Pos_Install_Arch.
 ## DESCRIÇÃO:
-###			Script de pós instalação desenvolvido para base Manjaro, 
+###			Script de pós instalação desenvolvido para base Arch, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 28/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 02/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 ### ESTE SCRIPT AINDA ENCONTRA-SE EM FASE DE TESTES E NÃO DEVE SER UTILIZADO PARA PRODUÇÃO.
@@ -29,74 +29,70 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 ### Programas para instalação e desinstalação.
 
 apps=(amd-ucode 
-	btrfs-progs 
+	amdvlk 
+	baobab 
 	celluloid 
 	chromium 
 	containerd 
 	cowsay 
-	dialog 
+	curl 
 	docker 
+	dialog 
 	docker-compose 
-	efibootmgr 
-	dosfstools 
 	eog 
 	evince 
 	exfat-utils 
 	ffmpegthumbnailer 
 	file-roller 
+	firefox 
 	flatpak 
 	font-manager 
 	fortune-mod 
-	gdm 
 	gedit 
 	gnome-calculator 
 	gnome-characters 
 	gnome-icon-theme-symbolic 
 	gnome-keyring 
-	gnome-control-center 
-	gnome-shell 
 	gnome-system-monitor 
-	gnome-terminal 
-	gnome-tweak-tool 
-	grub 
+	gnome-tweak-tool
+	gparted 
 	gufw 
+	haskell-gnutls 
 	hplip 
 	hugo 
 	jre-openjdk 
-	libpamac-flatpak-plugin 
+	lib32-vulkan-icd-loader 
 	lolcat 
 	lutris 
-	mtools 
-	nautilus 
 	neofetch 
 	neovim 
-	networkmanager 
-	network-manager-applet 
-	os-prober 
 	pass 
 	qbittorrent 
+	sdl_image 
 	seahorse 
+	simplescreenrecorder 
 	systemd-swap 
 	terminator 
-	wireless_tools 
-	wpa_supplicant 
-	xdg-user-dirs 
+	vulkan-radeon 
+	wget 
 	xf86-video-amdgpu 
-	xorg  
 	zsh)
 
 apps_do_aur=(brave-bin 
 	dropbox 
+	heroic-games-launcher-bin 
+	plymouth 
 	teamviewer 
+	timeshift-autosnap 
 	ulauncher 
-	xiaomi-adb-fastboot-tools 
+	xiaomitool-v2
 	vscodium-bin)  
 	
 flatpak=(com.obsproject.Studio
 	com.spotify.Client 
 	com.valvesoftware.Steam 
-	com.valvesoftware.Steam.Utility.MangoHud 
 	nl.hjdskes.gcolor3 
+	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.libreoffice.LibreOffice 
 	org.remmina.Remmina 
@@ -117,8 +113,6 @@ code_extensions=(dendron.dendron-markdown-shortcuts
 	timonwong.shellcheck 
 	zhuangtongfa.Material-theme)					
 
-# diretorio_downloads="$HOME/Downloads/programas"
-
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
@@ -134,39 +128,8 @@ else
 	exit 1
 fi
 
-### Check se há conexão com à internet.
-if ping -q -c 1 -W 1 1.1.1.1 >/dev/null;
-then
-  	echo ""
-	echo ""
-	echo -e "\e[32;1mConexão com à internet OK. Prosseguindo com o script...\e[m"
-	echo ""
-	echo ""
-else
-  	echo -e "\e[31;1mVocê não está conectado à internet. Verifique sua conexão de rede ou wi-fi antes de prosseguir.\e[m"
-	exit 1
-fi
-
-# ------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
-### Adicionando repositório Multilib e atualizando listas.
-sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-sudo pacman -Sy
-
-### Instalando yay AUR Helper.
-sudo pacman -S --needed base-devel --noconfirm
-git clone https://aur.archlinux.org/yay.git && cd yay/ && makepkg -sri
-
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
-
-### Configurando parâmetros.
-echo "k6-2-500" >> nano /etc/hostname
-cat <<EOF > /etc/hosts
-127.0.0.1	localhost
-::1		localhost
-127.0.0.1	k6-2-500.localdomain	k6-2-500
-EOF
 
 ### Instalação de programas.
 for nome_do_app in "${apps[@]}"; do
@@ -175,12 +138,8 @@ done
 
 ### Instalação de programas do AUR.
 for nome_do_aur in "${apps_do_aur[@]}"; do
-    sudo yay -S "$nome_do_aur" --noconfirm
+    yay -S "$nome_do_aur" --noconfirm
 done
-
-### Instalando o Grub.
-grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Instalação de Flatpaks.
 for nome_do_flatpak in "${flatpak[@]}"; do
@@ -212,13 +171,12 @@ fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
+
 ### Ativando ZRAM.
 sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-default.conf
 sudo systemctl enable --now systemd-swap
 
 ### Procedimentos e otimizações.
-systemctl enable NetworkManager
-systemctl enable gdm
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
@@ -230,6 +188,14 @@ sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/
 sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
+
+### Aplicando Plymouth
+sudo sed -ie 's/HOOKS=(/HOOKS=(plymouth /' /etc/mkinitcpio.conf
+sudo mkinitcpio -p linux
+sudo sed -ie 's/GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 splash"/' /etc/default/grub
+sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo plymouth-set-default-theme -R bgrt
 
 ### Bloco de personalizações pessoais.
 # mkdir -p "$diretorio_downloads"
@@ -256,21 +222,5 @@ sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminat
 # sudo gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
 
 ### Finalização e limpeza.
+sudo timeshift-autosnap
 sudo pacman -R "$(pacman -Qdtq)" --noconfirm
-
-### Limpando pasta temporária dos downloads.
-# sudo rm "$diretorio_downloads"/ -rf
-
-### Reiniciará o PC ou encerrará a execução do script.
-echo -e "Digite S para reiniciar, ou N para sair do Script:"
-read -r reinicia
-
-case $reinicia in
-    S|s)
-    	exit
-		reboot
-		;;
-    N|n)
-    	exit 0
-		;;
-esac

@@ -86,9 +86,9 @@ apps=(brave-browser
 	zsh)
 
 flatpak=(com.spotify.Client 
-	com.valvesoftware.Steam 
-	com.valvesoftware.Steam.Utility.MangoHud 
+	com.valvesoftware.Steam 	
 	nl.hjdskes.gcolor3 
+	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.libreoffice.LibreOffice 
 	org.qbittorrent.qBittorrent 

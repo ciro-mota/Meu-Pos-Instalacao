@@ -1,17 +1,18 @@
-# Minha Pós Instalação #
+# Minha Pós Instalação
 
-<img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge"> <img src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white"> <img src="https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white"> <img src="https://img.shields.io/badge/manjaro-35BF5C?style=for-the-badge&logo=manjaro&logoColor=white">
+![License](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge) ![Shell Script](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) ![Debian](https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white) ![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white) ![Manjaro](https://img.shields.io/badge/manjaro-35BF5C?style=for-the-badge&logo=manjaro&logoColor=white) ![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
 
-Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC em quatro distros (3 principais bases) Linux. O intuito é construir uma instalação mínima dessas distros e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
+Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC nas principais distros Linux. O intuito é construir uma instalação mínima dessas distros e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
 
-É inteiramente livre a cópia caso opte por executá-lo de forma integral ou adaptação para sua necessidade, modificando programas que serão instalados nas instâncias de repositório, .deb/.rpm, Flatpak e AUR (para Distro Manjaro).
+É inteiramente livre a cópia caso opte por executá-lo de forma integral ou adaptação para sua necessidade antes da execução, modificando programas que serão instalados nas etapas de repositório, .deb/.rpm, Flatpak e AUR (para Distro Manjaro) e extensões para o VSCode/Codium.
 
 ### Observações:
 
-- Recomendado instalação do Ubuntu 20.04.3 LTS no modo **"Instalação Mínima"**.
+- Recomendado instalação do Ubuntu 20.04.4 LTS no modo **"Instalação Mínima"**.
 - Recomendado instalação do Debian Testing no modo **"Net Install"**.
 - Recomendado instalação do Fedora Workstation ou Fedora Server escolhendo a opção **"Fedora Workstation"**.
 - Recomendado a instalação do Manjaro Linux com a **.iso de instalação mínima**.
+- Para o Arch Linux, seguir recomendações de instalação em [anexo](/assets/Arch-Install.md).
 
 ![](assets/compiled.gif)
 ### Extensões GNOME:
@@ -30,4 +31,4 @@ Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu
 ![](assets/screenshot.png)
 
 ### Ultima Modificação:
->20 Fev 2022
+>02 Mar 2022
