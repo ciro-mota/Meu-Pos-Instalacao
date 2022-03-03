@@ -10,11 +10,11 @@ loadkeys br-abnt2
 
 ## Particionamento:
 
-No mais caso, segue o exemplo do particionamento de um NVME com duas partições (o `/` e o `/boot/EFI`) e um disco secundário para a partição `/home`. Utilizei o `cfdisk` por mera preferência. Adapte para seu cenário.
+Para o meu caso, segue o exemplo do particionamento de um NVME com duas partições (o `/` e o `/boot/EFI`) e um disco secundário para a partição `/home`. Utilizei o `cfdisk` por mera preferência. Adapte para seu cenário.
 
-Se não tiver certeza do nome dos discos, use o comando `fdisk -l` para listar os discos.
+Se não tiver certeza do nome dos discos, use o comando `fdisk -l` para listá-los.
 
-Inicie uma nova tabela de discos escolhendo o modo `gpt`.
+Inicie uma nova tabela de partições escolhendo o modo `gpt`.
 
 ```
 cfdisk /dev/nvme0n1
@@ -28,7 +28,7 @@ Layout final das partições:
 ![imagem](/assets/arch-install1.png)
 ## Formatação:
 
-Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` par o `/` e `xfs` para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de boot.
+Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` para o `/` e `xfs` para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
 
 ```
 mkfs.vfat -F32 /dev/nvme0n1p1
@@ -42,7 +42,7 @@ mkfs.xfs /dev/sda1
 
 ## Pontos de montagem:
 
-Aqui iremos começar de fato a construção do sistema, começando pelos pontos de montagem. Vamos montar inicialmente a segunda partição, criar nela um subvolume e por fim desmontá-la. O subvolume é necessário e essencial para os snapshots. Você pode inclusive criar vários para melhor controle, no meu caso optei por somente criar um para toda a partição `/`.
+Aqui iremos começar de fato a construção do sistema começando pelos pontos de montagem. Vamos montar inicialmente a segunda partição, criar nela um subvolume e por fim desmontá-la. O subvolume é necessário e essencial para os snapshots. Você pode inclusive criar vários para melhor controle, no meu caso optei por somente criar um para toda a partição `/`.
 
 ```
 mount /dev/nvme0n1p2 /mnt
@@ -54,7 +54,7 @@ btrfs su cr /mnt/@
 umount /mnt
 ```
 
-Realizamos novamente a montagem da partição principal porém dessa vez com a montagem do subvolume.
+Realizamos novamente a montagem da partição principal, porém dessa vez com a montagem do subvolume.
 
 ```
 mount -o rw,relatime,ssd,subvol=@  /dev/nvme0n1p2 /mnt
@@ -92,7 +92,7 @@ Edite-o:
 nano /mnt/etc/fstab
 ```
 
-Substitua, para a partição `/` o campo `relatime` para `noatime,compress=zstd:3` onde habilitamos uma compressão visando desempenho e se aproveitando dos recursos do `btrfs`. Use `cat /mnt/etc/fstab` para verificar como ficou:
+Substitua, para a partição `/` o campo `relatime` para `noatime,compress=zstd:3` onde habilitamos compressão visando desempenho, se aproveitando dos recursos fornecidos pelo sistema de arquivos `btrfs`. Use `cat /mnt/etc/fstab` para verificar como ficou:
 
 ![imagem](/assets/arch-install2.png)
 
@@ -110,7 +110,7 @@ Defina seu fuso horário, adapte se necessário.
 ln -sf /usr/share/zoneinfo/America/Bahia /etc/localtime
 ```
 
-Sincronização dos relógios (hardware e sistema):
+Sincronização dos relógios (hardware e SO):
 
 ```
 hwclock --systohc
@@ -163,7 +163,7 @@ O comando abaixo irá definir o nome do PC, adapte-o.
 ```
 echo "k6-2-500" >> /etc/hostname
 ```
-O conjunto de linhas abaixo irá povoar o arquivo hosts:
+O conjunto de linhas abaixo irá povoar o arquivo hosts, adapte-o baseado no hostname definido no passo anterior:
 
 ```
 cat <<EOF > /etc/hosts
