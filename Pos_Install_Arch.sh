@@ -11,10 +11,9 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 02/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
-### ESTE SCRIPT AINDA ENCONTRA-SE EM FASE DE TESTES E NÃO DEVE SER UTILIZADO PARA PRODUÇÃO.
 
 
 # ------------------------------------------------------------------------------------------------------------- #
@@ -190,12 +189,12 @@ sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.ico
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 
 ### Aplicando Plymouth
-sudo sed -ie 's/HOOKS=(/HOOKS=(plymouth /' /etc/mkinitcpio.conf
+sudo sed -i 's/fsck)/fsck plymouth)/g' /etc/mkinitcpio.conf
 sudo mkinitcpio -p linux
 sudo sed -ie 's/GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 splash"/' /etc/default/grub
 sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
-sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo plymouth-set-default-theme -R bgrt
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Bloco de personalizações pessoais.
 # mkdir -p "$diretorio_downloads"
