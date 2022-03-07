@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 07/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -27,7 +27,6 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 url_dbox="https://www.dropbox.com/download?dl=packages/fedora/nautilus-dropbox-2020.03.04-1.fedora.x86_64.rpm"
-url_code="https://az764295.vo.msecnd.net/stable/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/code-1.64.1-1644255919.el7.x86_64.rpm"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 # url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
@@ -48,6 +47,7 @@ apps_remover=(cheese
 apps=(android-tools 
 	brave-browser 
 	celluloid 
+	codium 
 	chrome-gnome-shell
 	containerd.io 
 	cowsay 
@@ -74,6 +74,7 @@ flatpak=(com.obsproject.Studio
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
+	com.mattjakeman.ExtensionManager 
 	org.onlyoffice.desktopeditors 
 	org.qbittorrent.qBittorrent 
 	org.remmina.Remmina 
@@ -99,7 +100,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(cat /etc/fedora-release | awk '{ print $3 }') = "35" ]]
+if [[ $(tail /etc/fedora-release | awk '{ print $3 }') = "35" ]]
 then
 	echo ""
 	echo ""
@@ -127,6 +128,8 @@ sudo dnf config-manager --add-repo "$url_repo_brave"
 sudo rpm --import "$url_key_brave"
 
 sudo dnf config-manager --add-repo "$url_repo_dck"
+
+printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h" | sudo tee -a /etc/yum.repos.d/vscodium.repo
 
 flatpak remote-add --if-not-exists flathub "$url_flathub"
 
@@ -156,7 +159,6 @@ wget -O - $url_jopplin | bash
 
 ### Download de programas .rpm.
 mkdir -p "$diretorio_downloads"
-wget -cq --show-progress "$url_code" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_dbox" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
@@ -165,7 +167,7 @@ sudo dnf install -y "$diretorio_downloads"/*.rpm
 
 ### Instalação extensões do Code.
 for code_ext in "${code_extensions[@]}"; do
-    code --install-extension "$code_ext" 2> /dev/null
+    codium --install-extension "$code_ext" 2> /dev/null
 done
 
 ### Instalação de ícones, temas e configurações.

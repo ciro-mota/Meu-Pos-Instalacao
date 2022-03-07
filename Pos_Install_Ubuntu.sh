@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 19/02/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 07/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -34,7 +34,8 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
 url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
-url_code="https://az764295.vo.msecnd.net/stable/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/code_1.64.1-1644255817_amd64.deb"
+url_code="https://download.vscodium.com/debs"
+url_key_code="https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 # url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
@@ -90,6 +91,7 @@ flatpak=(com.spotify.Client
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
+	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.qbittorrent.qBittorrent 
 	org.remmina.Remmina 
@@ -166,6 +168,11 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] 
 sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
 echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
 
+wget -qO - $url_key_code | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+
+echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] '$url_code' vscodium main' \
+    | sudo tee /etc/apt/sources.list.d/vscodium.list	
+
 ### Atualizando sistema após adição de novos repositórios.
 sudo apt update && sudo apt upgrade -y
 
@@ -194,7 +201,6 @@ wget -O - $url_jopplin | bash
 
 ### Download de programas .deb.
 mkdir -p "$diretorio_downloads"
-wget -cq --show-progress "$url_code" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_dbox" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
@@ -203,7 +209,7 @@ sudo apt install -y "$diretorio_downloads"/*.deb
 
 ### Instalação extensões do Code.
 for code_ext in "${code_extensions[@]}"; do
-    code --install-extension "$code_ext" 2> /dev/null
+    codium --install-extension "$code_ext" 2> /dev/null
 done
 
 ### Instalação de ícones, temas e configurações.

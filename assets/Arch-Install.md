@@ -205,3 +205,22 @@ makepkg -sri
 ```
 
 Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/Pos_Install_Arch.sh) para conclusão da instalação.
+
+## Pós instalação:
+
+É possível que durante a tarefa de execução do `mkinitcpio -p linux` você perceba as mensagens abaixo ou próximas. 
+
+```
+==> WARNING: Possibly missing firmware for module: aic94xx
+==> WARNING: Possibly missing firmware for module: wd719x
+==> WARNING: Possibly missing firmware for module: xhci_pci
+```
+
+Não se trata necessariamente de um problema, conforme pode ser [lido aqui](https://lists.archlinux.org/pipermail/arch-dev-public/2013-May/024864.html). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `yay` conforme indicado acima.
+
+```
+yay -S wd719x-firmware aic94xx-firmware upd72020x-fw
+```
+```
+sudo pacman -S linux-firmware-qlogic
+```
