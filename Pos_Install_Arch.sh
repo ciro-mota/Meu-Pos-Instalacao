@@ -28,7 +28,6 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 ### Programas para instalação e desinstalação.
 
 apps=(amd-ucode 
-	amdvlk 
 	baobab 
 	celluloid 
 	chromium 
@@ -52,39 +51,59 @@ apps=(amd-ucode
 	gnome-characters 
 	gnome-icon-theme-symbolic 
 	gnome-keyring 
+	gnome-logs 
 	gnome-system-monitor 
 	gnome-tweak-tool
 	gparted 
+	gsfonts 
+	gst-libav 
+	gtk2 
+	gstreamer-vaapi 
 	gufw 
 	haskell-gnutls 
 	hplip 
 	hugo 
 	jre-openjdk 
 	lib32-vulkan-icd-loader 
+	lib32-vulkan-radeon 
+	libmpeg2 
+	libva-vdpau-driver 
+	libva-utils 
+	libva-mesa-driver
 	lolcat 
 	lutris 
+	mesa-vdpau 
 	neofetch 
-	neovim 
+	noto-fonts 
 	pass 
 	qbittorrent 
+	reflector
 	sdl_image 
 	seahorse 
 	simplescreenrecorder 
 	systemd-swap 
 	terminator 
+	ttf-caladea 
+	ttf-dejavu 
+	ttf-liberation 
+	ttf-opensans 
+	ttf-roboto 
+	ttf-ubuntu-font-family 
+	vim 
 	vulkan-radeon 
+	vulkan-tools 
 	wget 
+	wine 
 	xf86-video-amdgpu 
 	zsh)
 
-apps_do_aur=(brave-bin 
+apps_do_aur=(android-sdk-platform-tools 
+	brave-bin 
 	dropbox 
 	heroic-games-launcher-bin 
 	plymouth 
 	teamviewer 
-	timeshift-autosnap 
 	ulauncher 
-	xiaomitool-v2
 	vscodium-bin)  
 	
 flatpak=(com.obsproject.Studio
@@ -93,6 +112,7 @@ flatpak=(com.obsproject.Studio
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
+	org.ksnip.ksnip 
 	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.remmina.Remmina 
@@ -116,7 +136,7 @@ code_extensions=(dendron.dendron-markdown-shortcuts
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(cat /etc/arch-release) = "" ]]
+if [[ $(tail /etc/arch-release) = "" ]]
 then
 	echo ""
 	echo ""
@@ -138,7 +158,7 @@ done
 
 ### Instalação de programas do AUR.
 for nome_do_aur in "${apps_do_aur[@]}"; do
-    yay -S "$nome_do_aur" --noconfirm
+    paru -S "$nome_do_aur" --noconfirm
 done
 
 ### Instalação de Flatpaks.
@@ -177,16 +197,31 @@ sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-def
 sudo systemctl enable --now systemd-swap
 
 ### Procedimentos e otimizações.
+sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
+sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
+sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
+
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
+sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
+sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
+
 sudo usermod -aG docker "$(whoami)"
+sudo usermod -aG lp $(whoami)
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo systemctl enable reflector
+sudo systemctl enable fstrim.timer
+sudo systemctl start fstrim.timer
+
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'br')]"
+sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'br')]"
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override --env=MANGOHUD=1 com.valvesoftware.Steam
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 
 ### Aplicando Plymouth
@@ -222,5 +257,4 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 # sudo gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
 
 ### Finalização e limpeza.
-sudo timeshift-autosnap
 sudo pacman -R "$(pacman -Qdtq)" --noconfirm

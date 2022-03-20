@@ -1,4 +1,4 @@
-Não há uma forma correta da construção e instalação do Arch Linux, o método abaixo foi o método mais objetivo que consegui, visando meu perfil de uso.
+O caminho inicial e o principal para a instalação do Arch Linux é a sua wiki que é extremamente completa, mais precisamente o item [Installation guide (Português)](https://wiki.archlinux.org/title/Installation_guide_(Portugu%C3%AAs)). Contudo, não há uma forma exata e "correta" da sua construção e instalação, como uma "receita de bolo". O método abaixo foi o método mais objetivo que consegui desenvolver visando meu perfil de uso.
 ## Configurações iniciais de instalação:
 
 ```
@@ -196,12 +196,12 @@ Se tudo correu bem, digite `exit` e por fim `reboot` e o sistema irá iniciar no
 ```
 sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf && sudo pacman -Sy
 ```
-### Instalando yay AUR Helper.
+### Instalando Paru AUR Helper.
 ```
-git clone https://aur.archlinux.org/yay.git && cd yay/ 
+git clone https://aur.archlinux.org/paru.git && cd paru/ 
 ```
 ```
-makepkg -sri
+makepkg -si
 ```
 
 Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/Pos_Install_Arch.sh) para conclusão da instalação.
@@ -216,10 +216,10 @@ Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/P
 ==> WARNING: Possibly missing firmware for module: xhci_pci
 ```
 
-Não se trata necessariamente de um problema, conforme pode ser [lido aqui](https://lists.archlinux.org/pipermail/arch-dev-public/2013-May/024864.html). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `yay` conforme indicado acima.
+Não se trata necessariamente de um problema, conforme pode ser [lido aqui](https://lists.archlinux.org/pipermail/arch-dev-public/2013-May/024864.html). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `paru` conforme indicado acima.
 
 ```
-yay -S wd719x-firmware aic94xx-firmware upd72020x-fw
+paru -S wd719x-firmware aic94xx-firmware upd72020x-fw
 ```
 ```
 sudo pacman -S linux-firmware-qlogic

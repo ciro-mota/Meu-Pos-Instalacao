@@ -18,7 +18,7 @@ Este Git foi desenvolvido com o objetivo de demonstrar a parametrização do meu
 ### Extensões GNOME:
 
 - [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y  |  k:m)
+- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y  |  k:mm)
 - [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
 - [Hide Activities Button](https://extensions.gnome.org/extension/744/hide-activities-button/)
 - [Impatience](https://extensions.gnome.org/extension/277/impatience/)

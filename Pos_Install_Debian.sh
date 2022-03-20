@@ -90,6 +90,7 @@ flatpak=(com.spotify.Client
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
+	org.ksnip.ksnip 
 	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.qbittorrent.qBittorrent 

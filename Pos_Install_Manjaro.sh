@@ -65,11 +65,11 @@ apps=(bootsplash-manager
 	seahorse 
 	terminator)
 
-apps_do_aur=(brave-bin 
+apps_do_aur=(android-sdk-platform-tools 
+	brave-bin 
 	dropbox 
 	teamviewer 
 	ulauncher 
-	xiaomitool-v2 
 	vscodium-bin)  
 	
 flatpak=(com.obsproject.Studio
@@ -78,6 +78,7 @@ flatpak=(com.obsproject.Studio
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
+	org.ksnip.ksnip 
 	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.remmina.Remmina 

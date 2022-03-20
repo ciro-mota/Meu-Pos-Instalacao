@@ -74,6 +74,7 @@ flatpak=(com.obsproject.Studio
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
+	org.ksnip.ksnip 
 	com.mattjakeman.ExtensionManager 
 	org.onlyoffice.desktopeditors 
 	org.qbittorrent.qBittorrent 
