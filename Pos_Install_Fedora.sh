@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 04/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -22,45 +22,43 @@
 ### Repos e links de download dinâmicos.
 url_key_brave="https://brave-browser-rpm-release.s3.brave.com/brave-core.asc"
 url_repo_brave="https://brave-browser-rpm-release.s3.brave.com/x86_64/"
-url_repo_dck="https://download.docker.com/linux/fedora/docker-ce.repo"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
-url_dbox="https://www.dropbox.com/download?dl=packages/fedora/nautilus-dropbox-2020.03.04-1.fedora.x86_64.rpm"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
-# url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(cheese 
 	gnome-abrt 
 	gnome-boxes 
+	gnome-clocks 
 	gnome-connections 
+	gnome-contacts 
 	gnome-maps 
 	gnome-photos 
 	gnome-software 
 	gnome-tour 
+	libreoffice-*
 	mediawriter 
 	PackageKit 
 	totem 
 	rhythmbox)	
 
 apps=(android-tools 
+	belluzj-fantasque-sans-mono-fonts 
 	brave-browser 
 	celluloid 
 	codium 
 	chrome-gnome-shell
 	containerd.io 
 	cowsay 
-	docker-ce-cli  
 	ffmpegthumbnailer 
 	fortune-mod 
 	gnome-tweaks 
-	hugo  
-	java-latest-openjdk 
+	hugo 
 	lolcat 
 	lutris 
 	neofetch 
-	neovim 
 	pass 
 	terminator 
 	ulauncher 
@@ -69,14 +67,12 @@ apps=(android-tools
 	zsh)
 
 flatpak=(com.obsproject.Studio 
-	com.spotify.Client 
 	com.valvesoftware.Steam  
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.ksnip.ksnip 
-	com.mattjakeman.ExtensionManager 
-	org.onlyoffice.desktopeditors 
+	org.libreoffice.LibreOffice 
 	org.qbittorrent.qBittorrent 
 	org.remmina.Remmina 
 	org.telegram.desktop)
@@ -101,7 +97,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(tail /etc/fedora-release | awk '{ print $3 }') = "35" ]]
+if [[ $(tail /etc/fedora-release | awk '{ print $3 }') = "36" ]]
 then
 	echo ""
 	echo ""
@@ -128,11 +124,11 @@ done
 sudo dnf config-manager --add-repo "$url_repo_brave"
 sudo rpm --import "$url_key_brave"
 
-sudo dnf config-manager --add-repo "$url_repo_dck"
-
 printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h" | sudo tee -a /etc/yum.repos.d/vscodium.repo
 
 flatpak remote-add --if-not-exists flathub "$url_flathub"
+
+sudo dnf copr enable oleastre/fonts -y
 
 ### Atualizando sistema após adição de novos repositórios.
 sudo dnf update -y
@@ -160,7 +156,6 @@ wget -O - $url_jopplin | bash
 
 ### Download de programas .rpm.
 mkdir -p "$diretorio_downloads"
-wget -cq --show-progress "$url_dbox" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
 ### Instalando pacotes .rpm.
@@ -172,38 +167,39 @@ for code_ext in "${code_extensions[@]}"; do
 done
 
 ### Instalação de ícones, temas e configurações.
-if [ -d "$HOME"/.icons ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.icons
-fi
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
 
-if [ -d "$HOME"/.themes ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.themes
-fi
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 
 ### Procedimentos e otimizações.
 sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
-sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
-sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
-sudo usermod -aG docker "$(whoami)"
+sudo echo -e "max_parallel_downloads=3" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "color=always" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
+sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override org.onlyoffice.desktopeditors --filesystem="$HOME"/.icons/:ro
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
+sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 
 ### Bloco de personalizações pessoais.
 # wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
