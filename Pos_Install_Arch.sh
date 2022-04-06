@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -22,12 +22,12 @@
 ### Links de download dinâmicos.
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
-# url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
 
 ### Programas para instalação e desinstalação.
 
 apps=(amd-ucode 
+	android-tools 
 	baobab 
 	celluloid 
 	chromium 
@@ -40,12 +40,14 @@ apps=(amd-ucode
 	eog 
 	evince 
 	exfat-utils 
+	ttf-fantasque-sans-mono 
 	ffmpegthumbnailer 
 	file-roller 
 	firefox 
 	flatpak 
 	font-manager 
 	fortune-mod 
+	gamemode 
 	gedit 
 	gnome-calculator 
 	gnome-characters 
@@ -63,13 +65,11 @@ apps=(amd-ucode
 	haskell-gnutls 
 	hplip 
 	hugo 
-	jre-openjdk 
+	libva-mesa-driver 
+	lib32-gamemode 
 	lib32-vulkan-icd-loader 
 	lib32-vulkan-radeon 
 	libmpeg2 
-	libva-vdpau-driver 
-	libva-utils 
-	libva-mesa-driver
 	lolcat 
 	lutris 
 	mesa-vdpau 
@@ -89,6 +89,7 @@ apps=(amd-ucode
 	ttf-opensans 
 	ttf-roboto 
 	ttf-ubuntu-font-family 
+	vdpauinfo 
 	vim 
 	vulkan-radeon 
 	vulkan-tools 
@@ -97,8 +98,7 @@ apps=(amd-ucode
 	xf86-video-amdgpu 
 	zsh)
 
-apps_do_aur=(android-sdk-platform-tools 
-	brave-bin 
+apps_do_aur=(brave-bin 
 	dropbox 
 	heroic-games-launcher-bin 
 	plymouth 
@@ -107,13 +107,11 @@ apps_do_aur=(android-sdk-platform-tools
 	vscodium-bin)  
 	
 flatpak=(com.obsproject.Studio
-	com.spotify.Client 
 	com.valvesoftware.Steam 
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.ksnip.ksnip 
-	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.remmina.Remmina 
 	org.telegram.desktop)
@@ -175,19 +173,19 @@ for code_ext in "${code_extensions[@]}"; do
 done
 
 ### Instalação de ícones, temas e configurações.
-if [ -d "$HOME"/.icons ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.icons
-fi
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
 
-if [ -d "$HOME"/.themes ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.themes
-fi
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -207,9 +205,12 @@ sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
 sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
 sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
+wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 
 sudo usermod -aG docker "$(whoami)"
-sudo usermod -aG lp $(whoami)
+sudo usermod -aG lp "$(whoami)"
+sudo groupadd gamemode
+sudo usermod -aG gamemode "$(whoami)"
 sudo systemctl enable docker
 sudo systemctl start docker
 sudo systemctl enable reflector
@@ -219,13 +220,12 @@ sudo systemctl start fstrim.timer
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'br')]"
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override --env=MANGOHUD=1 com.valvesoftware.Steam
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 
 ### Aplicando Plymouth
-sudo sed -i 's/fsck)/fsck plymouth)/g' /etc/mkinitcpio.conf
+sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
 sudo mkinitcpio -p linux
 sudo sed -ie 's/GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 splash"/' /etc/default/grub
 sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
@@ -257,4 +257,5 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 # sudo gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
 
 ### Finalização e limpeza.
-sudo pacman -R "$(pacman -Qdtq)" --noconfirm
+sudo pacman -Qtdq | sudo pacman -Rns - --noconfirm
+sudo snapper -c root create-config /
