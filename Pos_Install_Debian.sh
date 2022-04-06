@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 05/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -362,7 +362,6 @@ esac
 # sudo update-grub
 # sudo dpkg-reconfigure gdm3
 # sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-# sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 # sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 # sudo dpkg-reconfigure gdm3
 # fc-cache -f -v >/dev/null

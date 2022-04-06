@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 04/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -195,7 +195,6 @@ sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override org.onlyoffice.desktopeditors --filesystem="$HOME"/.icons/:ro
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
