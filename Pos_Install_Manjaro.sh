@@ -11,15 +11,9 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
-
-### Você pode substituir o Pulseaudio pelo Pipewire, executando o procedimento de remoção e instalação a seguir:
-
-### sudo pacman -Rdd manjaro-pulse pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-ctl pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf
-### sudo pacman -S manjaro-pipewire
-
 
 # ------------------------------------------------------------------------------------------------------------- #
 # -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
@@ -27,17 +21,16 @@
 ### Links de download dinâmicos.
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
-# url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
-
 
 ### Programas para instalação e desinstalação.
-apps_remover=(bmenu 
+apps_remover=(gnome-calendar 
+	gnome-user-docs 
 	gthumb 
-	kvantum-qt5 
+	lollypop 
+	manjaro-hello 
+	manjaro-settings-manager-notifier
 	manjaro-settings-manager 
-	stoken 
-	touche 
-	totem)
+	yelp)
 
 apps=(bootsplash-manager 
 	bootsplash-theme-manjaro 
@@ -47,6 +40,7 @@ apps=(bootsplash-manager
 	cowsay 
 	docker 
 	docker-compose 
+	ttf-fantasque-sans-mono 
 	ffmpegthumbnailer 
 	flatpak 
 	font-manager 
@@ -54,32 +48,40 @@ apps=(bootsplash-manager
 	gnome-icon-theme-symbolic 
 	hplip 
 	hugo 
-	jre-openjdk 
 	libpamac-flatpak-plugin 
 	lolcat 
 	lutris 
 	neofetch 
-	neovim 
 	pass 
 	qbittorrent 
 	seahorse 
+	systemd-swap  
 	terminator)
 
 apps_do_aur=(android-sdk-platform-tools 
 	brave-bin 
-	dropbox 
+	heroic-games-launcher-bin 
 	teamviewer 
 	ulauncher 
-	vscodium-bin)  
+	vscodium-bin)
+
+pipewire_remove=(pulseaudio 
+	pulseaudio-alsa 
+	pulseaudio-bluetooth 
+	pulseaudio-ctl 
+	pulseaudio-jack 
+	pulseaudio-lirc 
+	pulseaudio-rtp 
+	pulseaudio-zeroconf)
+
+pipewire_adiciona=(manjaro-pipewire)		  
 	
 flatpak=(com.obsproject.Studio
-	com.spotify.Client 
 	com.valvesoftware.Steam  
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.ksnip.ksnip 
-	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.remmina.Remmina 
 	org.telegram.desktop)
@@ -97,9 +99,7 @@ code_extensions=(dendron.dendron-markdown-shortcuts
 	streetsidesoftware.code-spell-checker 
 	streetsidesoftware.code-spell-checker-portuguese-brazilian 
 	timonwong.shellcheck 
-	zhuangtongfa.Material-theme)					
-
-# diretorio_downloads="$HOME/Downloads/programas"
+	zhuangtongfa.Material-theme)
 
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
@@ -130,6 +130,10 @@ for nome_do_programa in "${apps_remover[@]}"; do
     sudo pamac remove "$nome_do_programa" --no-confirm
 done
 
+for pipe_rem in "${pipewire_remove[@]}"; do
+    sudo pacman -Rdd "$pipe_rem" --noconfirm
+done
+
 ### Instalação de programas.
 for nome_do_app in "${apps[@]}"; do
   if ! pamac list -i | grep -q "$nome_do_app"; then
@@ -137,6 +141,10 @@ for nome_do_app in "${apps[@]}"; do
   else
     echo "$nome_do_app ==> [JÁ INSTALADO]"
   fi
+done
+
+for pipe_add in "${pipewire_adiciona[@]}"; do
+    sudo pamac install "$pipe_add" --no-confirm
 done
 
 ### Instalação de programas do AUR.
@@ -159,19 +167,19 @@ for code_ext in "${code_extensions[@]}"; do
 done
 
 ### Instalação de ícones, temas e configurações.
-if [ -d "$HOME"/.icons ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.icons
-fi
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
 
-if [ -d "$HOME"/.themes ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.themes
-fi
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -181,20 +189,21 @@ sudo systemctl enable --now systemd-swap
 
 ### Procedimentos e otimizações.
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
-sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
+sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 sudo usermod -aG docker "$(whoami)"
-sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
-sudo rm /usr/share/applications/lstopo.desktop
-sudo rm /usr/share/applications/qv4l2.desktop
+sudo rm /usr/share/applications/avahi-discover.desktop
 sudo rm /usr/share/applications/bssh.desktop
 sudo rm /usr/share/applications/bvnc.desktop
 sudo rm /usr/share/applications/gtk-lshw.desktop
+sudo rm /usr/share/applications/lstopo.desktop
+sudo rm /usr/share/applications/nm-connection-editor.desktop
+sudo rm /usr/share/applications/qv4l2.desktop
 sudo rm /usr/share/applications/qvidcap.desktop
 
 ### Bloco de personalizações pessoais.
@@ -222,7 +231,4 @@ sudo rm /usr/share/applications/qvidcap.desktop
 # sudo gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
 
 ### Finalização e limpeza.
-sudo pacman -R "$(pacman -Qdtq)" --noconfirm
-
-### Limpando pasta temporária dos downloads.
-# sudo rm "$diretorio_downloads"/ -rf
+sudo pacman -Qtdq | sudo pacman -Rns - --noconfirm
