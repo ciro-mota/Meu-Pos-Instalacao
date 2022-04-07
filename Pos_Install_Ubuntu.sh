@@ -7,12 +7,12 @@
 ## NOME:
 ### 	Pos_Install.
 ## DESCRIÇÃO:
-###			Script de pós instalação desenvolvido para base Ubuntu versão 20.04.3, 
+###			Script de pós instalação desenvolvido para base Ubuntu versão 22.04. 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/03/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 03/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -28,71 +28,51 @@ url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-browser-arch
 url_ppa_brave="https://brave-browser-apt-release.s3.brave.com/"
 url_dck_key="https://download.docker.com/linux/ubuntu/gpg"
 url_ppa_dck="https://download.docker.com/linux/ubuntu"
-url_key_only="hkp://keyserver.ubuntu.com:80"
-url_ppa_only="https://download.onlyoffice.com/repo/debian"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-url_dbox="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
 url_code="https://download.vscodium.com/debs"
 url_key_code="https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
+url_firefox="https://ftp.mozilla.org/pub/firefox/releases/99.0/linux-x86_64/pt-BR/firefox-99.0.tar.bz2"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
-# url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(popularity-contest 
-	snapd 
-	gnome-software)
-
-apps_requerimentos=(apt-transport-https
-	curl 
-	flatpak 
-	git 
-	gnupg-agent 
-	gnome-software-plugin-flatpak)		
+	snapd)		
 
 apps=(brave-browser 
 	chrome-gnome-shell
 	cowsay 
-	default-jre 
 	docker-ce 
 	exfat-fuse 
 	fastboot 
 	ffmpegthumbnailer 
+	fonts-fantasque-sans 
 	fortune 
 	gir1.2-gtop-2.0 
 	gnome-mpv 
 	gnome-shell-extensions 
-	gnome-shell-extension-gamemode 
 	gufw 
-	hplip 
 	hugo 
 	libvulkan1:i386 
 	libgnutls30:i386 
-	libldap-2.4-2:i386 
 	libgpg-error0:i386 
-	libxml2:i386 
 	libasound2-plugins:i386 
-	libsdl2-2.0-0:i386 
 	libfreetype6:i386 
 	lolcat 
 	lutris 
 	neofetch 
 	obs-studio 
-	onlyoffice-desktopeditors 
 	terminator 
-	ubuntu-restricted-extras 
 	ulauncher 
 	vim-runtime  
 	zsh)
 
-flatpak=(com.spotify.Client 
-	com.valvesoftware.Steam 	
+flatpak=(com.valvesoftware.Steam 	
 	nl.hjdskes.gcolor3 
 	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.ksnip.ksnip 
-	com.mattjakeman.ExtensionManager 
 	org.libreoffice.LibreOffice 
 	org.qbittorrent.qBittorrent 
 	org.remmina.Remmina 
@@ -118,11 +98,11 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(lsb_release -cs) = 'focal' ]] 
+if [[ $(lsb_release -cs) = 'jammy' ]] 
 then
 	echo ""
 	echo ""
-	echo -e "\e[32;1mUbuntu Focal 20.04.3. Prosseguindo com o script...\e[m"
+	echo -e "\e[32;1mUbuntu Jammy 22.04. Prosseguindo com o script...\e[m"
 	echo ""
 	echo ""
 else
@@ -135,15 +115,6 @@ fi
 ### Mudança para o mirror global
 sudo sed -i 's/http:\/\/br./http:\/\//g' /etc/apt/sources.list
 
-### Instalando requerimentos.
-for nome_do_appreq in "${apps_requerimentos[@]}"; do
-  if ! dpkg -l | grep -q "$nome_do_appreq"; then
-    sudo apt install "$nome_do_appreq" -y
-  else
-    echo "[INSTALADO] - $nome_do_appreq"
-  fi
-done
-
 ### Desinstalando apps desnecessários.
 for nome_do_programa in "${apps_remover[@]}"; do
     sudo apt purge "$nome_do_programa" -y
@@ -152,22 +123,27 @@ done
 ### Adicionando/Confirmando arquitetura de 32 bits.
 sudo dpkg --add-architecture i386
 
+### Instalando requerimentos. ###
+sudo apt install \
+    apt-transport-https \
+    curl \
+	git \
+	flatpak -y
+
 ### Adicionando repositórios de terceiros.
 sudo add-apt-repository "$ppa_celluloid" -y
 sudo add-apt-repository "$ppa_lutris" -y
 sudo add-apt-repository "$url_ppa_obs" -y
 sudo add-apt-repository "$url_ppa_ulauncher" -y
 
-sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$url_key_brave"
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
-	$url_ppa_brave stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list > /dev/null
-
 curl -fsSL "$url_dck_key" | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $url_ppa_dck \
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $url_ppa_dck \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt-key adv --keyserver $url_key_only --recv-keys CB2DE8E5
-echo "deb $url_ppa_only squeeze main" | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$url_key_brave"
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
+	$url_ppa_brave stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list > /dev/null  
 
 wget -qO - $url_key_code | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
 
@@ -202,7 +178,6 @@ wget -O - $url_jopplin | bash
 
 ### Download de programas .deb.
 mkdir -p "$diretorio_downloads"
-wget -cq --show-progress "$url_dbox" 	-P "$diretorio_downloads"
 wget -cq --show-progress "$url_tviewer" -P "$diretorio_downloads"
 
 ### Instalando pacotes .deb.
@@ -213,26 +188,47 @@ for code_ext in "${code_extensions[@]}"; do
     codium --install-extension "$code_ext" 2> /dev/null
 done
 
-### Instalação de ícones, temas e configurações.
-if [ -d "$HOME"/.icons ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.icons
-fi
+### Instalação do Firefox Release não Snap.
+wget -cq --show-progress "$url_firefox"   -P "$diretorio_downloads"
+sudo tar xjf "$diretorio_downloads"/firefox*.bz2 -C /opt
+sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
+sudo chown -R "$(whoami)":"$(whoami)" /opt/firefox*
 
-if [ -d "$HOME"/.themes ]
-then
-  echo "Pasta já existe."
-else
-  mkdir -p "$HOME"/.themes
-fi
+sudo sh -c 'cat <<EOF > /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop
+[Desktop Entry]
+Name=Firefox
+Comment=Web Browser
+Exec=/opt/firefox/firefox %u
+Terminal=false
+Type=Application
+Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+EOF'
+
+sudo chown "$(whoami)":"$(whoami)" "$HOME"/.local/share/applications/firefox-stable.desktop
+
+### Instalação de ícones, temas e configurações.
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
+
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 ### Ativando ZRAM.
-sudo sh -c 'echo zram > /etc/modules-load.d/zram.conf'
-sudo sh -c 'echo "options zram num_devices=1" > /etc/modprobe.d/zram.conf'
+sudo echo -e "zram" | sudo tee -a /etc/modules-load.d/zram.conf
+sudo echo -e "options zram num_devices=1" | sudo tee -a  /etc/modprobe.d/zram.conf
 sudo sh -c 'echo  > /etc/udev/rules.d/99-zram.rules'
 
 sudo sh -c 'cat <<EOF > /etc/udev/rules.d/99-zram.rules
@@ -259,17 +255,16 @@ sudo systemctl enable zram
 
 ### Procedimentos e otimizações.
 sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
-sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
+sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 sudo usermod -aG docker "$(whoami)"
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.spotify.Client --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
-sudo update-alternatives --config x-terminal-emulator
 sudo systemctl stop packagekit
 sudo systemctl disable packagekit
+sudo systemctl mask packagekit
 
 ### Bloco de personalizações pessoais.
 # wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
