@@ -42,10 +42,10 @@ apps_remover=(cheese
 	mediawriter 
 	PackageKit 
 	totem 
-	rhythmbox)	
+	rhythmbox
+	yelp)	
 
 apps=(android-tools 
-	belluzj-fantasque-sans-mono-fonts 
 	brave-browser 
 	celluloid 
 	codium 
@@ -53,6 +53,7 @@ apps=(android-tools
 	containerd.io 
 	cowsay 
 	ffmpegthumbnailer 
+	file-roller
 	fortune-mod 
 	gnome-tweaks 
 	hugo 
@@ -124,11 +125,18 @@ done
 sudo dnf config-manager --add-repo "$url_repo_brave"
 sudo rpm --import "$url_key_brave"
 
-printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h" | sudo tee -a /etc/yum.repos.d/vscodium.repo
+sudo tee -a /etc/yum.repos.d/vscodium.repo << 'EOF'
+[gitlab.com_paulcarroty_vscodium_repo]
+name=gitlab.com_paulcarroty_vscodium_repo
+baseurl=https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/rpms/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
+metadata_expire=1h
+EOF
 
 flatpak remote-add --if-not-exists flathub "$url_flathub"
-
-sudo dnf copr enable oleastre/fonts -y
 
 ### Atualizando sistema após adição de novos repositórios.
 sudo dnf update -y
@@ -143,6 +151,11 @@ for nome_do_app in "${apps[@]}"; do
     echo "$nome_do_app ==> [JÁ INSTALADO]"
   fi
 done
+
+### Ativando suporte multimídia:
+sudo dnf install gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel -y
+sudo dnf install lame\* --exclude=lame-devel -y
+sudo dnf group upgrade --with-optional Multimedia -y
 
 ### Instalação de apps Flatpak.
 for nome_do_flatpak in "${flatpak[@]}"; do

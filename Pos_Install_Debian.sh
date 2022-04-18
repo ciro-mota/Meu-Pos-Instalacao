@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 18/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -28,7 +28,7 @@ url_ppa_dck="https://download.docker.com/linux/debian"
 url_ppa_ulauncher="https://ppa.launchpadcontent.net/agornostal/ulauncher/ubuntu"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
-url_code="https://download.vscodium.com/debs"
+url_code="https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs"
 url_key_code="https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
 url_firefox="https://ftp.mozilla.org/pub/firefox/releases/99.0/linux-x86_64/pt-BR/firefox-99.0.tar.bz2"

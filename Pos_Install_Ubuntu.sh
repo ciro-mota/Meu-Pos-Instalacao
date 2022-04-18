@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 03/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 18/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -31,7 +31,7 @@ url_ppa_dck="https://download.docker.com/linux/ubuntu"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-url_code="https://download.vscodium.com/debs"
+url_code="https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs"
 url_key_code="https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
 url_firefox="https://ftp.mozilla.org/pub/firefox/releases/99.0/linux-x86_64/pt-BR/firefox-99.0.tar.bz2"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
@@ -54,6 +54,7 @@ apps=(brave-browser
 	gnome-shell-extensions 
 	gufw 
 	hugo 
+	libavcodec-extra 
 	libvulkan1:i386 
 	libgnutls30:i386 
 	libgpg-error0:i386 
@@ -64,6 +65,7 @@ apps=(brave-browser
 	neofetch 
 	obs-studio 
 	terminator 
+	ubuntu-restricted-addons 
 	ulauncher 
 	vim-runtime  
 	zsh)
@@ -148,7 +150,7 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=
 wget -qO - $url_key_code | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
 
 echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] '$url_code' vscodium main' \
-    | sudo tee /etc/apt/sources.list.d/vscodium.list	
+    | sudo tee /etc/apt/sources.list.d/vscodium.list
 
 ### Atualizando sistema após adição de novos repositórios.
 sudo apt update && sudo apt upgrade -y
