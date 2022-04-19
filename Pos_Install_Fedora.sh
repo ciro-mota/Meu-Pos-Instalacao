@@ -199,8 +199,9 @@ done
 
 ### Procedimentos e otimizações.
 sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
-sudo echo -e "max_parallel_downloads=3" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "color=always" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "clean_requirements_on_remove=True" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
