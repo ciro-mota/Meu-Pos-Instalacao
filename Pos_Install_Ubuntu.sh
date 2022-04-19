@@ -260,6 +260,7 @@ sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
 sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+echo -e "gtk-hint-font-metrics=1" | sudo tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 sudo usermod -aG docker "$(whoami)"
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro

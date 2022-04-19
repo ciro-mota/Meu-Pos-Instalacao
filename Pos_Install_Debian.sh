@@ -351,6 +351,7 @@ esac
 # sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 # sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 # sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+# echo -e "gtk-hint-font-metrics=1" | sudo tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 # sudo mv /etc/network/interfaces /etc/network/interfaces.old
 # sudo usermod -aG docker $(whoami)
 # sudo usermod -aG lp $(whoami)
