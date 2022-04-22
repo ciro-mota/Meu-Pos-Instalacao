@@ -199,13 +199,15 @@ sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 
-sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
-sudo sh -c 'echo "# Menor uso de Swap" >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.swappiness=10 >> /etc/sysctl.conf'
-sudo sh -c 'echo vm.vfs_cache_pressure=50 >> /etc/sysctl.conf'
+sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
 sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
+
 wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
+echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 
 sudo usermod -aG docker "$(whoami)"
 sudo usermod -aG lp "$(whoami)"

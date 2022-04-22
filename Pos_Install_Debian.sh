@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 18/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 22/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -237,7 +237,7 @@ sudo tar xjf "$diretorio_downloads"/firefox*.bz2 -C /opt
 sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
 sudo chown -R "$(whoami)":"$(whoami)" /opt/firefox*
 
-sudo sh -c 'cat <<EOF > /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop
+sudo tee -a /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop << 'EOF' 
 [Desktop Entry]
 Name=Firefox
 Comment=Web Browser
@@ -248,7 +248,7 @@ Icon=/opt/firefox/browser/chrome/icons/default/default128.png
 Categories=Network;WebBrowser;
 MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
 StartupNotify=true
-EOF'
+EOF
 
 sudo chown "$(whoami)":"$(whoami)" "$HOME"/.local/share/applications/firefox-stable.desktop
 
@@ -257,13 +257,12 @@ sudo chown "$(whoami)":"$(whoami)" "$HOME"/.local/share/applications/firefox-sta
 ### Ativando ZRAM 
 sudo echo -e "zram" | sudo tee -a /etc/modules-load.d/zram.conf
 sudo echo -e "options zram num_devices=1" | sudo tee -a  /etc/modprobe.d/zram.conf
-sudo sh -c 'echo  > /etc/udev/rules.d/99-zram.rules'
 
-sudo sh -c 'cat <<EOF > /etc/udev/rules.d/99-zram.rules
+sudo tee -a /etc/udev/rules.d/99-zram.rules << 'EOF' 
 KERNEL=="zram0", ATTR{disksize}="2048M",TAG+="systemd"
-EOF'
+EOF
 
-sudo sh -c 'cat <<EOF > /etc/systemd/system/zram.service
+sudo tee -a /etc/systemd/system/zram.service << 'EOF' 
 [Unit]
 Description=Swap with zram
 After=multi-user.target
@@ -277,7 +276,7 @@ ExecStop=/sbin/swapoff /dev/zram0
 
 [Install]
 WantedBy=multi-user.target
-EOF'
+EOF
 
 sudo systemctl enable zram
 
@@ -351,7 +350,7 @@ esac
 # sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 # sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 # sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
-# echo -e "gtk-hint-font-metrics=1" | sudo tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
+# echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 # sudo mv /etc/network/interfaces /etc/network/interfaces.old
 # sudo usermod -aG docker $(whoami)
 # sudo usermod -aG lp $(whoami)
@@ -368,4 +367,3 @@ esac
 # fc-cache -f -v >/dev/null
 # sudo systemctl stop packagekit
 # sudo systemctl disable packagekit
-# sudo systemctl mask packagekit

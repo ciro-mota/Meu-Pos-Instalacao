@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 22/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -112,6 +112,12 @@ fi
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
+### Tweaks para o dnf.conf
+sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "color=always" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "clean_requirements_on_remove=True" | sudo tee -a /etc/dnf/dnf.conf
+
 ### Desinstalando apps desnecessários.
 for nome_do_programa in "${apps_remover[@]}"; do
     sudo dnf remove "$nome_do_programa" -y
@@ -198,22 +204,16 @@ done
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 
 ### Procedimentos e otimizações.
-sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
-sudo echo -e "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
-sudo echo -e "color=always" | sudo tee -a /etc/dnf/dnf.conf
-sudo echo -e "clean_requirements_on_remove=True" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
-echo -e "gtk-hint-font-metrics=1" | sudo tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
-sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
-sudo sed -i "s/NoDisplay=true/NoDisplay=false/g" /etc/xdg/autostart/*.desktop
-sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
+
 sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override org.onlyoffice.desktopeditors --filesystem="$HOME"/.icons/:ro
-sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
 
 ### Bloco de personalizações pessoais.
 # wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
