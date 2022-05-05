@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 22/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 05/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install.sh".
 
@@ -20,7 +20,6 @@
 # -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
 
 ### PPA's e links de download dinâmicos.
-ppa_celluloid="ppa:xuzhen666/gnome-mpv"
 ppa_lutris="ppa:lutris-team/lutris"
 url_ppa_obs="ppa:obsproject/obs-studio"
 url_ppa_ulauncher="ppa:agornostal/ulauncher"
@@ -33,7 +32,6 @@ url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
 url_code="https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs"
 url_key_code="https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/99.0/linux-x86_64/pt-BR/firefox-99.0.tar.bz2"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 
 ### Programas para instalação e desinstalação.
@@ -50,7 +48,6 @@ apps=(brave-browser
 	fonts-fantasque-sans 
 	fortune 
 	gir1.2-gtop-2.0 
-	gnome-mpv 
 	gnome-shell-extensions 
 	gufw 
 	hugo 
@@ -67,7 +64,8 @@ apps=(brave-browser
 	terminator 
 	ubuntu-restricted-addons 
 	ulauncher 
-	vim-runtime  
+	vim-runtime 
+	vlc  
 	zsh)
 
 flatpak=(com.valvesoftware.Steam 	
@@ -133,7 +131,6 @@ sudo apt install \
 	flatpak -y
 
 ### Adicionando repositórios de terceiros.
-sudo add-apt-repository "$ppa_celluloid" -y
 sudo add-apt-repository "$ppa_lutris" -y
 sudo add-apt-repository "$url_ppa_obs" -y
 sudo add-apt-repository "$url_ppa_ulauncher" -y
@@ -191,40 +188,7 @@ for code_ext in "${code_extensions[@]}"; do
 done
 
 ### Instalação do Firefox Release não Snap.
-wget -cq --show-progress "$url_firefox"   -P "$diretorio_downloads"
-sudo tar xjf "$diretorio_downloads"/firefox*.bz2 -C /opt
-sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
-sudo chown -R "$(whoami)":"$(whoami)" /opt/firefox*
-
-sudo tee -a /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop << 'EOF' 
-[Desktop Entry]
-Name=Firefox
-Comment=Web Browser
-Exec=/opt/firefox/firefox %u
-Terminal=false
-Type=Application
-Icon=/opt/firefox/browser/chrome/icons/default/default128.png
-Categories=Network;WebBrowser;
-MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-EOF
-
-sudo chown "$(whoami)":"$(whoami)" "$HOME"/.local/share/applications/firefox-stable.desktop
-
-### Instalação de ícones, temas e configurações.
-# if [ -d "$HOME"/.icons ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.icons
-# fi
-
-# if [ -d "$HOME"/.themes ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.themes
-# fi
+bash <(curl -s https://raw.githubusercontent.com/ciro-mota/firefox-desnap/main/Firefox-DeSnap.sh)
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -272,6 +236,21 @@ sudo systemctl disable packagekit
 # mkdir -p .local/share/fonts
 # mv *.ttf ~/.local/share/fonts/
 # fc-cache -f -v >/dev/null
+
+### Instalação de ícones, temas e configurações.
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
+
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # git clone "$url_backup"
 
