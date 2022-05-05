@@ -27,10 +27,11 @@ Os scripts são **testados** por mim antes de serem publicados, contudo devido a
 - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 - [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/) (Para Fedora e Arch)
 - [No overview at start-up](https://extensions.gnome.org/extension/4099/no-overview/)
+- [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/) (Para Fedora e Arch)
 
 ### Aparência final:
 
 ![](assets/screenshot.png)
 
 ### Ultima Modificação:
->22 Abr 2022
+>05 Mai 2022
