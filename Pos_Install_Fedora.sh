@@ -7,12 +7,12 @@
 ## NOME:
 ### 	Pos_Install_Fedora.
 ## DESCRIÇÃO:
-###			Script de pós instalação desenvolvido para base Fedora 35, 
+###			Script de pós instalação desenvolvido para base Fedora 36, 
 ###			baseado no meu uso de programas, configurações e personalizações.
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 22/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 05/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -25,6 +25,7 @@ url_repo_brave="https://brave-browser-rpm-release.s3.brave.com/x86_64/"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
+url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/assets/fonts.conf"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 
 ### Programas para instalação e desinstalação.
@@ -37,6 +38,7 @@ apps_remover=(cheese
 	gnome-maps 
 	gnome-photos 
 	gnome-software 
+	gnome-text-editor 
 	gnome-tour 
 	libreoffice-*
 	mediawriter 
@@ -47,15 +49,20 @@ apps_remover=(cheese
 
 apps=(android-tools 
 	brave-browser 
-	celluloid 
 	codium 
 	chrome-gnome-shell
 	containerd.io 
 	cowsay 
 	ffmpegthumbnailer 
-	file-roller
+	file-roller 
+	flameshot 
 	fortune-mod 
+	gedit 
 	gnome-tweaks 
+	google-arimo-fonts	
+	google-cousine-fonts	
+	google-tinos-fonts 
+	heroic-games-launcher-bin 
 	hugo 
 	lolcat 
 	lutris 
@@ -63,6 +70,8 @@ apps=(android-tools
 	pass 
 	terminator 
 	ulauncher 
+	vim-enhanced 
+	vlc 
 	zram-generator 
 	zram-generator-defaults 
 	zsh)
@@ -114,7 +123,7 @@ fi
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
 ### Tweaks para o dnf.conf
 sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
-sudo echo -e "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "color=always" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "clean_requirements_on_remove=True" | sudo tee -a /etc/dnf/dnf.conf
 
@@ -142,10 +151,12 @@ gpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
 metadata_expire=1h
 EOF
 
+sudo dnf copr enable atim/heroic-games-launcher -y
+
 flatpak remote-add --if-not-exists flathub "$url_flathub"
 
 ### Atualizando sistema após adição de novos repositórios.
-sudo dnf update -y
+sudo dnf upgrade --refresh -y
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- EXECUÇÃO -------------------------------------------------- #
@@ -185,6 +196,34 @@ for code_ext in "${code_extensions[@]}"; do
     codium --install-extension "$code_ext" 2> /dev/null
 done
 
+# ------------------------------------------------------------------------------------------------------------- #
+# ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
+
+### Procedimentos e otimizações.
+sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
+
+if [ -d "$HOME/".config/fontconfig ]
+then
+	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
+else
+	mkdir -p "$HOME"/.config/fontconfig
+	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
+fi
+
+sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
+
+### Bloco de personalizações pessoais.
+# wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
+# mkdir -p .local/share/fonts
+# mv *.ttf ~/.local/share/fonts/
+# fc-cache -f -v >/dev/null
+
 ### Instalação de ícones, temas e configurações.
 # if [ -d "$HOME"/.icons ]
 # then
@@ -199,27 +238,6 @@ done
 # else
 #   mkdir -p "$HOME"/.themes
 # fi
-
-# ------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
-
-### Procedimentos e otimizações.
-sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
-sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
-sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
-echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
-
-sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override org.onlyoffice.desktopeditors --filesystem="$HOME"/.icons/:ro
-sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
-
-### Bloco de personalizações pessoais.
-# wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
-# mkdir -p .local/share/fonts
-# mv *.ttf ~/.local/share/fonts/
-# fc-cache -f -v >/dev/null
 
 # git clone "$url_backup"
 
