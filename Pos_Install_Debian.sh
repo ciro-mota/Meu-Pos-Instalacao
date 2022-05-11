@@ -232,25 +232,7 @@ for code_ext in "${code_extensions[@]}"; do
 done
 
 ### Instalação do Firefox Release.
-wget -cq --show-progress "$url_firefox"   -P "$diretorio_downloads"
-sudo tar xjf "$diretorio_downloads"/firefox*.bz2 -C /opt
-sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
-sudo chown -R "$(whoami)":"$(whoami)" /opt/firefox*
-
-sudo tee -a /home/$(id -nu 1000)/.local/share/applications/firefox-stable.desktop << 'EOF' 
-[Desktop Entry]
-Name=Firefox
-Comment=Web Browser
-Exec=/opt/firefox/firefox %u
-Terminal=false
-Type=Application
-Icon=/opt/firefox/browser/chrome/icons/default/default128.png
-Categories=Network;WebBrowser;
-MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-EOF
-
-sudo chown "$(whoami)":"$(whoami)" "$HOME"/.local/share/applications/firefox-stable.desktop
+bash <(curl -s https://raw.githubusercontent.com/ciro-mota/firefox-desnap/main/Firefox-DeSnap.sh)
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
@@ -361,8 +343,7 @@ esac
 # sudo sed -i 's/logo-text-version-64.png/logo-text-64.png/g' /etc/gdm3/greeter.dconf-defaults
 # sudo update-grub
 # sudo dpkg-reconfigure gdm3
-# sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-# sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+# sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 # sudo dpkg-reconfigure gdm3
 # fc-cache -f -v >/dev/null
 # sudo systemctl stop packagekit

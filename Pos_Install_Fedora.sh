@@ -213,8 +213,7 @@ else
 	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
 fi
 
-sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
 

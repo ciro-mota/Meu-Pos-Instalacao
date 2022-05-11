@@ -226,8 +226,7 @@ sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 echo -e "gtk-hint-font-metrics=1" | sudo tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 sudo usermod -aG docker "$(whoami)"
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo systemctl stop packagekit
 sudo systemctl disable packagekit
 

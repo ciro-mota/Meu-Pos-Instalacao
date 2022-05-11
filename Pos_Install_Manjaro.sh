@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 11/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
 
@@ -166,21 +166,6 @@ for code_ext in "${code_extensions[@]}"; do
     codium --install-extension "$code_ext" 2> /dev/null
 done
 
-### Instalação de ícones, temas e configurações.
-# if [ -d "$HOME"/.icons ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.icons
-# fi
-
-# if [ -d "$HOME"/.themes ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.themes
-# fi
-
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 ### Ativando ZRAM.
@@ -193,8 +178,7 @@ sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 sudo usermod -aG docker "$(whoami)"
-sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 sudo rm /usr/share/applications/avahi-discover.desktop
@@ -213,6 +197,21 @@ sudo rm /usr/share/applications/qvidcap.desktop
 # mkdir -p .local/share/fonts
 # mv *.ttf ~/.local/share/fonts/
 # fc-cache -f -v >/dev/null
+
+### Instalação de ícones, temas e configurações.
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
+
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # git clone "$url_backup"
 

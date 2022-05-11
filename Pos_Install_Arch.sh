@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 06/04/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 11/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -21,6 +21,7 @@
 
 ### Links de download dinâmicos.
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
+url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/assets/fonts.conf"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 
 
@@ -172,21 +173,6 @@ for code_ext in "${code_extensions[@]}"; do
     codium --install-extension "$code_ext" 2> /dev/null
 done
 
-### Instalação de ícones, temas e configurações.
-# if [ -d "$HOME"/.icons ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.icons
-# fi
-
-# if [ -d "$HOME"/.themes ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.themes
-# fi
-
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 
@@ -209,6 +195,14 @@ sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
 wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 
+if [ -d "$HOME/".config/fontconfig ]
+then
+	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
+else
+	mkdir -p "$HOME"/.config/fontconfig
+	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
+fi
+
 sudo usermod -aG docker "$(whoami)"
 sudo usermod -aG lp "$(whoami)"
 sudo groupadd gamemode
@@ -221,8 +215,7 @@ sudo systemctl start fstrim.timer
 
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'br')]"
-sudo flatpak --system override org.telegram.desktop --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override com.valvesoftware.Steam --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override --env=MANGOHUD=1 com.valvesoftware.Steam
 sudo gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 
@@ -241,6 +234,21 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 # mkdir -p .local/share/fonts
 # mv *.ttf ~/.local/share/fonts/
 # fc-cache -f -v >/dev/null
+
+### Instalação de ícones, temas e configurações.
+# if [ -d "$HOME"/.icons ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.icons
+# fi
+
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo "Pasta já existe."
+# else
+#   mkdir -p "$HOME"/.themes
+# fi
 
 # git clone "$url_backup"
 
