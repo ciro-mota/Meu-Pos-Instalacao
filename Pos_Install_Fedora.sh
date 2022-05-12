@@ -107,7 +107,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(tail /etc/fedora-release | awk '{ print $3 }') = "36" ]]
+if [[ $(awk '{print $3}' /etc/fedora-release) = "36" ]]
 then
 	echo ""
 	echo ""
@@ -216,6 +216,15 @@ fi
 sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
+
+sudo systemctl stop abrt-journal-core.service
+sudo systemctl stop abrt-oops.service
+sudo systemctl stop abrt-xorg.service
+sudo systemctl stop abrtd.service
+sudo systemctl disable abrt-oops.service
+sudo systemctl disable  abrt-journal-core.service
+sudo systemctl disable abrt-xorg.service
+sudo systemctl disable abrtd.service
 
 ### Bloco de personalizações pessoais.
 # wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
