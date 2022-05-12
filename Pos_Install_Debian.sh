@@ -31,7 +31,6 @@ url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_code="https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs"
 url_key_code="https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-url_firefox="https://ftp.mozilla.org/pub/firefox/releases/99.0/linux-x86_64/pt-BR/firefox-99.0.tar.bz2"
 
 ### Programas para instalação.
 apps=(brave-browser 
@@ -282,10 +281,14 @@ read -r reinicia
 case $reinicia in
     S|s)
     	sudo shutdown -r now
-		;;
+	;;
     N|n)
     	exit 0
-		;;
+	;;
+	*)
+		echo -e "Opção inválida!"
+		exit 1
+	;;	
 esac
 
 # ------------------------------------------------------------------------------------------------------------- #
