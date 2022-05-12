@@ -26,7 +26,7 @@ Os scripts são **testados** por mim antes de serem publicados, contudo devido a
 - [Hide Activities Button](https://extensions.gnome.org/extension/744/hide-activities-button/)
 - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 - [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/) (Para Fedora e Arch)
-- [No overview at start-up](https://extensions.gnome.org/extension/4099/no-overview/)
+- [No overview at start-up](https://extensions.gnome.org/extension/4099/no-overview/) (caso opte por não usar a Dash to Dock)
 - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/) (Para Fedora e Arch)
 
 ### Aparência final:
@@ -34,4 +34,4 @@ Os scripts são **testados** por mim antes de serem publicados, contudo devido a
 ![](assets/screenshot.png)
 
 ### Ultima Modificação:
->05 Mai 2022
+>12 Mai 2022
