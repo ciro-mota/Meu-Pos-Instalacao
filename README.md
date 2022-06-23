@@ -19,7 +19,7 @@ Peço gentilmente que em caso de erros, reporte-os na guia [Issues](https://gith
 
 - [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
 - [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y  |  k:mm)
-- [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
+- [Dash to Dock for COSMIC](https://extensions.gnome.org/extension/5004/dash-to-dock-for-cosmic/)
 - [Hide Activities Button](https://extensions.gnome.org/extension/744/hide-activities-button/)
 - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 - [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/) (Para Fedora e Arch)
