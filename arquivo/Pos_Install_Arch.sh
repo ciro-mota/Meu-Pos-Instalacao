@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 11/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 23/06/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -21,7 +21,7 @@
 
 ### Links de download dinâmicos.
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
-url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/assets/fonts.conf"
+url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/fonts.conf"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 
 
@@ -119,6 +119,7 @@ flatpak=(com.obsproject.Studio
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
+	emmanuelbeziat.vscode-great-icons
 	foxundermoon.shell-format
 	HashiCorp.terraform
 	ritwickdey.LiveServer
