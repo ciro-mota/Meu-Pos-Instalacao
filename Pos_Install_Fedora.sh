@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 05/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 11/07/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -70,6 +70,7 @@ apps=(android-tools
 	pass 
 	terminator 
 	ulauncher 
+	unrar-free 
 	vim-enhanced 
 	vlc 
 	zram-generator 
@@ -100,7 +101,7 @@ code_extensions=(dendron.dendron-markdown-shortcuts
 	streetsidesoftware.code-spell-checker 
 	streetsidesoftware.code-spell-checker-portuguese-brazilian 
 	timonwong.shellcheck 
-	zhuangtongfa.Material-theme)	
+	zhuangtongfa.Material-theme)
 
 diretorio_downloads="$HOME/Downloads/programas"
 
@@ -126,6 +127,8 @@ sudo echo -e "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "color=always" | sudo tee -a /etc/dnf/dnf.conf
 sudo echo -e "clean_requirements_on_remove=True" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
+sudo echo -e "metadata_expire=7d" | sudo tee -a /etc/dnf/dnf.conf # Você precisará rodar ao menos uma vez por semana o comando: sudo dnf up --refresh
 
 ### Desinstalando apps desnecessários.
 for nome_do_programa in "${apps_remover[@]}"; do
@@ -222,7 +225,7 @@ sudo systemctl stop abrt-oops.service
 sudo systemctl stop abrt-xorg.service
 sudo systemctl stop abrtd.service
 sudo systemctl disable abrt-oops.service
-sudo systemctl disable  abrt-journal-core.service
+sudo systemctl disable abrt-journal-core.service
 sudo systemctl disable abrt-xorg.service
 sudo systemctl disable abrtd.service
 

@@ -25,7 +25,7 @@ cfdisk /dev/sda
 
 Layout final das partições:
 
-![imagem](/assets/arch-install1.png)
+![imagem](/arch/arch-install1.png)
 ## Formatação:
 
 Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` para o `/` e `xfs` para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
@@ -94,7 +94,7 @@ nano /mnt/etc/fstab
 
 Substitua, para a partição `/` o campo `relatime` para `noatime,compress=zstd:3` onde habilitamos compressão visando desempenho, se aproveitando dos recursos fornecidos pelo sistema de arquivos `btrfs`. Use `cat /mnt/etc/fstab` para verificar como ficou:
 
-![imagem](/assets/arch-install2.png)
+![imagem](/arch/arch-install2.png)
 
 ## Construção do sistema:
 
@@ -124,7 +124,7 @@ nano /etc/locale.gen
 
 Descomente a linha referente a `pt_BR.UTF-8 UTF-8`. Salve e saia.
 
-![imagem](/assets/arch-install3.png)
+![imagem](/arch/arch-install3.png)
 
 Execute os comandos à seguir:
 
@@ -204,7 +204,7 @@ git clone https://aur.archlinux.org/paru.git && cd paru/
 makepkg -si
 ```
 
-Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/Pos_Install_Arch.sh) para conclusão da instalação.
+Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/arquivo/Pos_Install_Arch.sh) para conclusão da instalação.
 
 ## Pós instalação:
 
