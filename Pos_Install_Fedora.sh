@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 11/07/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 23/06/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -25,7 +25,7 @@ url_repo_brave="https://brave-browser-rpm-release.s3.brave.com/x86_64/"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
-url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/assets/fonts.conf"
+url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/fonts.conf"
 # url_backup="https://github.com/ciro-mota/conf-backup.git"
 
 ### Programas para instalação e desinstalação.
@@ -90,6 +90,7 @@ flatpak=(com.obsproject.Studio
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
+	emmanuelbeziat.vscode-great-icons
 	foxundermoon.shell-format
 	HashiCorp.terraform
 	ritwickdey.LiveServer
