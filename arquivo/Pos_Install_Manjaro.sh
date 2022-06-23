@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 11/05/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 23/06/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Manjaro.sh".
 
@@ -88,6 +88,7 @@ flatpak=(com.obsproject.Studio
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
+	emmanuelbeziat.vscode-great-icons
 	foxundermoon.shell-format
 	HashiCorp.terraform
 	ritwickdey.LiveServer
@@ -104,7 +105,7 @@ code_extensions=(dendron.dendron-markdown-shortcuts
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(lsb_release -cs) = "Qonos" ]]
+if [[ $(lsb_release -cs) = "Ruah" ]]
 then
 	echo ""
 	echo ""
