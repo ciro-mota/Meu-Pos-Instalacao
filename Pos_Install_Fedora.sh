@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 23/06/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 02/08/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -26,7 +26,8 @@ url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_insta
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/fonts.conf"
-# url_backup="https://github.com/ciro-mota/conf-backup.git"
+url_neofetch="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config.conf"
+url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf"
 
 ### Programas para instalação e desinstalação.
 apps_remover=(cheese 
@@ -40,12 +41,12 @@ apps_remover=(cheese
 	gnome-software 
 	gnome-text-editor 
 	gnome-tour 
-	libreoffice-*
+	libreoffice-* 
 	mediawriter 
 	PackageKit 
 	totem 
 	rhythmbox
-	yelp)	
+	yelp)
 
 apps=(android-tools 
 	brave-browser 
@@ -59,8 +60,8 @@ apps=(android-tools
 	fortune-mod 
 	gedit 
 	gnome-tweaks 
-	google-arimo-fonts	
-	google-cousine-fonts	
+	google-arimo-fonts 
+	google-cousine-fonts 
 	google-tinos-fonts 
 	heroic-games-launcher-bin 
 	hugo 
@@ -68,6 +69,7 @@ apps=(android-tools
 	lutris 
 	neofetch 
 	pass 
+	qemu-system-x86 
 	terminator 
 	ulauncher 
 	unrar-free 
@@ -89,13 +91,13 @@ flatpak=(com.obsproject.Studio
 	org.telegram.desktop)
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
-	eamodio.gitlens
-	emmanuelbeziat.vscode-great-icons
-	foxundermoon.shell-format
-	HashiCorp.terraform
-	ritwickdey.LiveServer
+	eamodio.gitlens 
+	emmanuelbeziat.vscode-great-icons 
+	esbenp.prettier-vscode 
+	foxundermoon.shell-format 
+	HashiCorp.terraform 
+	ritwickdey.LiveServer 
 	ms-azuretools.vscode-docker 
-	MS-CEINTL.vscode-language-pack-pt-BR
 	ms-kubernetes-tools.vscode-kubernetes-tools
 	Shan.code-settings-sync 
 	snyk-security.vscode-vuln-cost 
@@ -217,10 +219,6 @@ else
 	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
 fi
 
-sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
-sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
-
 sudo systemctl stop abrt-journal-core.service
 sudo systemctl stop abrt-oops.service
 sudo systemctl stop abrt-xorg.service
@@ -230,43 +228,68 @@ sudo systemctl disable abrt-journal-core.service
 sudo systemctl disable abrt-xorg.service
 sudo systemctl disable abrtd.service
 
-### Bloco de personalizações pessoais.
-# wget -cq --show-progress "$url_fantasque" -P "$diretorio_downloads"
-# mkdir -p .local/share/fonts
-# mv *.ttf ~/.local/share/fonts/
-# fc-cache -f -v >/dev/null
+### Instalação de ícones, temas, fonte e configurações básicas.
+theme (){
 
-### Instalação de ícones, temas e configurações.
-# if [ -d "$HOME"/.icons ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.icons
-# fi
+git clone -q https://github.com/daniruiz/flat-remix-gtk.git
+cp -r "$HOME"/flat-remix-gtk/themes/Flat-Remix-GTK-Blue-Dark-Solid "$HOME"/.themes
+cp -r "$HOME"/flat-remix-gtk/themes/Flat-Remix-LibAdwaita-Blue-Dark-Solid/*.* "$HOME"/.config/gtk-4.0
+gsettings set org.gnome.desktop.interface gtk-theme 'Flat-Remix-GTK-Blue-Dark-Solid'
 
-# if [ -d "$HOME"/.themes ]
-# then
-#   echo "Pasta já existe."
-# else
-#   mkdir -p "$HOME"/.themes
-# fi
+}
 
-# git clone "$url_backup"
+icon (){
 
-# cp -r $HOME/conf-backup/Dracula-Blue $HOME/.themes
-# cp -r $HOME/conf-backup/Yaru-Deepblue-dark $HOME/.themes
-# cp -r $HOME/conf-backup/Flat-Remix-Blue-Dark $HOME/.icons
-# cp -r $HOME/conf-backup/volantes_cursors $HOME/.icons
-# cp -r $HOME/conf-backup/neofetch $HOME/.config/neofetch
-# cp -r $HOME/conf-backup/terminator $HOME/.config/terminator
-# cp -r $HOME/conf-backup/.zsh_aliases $HOME
-# cp -r $HOME/conf-backup/.zshrc $HOME
-# cp -r $HOME/conf-backup/.vim $HOME
+git clone -q https://github.com/daniruiz/flat-remix.git
+cp -r "$HOME"/flat-remix/Flat-Remix-Blue-Dark "$HOME"/.icons
+gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 
-# sudo gsettings set org.gnome.desktop.interface gtk-theme 'Dracula-Blue'
-# sudo gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
-# sudo gsettings set org.gnome.shell.extensions.user-theme name 'Yaru-Deepblue-dark'
-# sudo gsettings set org.gnome.desktop.interface cursor-theme 'volantes_cursors'
+}
+
+if [ -d "$HOME"/.icons ]
+then
+  echo -e "Pasta já existe.\n"
+  echo -e "Clonando..."
+  icon
+else
+  mkdir -p "$HOME"/.icons
+  echo -e "Clonando..."
+  icon
+fi
+
+if [ -d "$HOME"/.themes ]
+then
+  echo -e "Pasta já existe.\n"
+  echo -e "Clonando..."
+  theme
+else
+  mkdir -p "$HOME"/.themes
+  echo -e "Clonando..."
+  theme
+fi
+
+sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
+sudo flatpak --system override --env=GTK_THEME=Flat-Remix-GTK-Blue-Dark-Solid
+sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
+
+if [ -d "$HOME/".local/share/fonts ]
+then
+	wget -cq --show-progress "$url_fantasque" -P "$HOME"/.local/share/fonts
+	fc-cache -f -v >/dev/null
+else
+	mkdir -p "$HOME"/.local/share/fonts
+	wget -cq --show-progress "$url_fantasque" -P "$HOME"/.local/share/fonts
+	fc-cache -f -v >/dev/null
+fi
+
+if [ -d "$HOME/".config/neofetch ]
+then
+	wget -cq --show-progress "$url_neofetch" -P "$HOME"/.config/neofetch
+else
+	mkdir -p "$HOME"/.config/neofetch
+	wget -cq --show-progress "$url_neofetch" -P "$HOME"/.config/neofetch
+fi
 
 ### Finalização e limpeza.
 sudo dnf autoremove -y
