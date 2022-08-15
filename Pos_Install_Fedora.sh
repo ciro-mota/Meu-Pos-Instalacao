@@ -180,6 +180,9 @@ sudo dnf install gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-open
 sudo dnf install lame\* --exclude=lame-devel -y
 sudo dnf group upgrade --with-optional Multimedia -y
 
+### Adicionando Virt-Manager
+sudo dnf install @virtualization
+
 ### Instalação de apps Flatpak.
 for nome_do_flatpak in "${flatpak[@]}"; do
   if ! flatpak list | grep -q "$nome_do_flatpak"; then
@@ -211,13 +214,11 @@ sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
 
-if [ -d "$HOME/".config/fontconfig ]
-then
-	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
-else
-	mkdir -p "$HOME"/.config/fontconfig
-	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
-fi
+sudo sed -i '/unix_sock_group/s/^#//g' /etc/libvirt/libvirtd.conf
+sudo sed -i '/unix_sock_rw_perms/s/^#//g' /etc/libvirt/libvirtd.conf
+sudo usermod -a -G libvirt "$(whoami)"
+sudo systemctl start libvirtd
+sudo systemctl enable libvirtd
 
 sudo systemctl stop abrt-journal-core.service
 sudo systemctl stop abrt-oops.service
@@ -227,6 +228,20 @@ sudo systemctl disable abrt-oops.service
 sudo systemctl disable abrt-journal-core.service
 sudo systemctl disable abrt-xorg.service
 sudo systemctl disable abrtd.service
+
+sudo dnf config-manager --set-disabled rpmfusion-nonfree-steam
+sudo dnf config-manager --set-disabled rpmfusion-nonfree-nvidia-driver
+sudo dnf config-manager --set-disabled phracek-PyCharm
+sudo dnf config-manager --set-disabled updates-modular
+sudo dnf config-manager --set-disabled fedora-modular
+
+if [ -d "$HOME/".config/fontconfig ]
+then
+	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
+else
+	mkdir -p "$HOME"/.config/fontconfig
+	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
+fi
 
 ### Instalação de ícones, temas, fonte e configurações básicas.
 theme (){
@@ -270,8 +285,8 @@ fi
 
 sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override --env=GTK_THEME=Flat-Remix-GTK-Blue-Dark-Solid
-sudo gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-sudo gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
+gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
 
 if [ -d "$HOME/".local/share/fonts ]
 then
