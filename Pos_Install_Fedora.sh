@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 02/08/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 23/08/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -27,6 +27,7 @@ url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_tviewer="https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/fonts.conf"
 url_neofetch="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config.conf"
+url_terminator="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config"
 url_fantasque="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf"
 
 ### Programas para instalação e desinstalação.
@@ -46,13 +47,12 @@ apps_remover=(cheese
 	PackageKit 
 	totem 
 	rhythmbox
+	virtualbox-guest-additions-*
 	yelp)
 
 apps=(android-tools 
 	brave-browser 
 	codium 
-	chrome-gnome-shell
-	containerd.io 
 	cowsay 
 	ffmpegthumbnailer 
 	file-roller 
@@ -68,15 +68,12 @@ apps=(android-tools
 	lolcat 
 	lutris 
 	neofetch 
-	pass 
 	qemu-system-x86 
 	terminator 
 	ulauncher 
 	unrar-free 
 	vim-enhanced 
 	vlc 
-	zram-generator 
-	zram-generator-defaults 
 	zsh)
 
 flatpak=(com.obsproject.Studio 
@@ -212,7 +209,14 @@ done
 sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
-echo -e "gtk-hint-font-metrics=1" | tee -a /home/"$(whoami)"/.config/gtk-4.0/settings.ini
+
+if [ -d "$HOME/".config/gtk-4.0 ]
+then
+	echo -e "gtk-hint-font-metrics=1" | tee -a "$HOME/".config/gtk-4.0/settings.ini
+else
+	mkdir -p "$HOME"/.config/gtk-4.0
+	echo -e "gtk-hint-font-metrics=1" | tee -a "$HOME/".config/gtk-4.0/settings.ini
+fi
 
 sudo sed -i '/unix_sock_group/s/^#//g' /etc/libvirt/libvirtd.conf
 sudo sed -i '/unix_sock_rw_perms/s/^#//g' /etc/libvirt/libvirtd.conf
@@ -246,17 +250,17 @@ fi
 ### Instalação de ícones, temas, fonte e configurações básicas.
 theme (){
 
-git clone -q https://github.com/daniruiz/flat-remix-gtk.git
-cp -r "$HOME"/flat-remix-gtk/themes/Flat-Remix-GTK-Blue-Dark-Solid "$HOME"/.themes
-cp -r "$HOME"/flat-remix-gtk/themes/Flat-Remix-LibAdwaita-Blue-Dark-Solid/*.* "$HOME"/.config/gtk-4.0
+git clone -q https://github.com/daniruiz/flat-remix-gtk.git "$diretorio_downloads"/flat-remix-gtk
+cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-GTK-Blue-Dark-Solid "$HOME"/.themes
+cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-LibAdwaita-Blue-Dark-Solid/*.* "$HOME"/.config/gtk-4.0
 gsettings set org.gnome.desktop.interface gtk-theme 'Flat-Remix-GTK-Blue-Dark-Solid'
 
 }
 
 icon (){
 
-git clone -q https://github.com/daniruiz/flat-remix.git
-cp -r "$HOME"/flat-remix/Flat-Remix-Blue-Dark "$HOME"/.icons
+git clone -q https://github.com/daniruiz/flat-remix.git "$diretorio_downloads"/flat-remix
+cp -r "$diretorio_downloads"/flat-remix/Flat-Remix-Blue-Dark "$HOME"/.icons
 gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
 
 }
@@ -286,7 +290,7 @@ fi
 sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
 sudo flatpak --system override --env=GTK_THEME=Flat-Remix-GTK-Blue-Dark-Solid
 gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,close'
+gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
 if [ -d "$HOME/".local/share/fonts ]
 then
@@ -304,6 +308,14 @@ then
 else
 	mkdir -p "$HOME"/.config/neofetch
 	wget -cq --show-progress "$url_neofetch" -P "$HOME"/.config/neofetch
+fi
+
+if [ -d "$HOME/".config/terminator ]
+then
+	wget -cq --show-progress "$url_terminator" -P "$HOME"/.config/terminator
+else
+	mkdir -p "$HOME"/.config/neofetch
+	wget -cq --show-progress "$url_terminator" -P "$HOME"/.config/terminator
 fi
 
 ### Finalização e limpeza.
