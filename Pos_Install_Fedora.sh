@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 23/08/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/09/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -88,13 +88,13 @@ flatpak=(com.obsproject.Studio
 	org.telegram.desktop)
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
-	eamodio.gitlens 
-	emmanuelbeziat.vscode-great-icons 
-	esbenp.prettier-vscode 
-	foxundermoon.shell-format 
-	HashiCorp.terraform 
-	ritwickdey.LiveServer 
+	eamodio.gitlens
+	emmanuelbeziat.vscode-great-icons
+	foxundermoon.shell-format
+	HashiCorp.terraform
+	ritwickdey.LiveServer
 	ms-azuretools.vscode-docker 
+	MS-CEINTL.vscode-language-pack-pt-BR
 	ms-kubernetes-tools.vscode-kubernetes-tools
 	Shan.code-settings-sync 
 	snyk-security.vscode-vuln-cost 
