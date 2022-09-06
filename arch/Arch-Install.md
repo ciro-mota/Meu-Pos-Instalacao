@@ -1,16 +1,18 @@
-O caminho inicial e o principal para a instalação do Arch Linux é a sua wiki que é extremamente completa, mais precisamente o item [Installation guide (Português)](https://wiki.archlinux.org/title/Installation_guide_(Portugu%C3%AAs)). Contudo, não há uma forma exata e "correta" da sua construção e instalação, como uma "receita de bolo". O método abaixo foi o método mais objetivo que consegui desenvolver visando meu perfil de uso.
+O caminho inicial e o principal para a instalação do Arch Linux é a sua wiki que é extremamente completa, mais precisamente o item [Installation guide (Português)](<https://wiki.archlinux.org/title/Installation_guide_(Portugu%C3%AAs)>). Contudo, não há uma forma exata e "correta" da sua construção e instalação, como uma "receita de bolo". O método abaixo foi o método mais objetivo que consegui desenvolver visando meu perfil de uso.
+
 ## Configurações iniciais de instalação:
 
 ```
 timedatectl set-ntp true
 ```
+
 ```
 loadkeys br-abnt2
 ```
 
 ## Particionamento:
 
-Para o meu caso, segue o exemplo do particionamento de um NVME com duas partições (o `/` e o `/boot/EFI`) e um disco secundário para a partição `/home`. Utilizei o `cfdisk` por mera preferência. Adapte para seu cenário.
+Para o meu caso, segue o exemplo do particionamento de um NVME com duas partições (o `/` e o `/boot`) e um disco secundário para a partição `/home`. Utilizei o `cfdisk` por mera preferência. Adapte para seu cenário.
 
 Se não tiver certeza do nome dos discos, use o comando `fdisk -l` para listá-los.
 
@@ -19,6 +21,9 @@ Inicie uma nova tabela de partições escolhendo o modo `gpt`.
 ```
 cfdisk /dev/nvme0n1
 ```
+
+Defina o tipo da partição `/boot` de 512MB como `EFI System`.
+
 ```
 cfdisk /dev/sda
 ```
@@ -26,6 +31,7 @@ cfdisk /dev/sda
 Layout final das partições:
 
 ![imagem](/arch/arch-install1.png)
+
 ## Formatação:
 
 Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` para o `/` e `xfs` para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
@@ -33,9 +39,11 @@ Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de 
 ```
 mkfs.vfat -F32 /dev/nvme0n1p1
 ```
+
 ```
-mkfs.btrfs /dev/nvme0n1p2
+mkfs.btrfs -L ROOT /dev/nvme0n1p2
 ```
+
 ```
 mkfs.xfs /dev/sda1
 ```
@@ -47,9 +55,11 @@ Aqui iremos começar de fato a construção do sistema começando pelos pontos d
 ```
 mount /dev/nvme0n1p2 /mnt
 ```
+
 ```
 btrfs su cr /mnt/@
 ```
+
 ```
 umount /mnt
 ```
@@ -63,13 +73,15 @@ mount -o rw,relatime,ssd,subvol=@  /dev/nvme0n1p2 /mnt
 Crie a seguinte estrutura de pasta:
 
 ```
-mkdir -p /mnt/{boot/EFI,home}
+mkdir -p /mnt/{boot,home}
 ```
+
 Monte a estrutura que foi criada. No meu caso como citado, a partição `/home` ficará em um outro disco, adapte ao seu cenário se necessário:
 
 ```
-mount /dev/nvme0n1p1 /mnt/boot/EFI
+mount /dev/nvme0n1p1 /mnt/boot
 ```
+
 ```
 mount /dev/sda1 /mnt/home
 ```
@@ -131,9 +143,11 @@ Execute os comandos à seguir:
 ```
 echo LANG=pt_BR.UTF-8 >> /etc/locale.conf
 ```
+
 ```
 locale-gen
 ```
+
 ```
 EDITOR=nano visudo
 ```
@@ -149,13 +163,15 @@ useradd -m -G wheel ciromota
 ```
 passwd ciromota
 ```
+
 ## Instalação do sistema:
 
 No meu caso escolhi uma instalação mínima do GNOME. Caso escolha outra _DE_, verifique a lista de pacotes necessários. Aqui também são instalados alguns utilitários de sistema:
 
 ```
-pacman -S btrfs-progs dosfstools efibootmgr gnome-shell gnome-control-center gdm gnome-terminal grub mtools networkmanager nautilus network-manager-applet os-prober wireless_tools wpa_supplicant xdg-user-dirs xorg
+pacman -S btrfs-progs dosfstools efibootmgr gnome-shell gnome-control-center gdm gnome-terminal grub mtools networkmanager nautilus network-manager-applet os-prober pipewire wireless_tools wpa_supplicant xdg-user-dirs xorg
 ```
+
 ## Configurando parâmetros:
 
 O comando abaixo irá definir o nome do PC, adapte-o.
@@ -163,6 +179,7 @@ O comando abaixo irá definir o nome do PC, adapte-o.
 ```
 echo "k6-2-500" >> /etc/hostname
 ```
+
 O conjunto de linhas abaixo irá povoar o arquivo hosts, adapte-o baseado no hostname definido no passo anterior:
 
 ```
@@ -173,42 +190,76 @@ cat <<EOF > /etc/hosts
 EOF
 ```
 
-## Instalando o Grub.
+## Instalando o Systemd-Boot.
+
 ```
-grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
+bootctl --path=/boot install
 ```
+
 ```
-grub-mkconfig -o /boot/grub/grub.cfg
+echo "default arch.conf" >> /boot/loader/loader.conf
+```
+
+```
+echo "editor no" >> /boot/loader/loader.conf
+```
+
+```
+cat <<EOF > /boot/loader/entries/arch.conf
+title	Arch Linux
+linux	/vmlinuz-linux
+initrd	/initramfs-linux.img
+options root=LABEL=ROOT rootflags=subvol=@ rw
+EOF
 ```
 
 ## Ativando serviços:
+
 ```
 systemctl enable NetworkManager
 ```
+
 ```
 systemctl enable gdm
 ```
 
-Se tudo correu bem, digite `exit` e por fim `reboot` e o sistema irá iniciar normalmente e com ambiente gráfico.
-
 ## Aplicando requisitos:
+
 ### Adicionando repositório Multilib.
+
 ```
 sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf && sudo pacman -Sy
 ```
+
 ### Instalando Paru AUR Helper.
+
+Altere de `ciromota` para o usuário que criou anteriormente.
+
 ```
-git clone https://aur.archlinux.org/paru.git && cd paru/ 
-```
-```
-makepkg -si
+sudo -u ciromota bash -c 'cd ~&& git clone https://aur.archlinux.org/paru.git && cd paru/ && makepkg -si --noconfirm'
 ```
 
-Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/arquivo/Pos_Install_Arch.sh) para conclusão da instalação.
+### Atualizando o Initramfs:
+
+```
+mkinitcpio -p linux
+```
+
+### Saindo da instalação:
+
+```
+exit
+umount -R /mnt
+reboot
+```
+
+Se tudo correu bem, após o `reboot` o sistema irá iniciar normalmente e com ambiente gráfico GNOME.
+
+Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/arch/Pos_Install_Arch.sh) para conclusão da instalação.
 
 ## Pós instalação:
 
-É possível que durante a tarefa de execução do `mkinitcpio -p linux` você perceba as mensagens abaixo ou próximas. 
+É possível que durante a tarefa de execução do `mkinitcpio -p linux` você perceba as mensagens abaixo ou próximas.
 
 ```
 ==> WARNING: Possibly missing firmware for module: aic94xx
@@ -221,6 +272,7 @@ Não se trata necessariamente de um problema, conforme pode ser [lido aqui](http
 ```
 paru -S wd719x-firmware aic94xx-firmware upd72020x-fw
 ```
+
 ```
 sudo pacman -S linux-firmware-qlogic
 ```
