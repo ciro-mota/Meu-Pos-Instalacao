@@ -209,7 +209,7 @@ cat <<EOF > /boot/loader/entries/arch.conf
 title	Arch Linux
 linux	/vmlinuz-linux
 initrd	/initramfs-linux.img
-options root=LABEL=ROOT rootflags=subvol=@ rw
+options root=LABEL=ROOT rootflags=subvol=@ rw quiet splash
 EOF
 ```
 
