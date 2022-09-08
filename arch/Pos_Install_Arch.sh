@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 06/09/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 08/09/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -20,6 +20,7 @@
 # -------------------------------------------- VARIÁVEIS E REQUISITOS ----------------------------------------- #
 
 ### Links de download dinâmicos.
+url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
 url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/fonts.conf"
 url_neofetch="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config.conf"
@@ -87,6 +88,7 @@ apps=(amd-ucode
 	sdl_image 
 	seahorse 
 	simplescreenrecorder 
+	snap-pac
 	systemd-swap 
 	terminator 
 	ttf-caladea 
@@ -108,6 +110,7 @@ apps=(amd-ucode
 apps_do_aur=(brave-bin 
 	heroic-games-launcher-bin 
 	plymouth 
+	plymouth-theme-arch-charge-big 
 	systemd-boot-pacman-hook 
 	teamviewer 
 	ulauncher 
@@ -171,6 +174,8 @@ for nome_do_aur in "${apps_do_aur[@]}"; do
 done
 
 ### Instalação de Flatpaks.
+flatpak remote-add --if-not-exists flathub "$url_flathub"
+
 for nome_do_flatpak in "${flatpak[@]}"; do
     sudo flatpak install --system "$nome_do_flatpak" -y
 done
@@ -200,9 +205,18 @@ sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
-sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
+sudo sed -i '/#VerbosePkgLists/a ILoveCandy' /etc/pacman.conf
+
+sudo sed -i "s/France,Germany/'United States',Brazil/g" /etc/xdg/reflector/reflector.conf
+sudo sed -i 's/--sort age/--sort rate/g' /etc/xdg/reflector/reflector.conf
+sudo systemctl enable reflector
+sudo systemctl start reflector
+sudo systemctl enable reflector.timer
+sudo systemctl start reflector.service
 
 wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
+
+sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
 
 if [ -d "$HOME/".config/gtk-4.0 ]
 then
@@ -223,7 +237,6 @@ fi
 sudo usermod -aG lp "$(whoami)"
 sudo groupadd gamemode
 sudo usermod -aG gamemode "$(whoami)"
-sudo systemctl enable reflector
 sudo systemctl enable fstrim.timer
 sudo systemctl start fstrim.timer
 
@@ -235,11 +248,8 @@ sudo systemctl enable libvirtd
 
 ### Aplicando Plymouth
 sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
+sudo plymouth-set-default-theme -R arch-charge-big
 sudo mkinitcpio -p linux
-sudo sed -ie 's/GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"/GRUB_CMDLINE_LINUX_DEFAULT="\1 splash"/' /etc/default/grub
-sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
-sudo plymouth-set-default-theme -R bgrt
-sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Instalação de ícones, temas, fonte e configurações básicas.
 theme (){
