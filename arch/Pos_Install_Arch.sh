@@ -2,7 +2,7 @@
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------ CABEÇALHO -------------------------------------------------- #
 ## AUTOR:
-### 	Ciro Mota <contato.ciromota@outlook.com>
+### 	Ciro Mota
 ## NOME:
 ### 	Pos_Install_Arch.
 ## DESCRIÇÃO:
@@ -108,6 +108,7 @@ apps=(amd-ucode
 	zsh)
 
 apps_do_aur=(brave-bin 
+	gnome-browser-connector 
 	heroic-games-launcher-bin 
 	plymouth 
 	plymouth-theme-arch-charge-big 
@@ -206,6 +207,7 @@ sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
 sudo sed -i '/#VerbosePkgLists/a ILoveCandy' /etc/pacman.conf
+sudo sed -i 's/#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
 
 sudo sed -i "s/France,Germany/'United States',Brazil/g" /etc/xdg/reflector/reflector.conf
 sudo sed -i 's/--sort age/--sort rate/g' /etc/xdg/reflector/reflector.conf
