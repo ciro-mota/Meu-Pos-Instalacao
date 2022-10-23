@@ -166,10 +166,10 @@ passwd ciromota
 
 ## Instalação do sistema:
 
-No meu caso escolhi uma instalação mínima do GNOME. Caso escolha outra _DE_, verifique a lista de pacotes necessários. Aqui também são instalados alguns utilitários de sistema:
+No meu caso escolhi uma instalação mínima do GNOME. Caso escolha outro Ambiente Desktop, verifique a lista de pacotes necessários. Aqui também são instalados alguns utilitários de sistema:
 
 ```
-pacman -S btrfs-progs dosfstools efibootmgr gnome-shell gnome-control-center gdm gnome-terminal grub mtools networkmanager nautilus network-manager-applet os-prober pipewire wireless_tools wpa_supplicant xdg-user-dirs xorg
+pacman -S btrfs-progs dosfstools efibootmgr gnome-shell gnome-control-center gdm gnome-terminal grub mtools networkmanager nautilus network-manager-applet os-prober pipewire wireless_tools wireplumber wpa_supplicant xdg-user-dirs xorg
 ```
 
 ## Configurando parâmetros:
@@ -259,7 +259,7 @@ Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/a
 
 ## Pós instalação:
 
-É possível que durante a tarefa de execução do `mkinitcpio -p linux` você perceba as mensagens abaixo ou próximas.
+É possível que durante a tarefa de execução do `mkinitcpio -p linux` você perceba as mensagens abaixo ou parecidas.
 
 ```
 ==> WARNING: Possibly missing firmware for module: aic94xx
@@ -267,7 +267,7 @@ Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/a
 ==> WARNING: Possibly missing firmware for module: xhci_pci
 ```
 
-Não se trata necessariamente de um problema, conforme pode ser [lido aqui](https://lists.archlinux.org/pipermail/arch-dev-public/2013-May/024864.html). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `paru` conforme indicado acima.
+Não se trata necessariamente de um problema conforme pode ser [lido aqui](https://lists.archlinux.org/pipermail/arch-dev-public/2013-May/024864.html). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `paru` conforme indicado acima.
 
 ```
 paru -S wd719x-firmware aic94xx-firmware upd72020x-fw
