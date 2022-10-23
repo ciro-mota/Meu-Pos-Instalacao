@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------ CABEÇALHO -------------------------------------------------- #
 ## AUTOR:
-### 	Ciro Mota <contato.ciromota@outlook.com>
+### 	Ciro Mota
 ## NOME:
 ### 	Pos_Install_Fedora.
 ## DESCRIÇÃO:
@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 06/09/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 23/10/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -108,7 +108,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(awk '{print $3}' /etc/fedora-release) = "36" ]]
+if [[ $(awk '{print $3}' /etc/fedora-release) = "37" ]]
 then
 	echo ""
 	echo ""
