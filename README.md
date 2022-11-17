@@ -20,14 +20,131 @@ Peço gentilmente que em caso de erros, reporte-os na guia [Issues](https://gith
 ### Extensões GNOME:
 
 - [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y | k:mm)
+- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y | k:mm) (Ainda não compatível com GNOME 43, poderá funcionar desabilitando a verificação)
 - [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
 - [Hide Activities Button](https://extensions.gnome.org/extension/744/hide-activities-button/)
 - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 - [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/)
 - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/)
 
-É possível aplicar uma transparência sem o uso de extensões na barra de tarefas do GNOME, para isso edite o arquivo `gnome-shell.css` do seu tema favorito, localize o conjunto de linhas abaixo:
+### Tema
+
+Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceTeam.Gradience) para aplicação de esquema de cores Dracula com cor de destaque azul ao invés do rosa/roxo. Importe meu esquema de cores caso desejar:
+
+<details>
+  <summary>Clique para expandir</summary>
+    
+```json
+{
+    "name": "local-theme",
+    "variables": {
+        "accent_color": "rgb(28, 113, 216)",
+        "accent_bg_color": "rgb(26, 95, 180)",
+        "accent_fg_color": "#f8f8f2",
+        "destructive_color": "#f55",
+        "destructive_bg_color": "#f55",
+        "destructive_fg_color": "#f8f8f2",
+        "success_color": "#50fa7b",
+        "success_bg_color": "#50fa7b",
+        "success_fg_color": "#f8f8f2",
+        "warning_color": "#f1fa8c",
+        "warning_bg_color": "#f1fa8c",
+        "warning_fg_color": "rgba(0, 0, 0, 0.8)",
+        "error_color": "#f55",
+        "error_bg_color": "#f55",
+        "error_fg_color": "#f8f8f2",
+        "window_bg_color": "rgb(35, 37, 46)",
+        "window_fg_color": "#f8f8f2",
+        "view_bg_color": "rgb(35, 37, 46)",
+        "view_fg_color": "#f8f8f2",
+        "headerbar_bg_color": "rgb(35, 37, 46)",
+        "headerbar_fg_color": "#f8f8f2",
+        "headerbar_border_color": "#fff",
+        "headerbar_shade_color": "rgba(0, 0, 0, 0.36)",
+        "card_bg_color": "rgba(255, 255, 255, 0.08)",
+        "card_fg_color": "#f8f8f2",
+        "card_shade_color": "rgba(0, 0, 0, 0.36)",
+        "dialog_bg_color": "rgb(35, 37, 46)",
+        "dialog_fg_color": "#f8f8f2",
+        "popover_bg_color": "rgb(35, 37, 46)",
+        "popover_fg_color": "#f8f8f2",
+        "shade_color": "#383838",
+        "scrollbar_outline_color": "rgba(0, 0, 0, 0.5)"
+    },
+    "palette": {
+        "blue_": {
+            "1": "#99c1f1",
+            "2": "#62a0ea",
+            "3": "#3584e4",
+            "4": "#1c71d8",
+            "5": "#1a5fb4"
+        },
+        "green_": {
+            "1": "#8ff0a4",
+            "2": "#57e389",
+            "3": "#33d17a",
+            "4": "#2ec27e",
+            "5": "#26a269"
+        },
+        "yellow_": {
+            "1": "#f9f06b",
+            "2": "#f8e45c",
+            "3": "#f6d32d",
+            "4": "#f5c211",
+            "5": "#e5a50a"
+        },
+        "orange_": {
+            "1": "#ffbe6f",
+            "2": "#ffa348",
+            "3": "#ff7800",
+            "4": "#e66100",
+            "5": "#c64600"
+        },
+        "red_": {
+            "1": "#f66151",
+            "2": "#ed333b",
+            "3": "#e01b24",
+            "4": "#c01c28",
+            "5": "#a51d2d"
+        },
+        "purple_": {
+            "1": "#dc8add",
+            "2": "#c061cb",
+            "3": "#9141ac",
+            "4": "#813d9c",
+            "5": "#613583"
+        },
+        "brown_": {
+            "1": "#cdab8f",
+            "2": "#b5835a",
+            "3": "#986a44",
+            "4": "#865e3c",
+            "5": "#63452c"
+        },
+        "light_": {
+            "1": "#fff",
+            "2": "#f6f5f4",
+            "3": "#deddda",
+            "4": "#c0bfbc",
+            "5": "#9a9996"
+        },
+        "dark_": {
+            "1": "#77767b",
+            "2": "#5e5c64",
+            "3": "#3d3846",
+            "4": "#241f31",
+            "5": "#000"
+        }
+    },
+    "custom_css": {
+        "gtk4": ""
+    },
+    "plugins": {}
+}
+```
+</details>
+
+É possível também aplicar uma transparência sem o uso de extensões na barra de tarefas do GNOME, para isso edite o arquivo `gnome-shell.css` do seu tema favorito, localize o conjunto de linhas abaixo:
 
 ```css
 /* Top Bar */
@@ -43,4 +160,4 @@ E modifique o último valor do campo. No meu caso há uma transparência de 0.7,
 
 ### Ultima Modificação:
 
-> 23 Out 2022
+> 17 Nov 2022
