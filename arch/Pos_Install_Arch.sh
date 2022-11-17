@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 08/09/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 17/11/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -254,14 +254,14 @@ sudo plymouth-set-default-theme -R arch-charge-big
 sudo mkinitcpio -p linux
 
 ### Instalação de ícones, temas, fonte e configurações básicas.
-theme (){
+# theme (){
 
-git clone -q https://github.com/daniruiz/flat-remix-gtk.git "$diretorio_downloads"/flat-remix-gtk
-cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-GTK-Blue-Dark-Solid "$HOME"/.themes
-cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-LibAdwaita-Blue-Dark-Solid/*.* "$HOME"/.config/gtk-4.0
-gsettings set org.gnome.desktop.interface gtk-theme 'Flat-Remix-GTK-Blue-Dark-Solid'
+# git clone -q https://github.com/daniruiz/flat-remix-gtk.git "$diretorio_downloads"/flat-remix-gtk
+# cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-GTK-Blue-Dark-Solid "$HOME"/.themes
+# cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-LibAdwaita-Blue-Dark-Solid/*.* "$HOME"/.config/gtk-4.0
+# gsettings set org.gnome.desktop.interface gtk-theme 'Flat-Remix-GTK-Blue-Dark-Solid'
 
-}
+# }
 
 icon (){
 
@@ -282,16 +282,16 @@ else
   icon
 fi
 
-if [ -d "$HOME"/.themes ]
-then
-  echo -e "Pasta já existe.\n"
-  echo -e "Clonando..."
-  theme
-else
-  mkdir -p "$HOME"/.themes
-  echo -e "Clonando..."
-  theme
-fi
+# if [ -d "$HOME"/.themes ]
+# then
+#   echo -e "Pasta já existe.\n"
+#   echo -e "Clonando..."
+#   theme
+# else
+#   mkdir -p "$HOME"/.themes
+#   echo -e "Clonando..."
+#   theme
+# fi
 
 if [ -d "$HOME/".config/neofetch ]
 then
@@ -309,8 +309,8 @@ else
 	wget -cq --show-progress "$url_terminator" -P "$HOME"/.config/terminator
 fi
 
-sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
-sudo flatpak --system override --env=GTK_THEME=Flat-Remix-GTK-Blue-Dark-Solid
+# sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
+# sudo flatpak --system override --env=GTK_THEME=Flat-Remix-GTK-Blue-Dark-Solid
 gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
