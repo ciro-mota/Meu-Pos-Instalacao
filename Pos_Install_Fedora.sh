@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 17/11/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 05/12/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -67,19 +67,19 @@ apps=(android-tools
 	hugo 
 	lolcat 
 	lutris 
+	mangohud 
 	neofetch 
 	qemu-system-x86 
 	terminator 
+	steam 
 	ulauncher 
 	unrar-free 
 	vim-enhanced 
 	vlc 
 	zsh)
 
-flatpak=(com.obsproject.Studio 
-	com.valvesoftware.Steam  
+flatpak=(com.github.GradienceTeam.Gradience 
 	nl.hjdskes.gcolor3 
-	org.freedesktop.Platform.VulkanLayer.MangoHud 
 	org.gimp.GIMP 
 	org.ksnip.ksnip 
 	org.libreoffice.LibreOffice 
@@ -248,47 +248,54 @@ else
 fi
 
 ### Instalação de ícones, temas, fonte e configurações básicas.
-# theme (){
+theme (){
 
-# git clone -q https://github.com/daniruiz/flat-remix-gtk.git "$diretorio_downloads"/flat-remix-gtk
-# cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-GTK-Blue-Dark-Solid "$HOME"/.themes
-# cp -r "$diretorio_downloads"/flat-remix-gtk/themes/Flat-Remix-LibAdwaita-Blue-Dark-Solid/*.* "$HOME"/.config/gtk-4.0
-# gsettings set org.gnome.desktop.interface gtk-theme 'Flat-Remix-GTK-Blue-Dark-Solid'
+curl -s https://api.github.com/repos/lassekongo83/adw-gtk3/releases/latest | grep "browser_download_url.*tar.xz" | \
+cut -d : -f 2,3 | tr -d \" | \
+wget -P "$diretorio_downloads" -i - | \
+tar xf ./*.tar.xz -C "$HOME"/.local/share/themes
 
-# }
-
-icon (){
-
-git clone -q https://github.com/daniruiz/flat-remix.git "$diretorio_downloads"/flat-remix
-cp -r "$diretorio_downloads"/flat-remix/Flat-Remix-Blue-Dark "$HOME"/.icons
-gsettings set org.gnome.desktop.interface icon-theme 'Flat-Remix-Blue-Dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 }
 
-if [ -d "$HOME"/.icons ]
+icon (){
+
+wget -cqO- https://git.io/papirus-icon-theme-install | DESTDIR="$HOME/.local/share/icons" sh
+wget -cqO- https://git.io/papirus-folders-install | sh
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+papirus-folders -C bluegrey --theme Papirus
+rm "$HOME"/.local/share/icons/ePapirus-Dark -rf
+rm "$HOME"/.local/share/icons/ePapirus -rf
+rm "$HOME"/.local/share/icons/Papirus-Dark -rf
+rm "$HOME"/.local/share/icons/Papirus-Light -rf
+
+}
+
+if [ -d "$HOME"/.local/share/icons ]
 then
   echo -e "Pasta já existe.\n"
-  echo -e "Clonando..."
+  echo -e "Instalando..."
   icon
 else
-  mkdir -p "$HOME"/.icons
-  echo -e "Clonando..."
+  mkdir -p "$HOME"/.local/share/icons
+  echo -e "Instalando..."
   icon
 fi
 
-# if [ -d "$HOME"/.themes ]
-# then
-#   echo -e "Pasta já existe.\n"
-#   echo -e "Clonando..."
-#   theme
-# else
-#   mkdir -p "$HOME"/.themes
-#   echo -e "Clonando..."
-#   theme
-# fi
+if [ -d "$HOME"/.local/share/themes ]
+then
+  echo -e "Pasta já existe.\n"
+  echo -e "Instalando..."
+  theme
+else
+  mkdir -p "$HOME"/.local/share/themes
+  echo -e "Instalando..."
+  theme
+fi
 
-# sudo flatpak --system override --filesystem="$HOME"/.icons/:ro
-# sudo flatpak --system override --env=GTK_THEME=Flat-Remix-GTK-Blue-Dark-Solid
+sudo flatpak --system override --filesystem="$HOME"/.local/share/icons:ro
+sudo flatpak override --filesystem=xdg-data/themes:ro
 gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
