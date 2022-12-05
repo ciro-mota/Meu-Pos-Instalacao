@@ -160,4 +160,4 @@ E modifique o último valor do campo. No meu caso há uma transparência de 0.7,
 
 ### Ultima Modificação:
 
-> 17 Nov 2022
+> 05 Dez 2022
