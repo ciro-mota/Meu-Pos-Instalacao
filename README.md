@@ -5,22 +5,24 @@
 ![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
 
-Este script foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC no **Fedora Workstation** que é a minha distro principal no momento. O intuito é construir uma instalação mínima e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
+Este script foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC com o **Fedora Workstation** que é a minha distro principal no momento. O intuito é construir uma instalação mínima e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
 
 Este script conta também com uma versão "backup" caso eu opte em algum momento migrar para o Arch Linux. Para instalação do Arch Linux, seguir recomendações de instalação em [anexo](/arch/Arch-Install.md).
 
-É inteiramente livre a cópia caso opte por executá-lo de forma integral ou adaptação para sua necessidade antes da execução, modificando programas que serão instalados nas etapas de repositório, .rpm e Flatpak. Além de servir de inspiração para a construção do seu próprio script de pós instalação.
-
 ### Observações:
 
-Os scripts disponibilizados são **testados** por mim antes de serem publicados, contudo devido a natureza da diferença entre hardwares e o período quando ocorre as atualizações do script e as atualizações dos sistemas, erros poderão ocorrer na execução. Em sendo, não há garantias plenas do total funcionamento deste script de modo que não me responsabilizo caso haja algum dano material ou de perda de dados.
+É inteiramente livre a cópia e execução dos scripts contidos neste repositório contudo, você deverá **acima de tudo ler e entender** o que cada passo faz caso opte por executá-lo de forma integral sabendo que meu perfil de uso é seguramente diferente do seu, ou **adaptá-lo (melhor opção) para sua necessidade** antes da execução, modificando programas que serão instalados nas etapas de repositório, .rpm, Flatpak, extensões do Codium e AUR caso opte pelo Arch Linux. O intuito além de demostrar é de servir de inspiração para a construção do seu próprio script de pós instalação.
 
-Peço gentilmente que em caso de erros, reporte-os na guia [Issues](https://github.com/ciro-mota/Meu-Pos-Instalacao/issues) que tentarei o possível para ajudá-lo.
+### Isenção de Responsabilidade:
+
+Os scripts disponibilizados são seguramente **testados** por mim antes de serem publicados contudo devido a natureza da diferença entre hardwares e o período quando ocorre as atualizações do script e as atualizações dos sistemas e pacotes, erros poderão ocorrer na execução. Em sendo, não há garantias plenas do total funcionamento deste script de modo que não me responsabilizo caso haja algum dano material ou de perda de dados.
+
+Peço **gentilmente** que em caso de erros reporte-os na guia [Issues](https://github.com/ciro-mota/Meu-Pos-Instalacao/issues) que tentarei o possível para ajudar.
 
 ### Extensões GNOME:
 
 - [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y | k:mm) (Ainda não compatível com GNOME 43, poderá funcionar desabilitando a verificação)
+- [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y | k:mm)
 - [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
 - [Hide Activities Button](https://extensions.gnome.org/extension/744/hide-activities-button/)
 - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
@@ -29,7 +31,7 @@ Peço gentilmente que em caso de erros, reporte-os na guia [Issues](https://gith
 
 ### Tema
 
-Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceTeam.Gradience) para aplicação de esquema de cores Dracula com cor de destaque azul ao invés do rosa/roxo. Importe meu esquema de cores caso desejar:
+Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceTeam.Gradience) para aplicação de esquema de cores Dracula com cor de destaque azul ao invés do rosa/roxo padrão deste tema. Importe meu esquema de cores caso desejar:
 
 <details>
   <summary>Clique para expandir</summary>
@@ -152,7 +154,7 @@ Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceT
   background-color: rgba(0, 0, 0, 0.7);
 ```
 
-E modifique o último valor do campo. No meu caso há uma transparência de 0.7, equivalente a 70%.
+E modifique o último valor do campo. No meu caso há uma transparência de 0.7, equivalente a 70% e na cor preta.
 
 ### Aparência final:
 
@@ -160,4 +162,4 @@ E modifique o último valor do campo. No meu caso há uma transparência de 0.7,
 
 ### Ultima Modificação:
 
-> 05 Dez 2022
+> 22 Jan 2023
