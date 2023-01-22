@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 09/12/2022. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 22/01/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -31,7 +31,6 @@ url_terminator="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloa
 apps=(amd-ucode 
 	android-tools 
 	baobab 
-	chromium 
 	containerd 
 	cowsay 
 	curl 
@@ -51,6 +50,7 @@ apps=(amd-ucode
 	fortune-mod 
 	gamemode 
 	gedit 
+	gimp 
 	gnome-calculator 
 	gnome-characters 
 	gnome-icon-theme-symbolic 
@@ -68,12 +68,14 @@ apps=(amd-ucode
 	haskell-gnutls 
 	hplip 
 	hugo 
+	ksnip 
 	lame 
 	libva-mesa-driver 
 	lib32-gamemode 
 	lib32-vulkan-icd-loader 
 	lib32-vulkan-radeon 
 	libmpeg2 
+	libreoffice-fresh-pt-br 
 	lolcat 
 	lutris 
 	mesa-vdpau 
@@ -85,11 +87,14 @@ apps=(amd-ucode
 	qemu-kvm 
 	qemu-system-x86 
 	reflector 
+	remmina 
 	sdl_image 
 	seahorse 
 	simplescreenrecorder 
-	snap-pac
+	snap-pac 
+	steam 
 	systemd-swap 
+	telegram-desktop 
 	terminator 
 	ttf-caladea 
 	ttf-dejavu 
@@ -110,6 +115,8 @@ apps=(amd-ucode
 apps_do_aur=(brave-bin 
 	gnome-browser-connector 
 	heroic-games-launcher-bin 
+	lib32-mangohud-git 
+	mangohud-git 
 	plymouth 
 	plymouth-theme-arch-charge-big 
 	systemd-boot-pacman-hook 
@@ -119,14 +126,7 @@ apps_do_aur=(brave-bin
 	vscodium-bin)
 	
 flatpak=(com.github.GradienceTeam.Gradience 
-	com.valvesoftware.Steam 
-	nl.hjdskes.gcolor3 
-	org.freedesktop.Platform.VulkanLayer.MangoHud 
-	org.gimp.GIMP 
-	org.ksnip.ksnip 
-	org.libreoffice.LibreOffice 
-	org.remmina.Remmina 
-	org.telegram.desktop)
+	nl.hjdskes.gcolor3)
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
@@ -215,6 +215,9 @@ sudo systemctl enable reflector
 sudo systemctl start reflector
 sudo systemctl enable reflector.timer
 sudo systemctl start reflector.service
+
+sudo usermod --add-subuids 10000-75535 "$(whoami)"
+sudo usermod --add-subgids 10000-75535 "$(whoami)"
 
 wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 
@@ -322,7 +325,6 @@ gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'br')]"
-sudo flatpak --system override --env=MANGOHUD=1 com.valvesoftware.Steam
 
 ### Finalização e limpeza.
 sudo pacman -Qtdq | sudo pacman -Rns - --noconfirm
