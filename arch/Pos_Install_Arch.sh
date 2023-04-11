@@ -41,6 +41,7 @@ apps=(amd-ucode
 	evince 
 	exfat-utils 
 	ttf-fantasque-sans-mono 
+	ffmpeg 
 	ffmpegthumbnailer 
 	file-roller 
 	firefox 
@@ -61,6 +62,10 @@ apps=(amd-ucode
 	gparted 
 	gsfonts 
 	gst-libav 
+	gst-plugins-bad 
+	gst-plugins-base 
+	gst-plugins-good 
+	gst-plugins-ugly 
 	gtk2 
 	gstreamer 
 	gstreamer-vaapi 
