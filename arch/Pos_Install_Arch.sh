@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 12/02/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 07/05/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -325,8 +325,10 @@ else
 	wget -cq --show-progress "$url_terminator" -P "$HOME"/.config/terminator
 fi
 
-sudo flatpak --system override --filesystem="$HOME"/.local/share/icons:ro
+sudo flatpak override --system --filesystem=/usr/share/icons/:ro
+sudo flatpak override --system --filesystem=xdg-data/icons:ro
 sudo flatpak override --filesystem=xdg-data/themes:ro
+sudo flatpak override --system --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
 gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
