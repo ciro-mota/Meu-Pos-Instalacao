@@ -12,7 +12,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 22/01/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 07/05/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Fedora.sh".
 
@@ -54,6 +54,7 @@ apps=(android-tools
 	brave-browser 
 	codium 
 	cowsay 
+	ffmpeg 
 	ffmpegthumbnailer 
 	file-roller 
 	flameshot 
@@ -108,7 +109,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(awk '{print $3}' /etc/fedora-release) = "37" ]]
+if [[ $(awk '{print $3}' /etc/fedora-release) = "38" ]]
 then
 	echo ""
 	echo ""
@@ -294,8 +295,10 @@ else
   theme
 fi
 
-sudo flatpak --system override --filesystem="$HOME"/.local/share/icons:ro
+sudo flatpak override --system --filesystem=/usr/share/icons/:ro
+sudo flatpak override --system --filesystem=xdg-data/icons:ro
 sudo flatpak override --filesystem=xdg-data/themes:ro
+sudo flatpak override --system --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
 gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
