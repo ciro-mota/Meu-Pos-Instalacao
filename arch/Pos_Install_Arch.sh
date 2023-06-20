@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 07/05/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 20/06/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -35,6 +35,7 @@ apps=(amd-ucode
 	cowsay 
 	curl 
 	dialog 
+	docker 
 	docker-compose 
 	edk2-ovmf 
 	eog 
@@ -88,7 +89,6 @@ apps=(amd-ucode
 	neofetch 
 	noto-fonts 
 	pass 
-	podman 
 	qbittorrent 
 	qemu-kvm 
 	qemu-system-x86 
@@ -202,6 +202,23 @@ done
 sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-default.conf
 sudo systemctl enable --now systemd-swap
 
+### Dracut Flags
+sudo tee -a /etc/dracut.conf.d/myflags.conf << 'EOF' 
+i18n_vars="/usr/share/kbd/consolefonts /usr/share/kbd/keymaps"
+i18n_install_all="yes"
+
+kernel_cmdline="quiet"
+
+add_dracutmodules+=" plymouth "
+
+compress="zstd"
+stdloglvl=3
+sysloglvl=5
+hostonly="yes"
+hostonly_cmdline="no"
+early_microcode="yes"
+EOF
+
 ### Procedimentos e otimizações.
 sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
@@ -221,9 +238,6 @@ sudo systemctl enable reflector
 sudo systemctl start reflector
 sudo systemctl enable reflector.timer
 sudo systemctl start reflector.service
-
-sudo usermod --add-subuids 10000-75535 "$(whoami)"
-sudo usermod --add-subgids 10000-75535 "$(whoami)"
 
 wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 
@@ -245,22 +259,26 @@ else
 	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
 fi
 
-sudo usermod -aG lp "$(whoami)"
 sudo groupadd gamemode
+
+sudo usermod -aG lp "$(whoami)"
 sudo usermod -aG gamemode "$(whoami)"
+sudo usermod -aG docker $(whoami)
+sudo usermod -a -G libvirt "$(whoami)"
+
 sudo systemctl enable fstrim.timer
 sudo systemctl start fstrim.timer
 
 sudo sed -i '/unix_sock_group/s/^#//g' /etc/libvirt/libvirtd.conf
 sudo sed -i '/unix_sock_rw_perms/s/^#//g' /etc/libvirt/libvirtd.conf
-sudo usermod -a -G libvirt "$(whoami)"
+
 sudo systemctl start libvirtd
 sudo systemctl enable libvirtd
 
 ### Aplicando Plymouth
-sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
+#sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R arch-charge-big
-sudo mkinitcpio -p linux
+#sudo mkinitcpio -p linux
 
 ### Instalação de ícones, temas, fonte e configurações básicas.
 theme (){

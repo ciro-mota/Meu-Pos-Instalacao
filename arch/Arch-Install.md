@@ -231,12 +231,12 @@ systemctl enable gdm
 sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf && sudo pacman -Sy
 ```
 
-### Instalando Paru AUR Helper.
+### Instalando Yay AUR Helper.
 
 Altere de `ciromota` para o usuário que criou anteriormente.
 
 ```
-sudo -u ciromota bash -c 'cd ~&& git clone https://aur.archlinux.org/paru.git && cd paru/ && makepkg -si --noconfirm'
+sudo -u ciromota bash -c 'cd ~&& git clone https://aur.archlinux.org/yay.git && cd yay/ && makepkg -si --noconfirm'
 ```
 
 ### Atualizando o Initramfs:
