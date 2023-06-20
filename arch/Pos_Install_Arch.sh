@@ -37,6 +37,7 @@ apps=(amd-ucode
 	dialog 
 	docker 
 	docker-compose 
+	dracut 
 	edk2-ovmf 
 	eog 
 	evince 
@@ -119,6 +120,7 @@ apps=(amd-ucode
 	zsh)
 
 apps_do_aur=(brave-bin 
+	dracut-hook 
 	gnome-browser-connector 
 	heroic-games-launcher-bin 
 	lib32-mangohud-git 
