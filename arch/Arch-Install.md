@@ -16,13 +16,17 @@ Para o meu caso, segue o exemplo do particionamento de um NVME com duas partiç�
 
 Se não tiver certeza do nome dos discos, use o comando `fdisk -l` para listá-los.
 
-Inicie uma nova tabela de partições escolhendo o modo `gpt`.
+Inicie uma nova tabela de partições escolhendo o formato `gpt`.
 
 ```
 cfdisk /dev/nvme0n1
 ```
 
+![imagem](/arch/arch-install1a.png)
+
 Defina o tipo da partição `/boot` de 512MB como `EFI System`.
+
+![imagem](/arch/arch-install1b.png)
 
 ```
 cfdisk /dev/sda
@@ -128,17 +132,11 @@ Sincronização dos relógios (hardware e SO):
 hwclock --systohc
 ```
 
-Agora a configuração de idiomas, edite o arquivo:
+Agora a configuração de idiomas:
 
 ```
-nano /etc/locale.gen
+sed -i 's/#pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/g' /etc/locale.gen
 ```
-
-Descomente a linha referente a `pt_BR.UTF-8 UTF-8`. Salve e saia.
-
-![imagem](/arch/arch-install3.png)
-
-Execute os comandos à seguir:
 
 ```
 echo LANG=pt_BR.UTF-8 >> /etc/locale.conf
@@ -148,13 +146,15 @@ echo LANG=pt_BR.UTF-8 >> /etc/locale.conf
 locale-gen
 ```
 
+Aqui a configuração de usuário e `sudo`:
+
 ```
 EDITOR=nano visudo
 ```
 
 Ao abrir o editor, descomente a linha `%wheel ALL=(ALL) ALL`. Salve e saia.
 
-Abaixo a criação do usuário, adapte ao seu cenário:
+Abaixo a criação do seu usuário, adapte ao seu cenário:
 
 ```
 useradd -m -G wheel ciromota
