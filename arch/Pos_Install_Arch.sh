@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 20/06/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 03/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -157,7 +157,7 @@ diretorio_downloads="$HOME/Downloads/programas"
 # ------------------------------------------------------------------------------------------------------------- #
 # --------------------------------------------------- TESTE --------------------------------------------------- #
 ### Check se a distribuição é a correta.
-if [[ $(tail /etc/arch-release) = "" ]]
+if [[ -f /etc/arch-release ]]
 then
 	echo ""
 	echo ""
@@ -179,7 +179,7 @@ done
 
 ### Instalação de programas do AUR.
 for nome_do_aur in "${apps_do_aur[@]}"; do
-    paru -S "$nome_do_aur" --noconfirm
+    yay -S "$nome_do_aur" --noconfirm
 done
 
 ### Instalação de Flatpaks.
@@ -204,7 +204,7 @@ done
 sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-default.conf
 sudo systemctl enable --now systemd-swap
 
-### Dracut Flags
+### Configurações do Dracut (Flags).
 sudo tee -a /etc/dracut.conf.d/myflags.conf << 'EOF' 
 i18n_vars="/usr/share/kbd/consolefonts /usr/share/kbd/keymaps"
 i18n_install_all="yes"
@@ -221,27 +221,13 @@ hostonly_cmdline="no"
 early_microcode="yes"
 EOF
 
-### Procedimentos e otimizações.
+ln -sf /dev/null /etc/pacman.d/hooks/90-mkinitcpio-install.hook
+ln -sf /dev/null /etc/pacman.d/hooks/60-mkinitcpio-remove.hook
+
+### Correções de fontes.
 sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
-
-sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
-sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
-sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
-
-sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
-sudo sed -i '/#VerbosePkgLists/a ILoveCandy' /etc/pacman.conf
-sudo sed -i 's/#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
-
-sudo sed -i "s/France,Germany/'United States',Brazil/g" /etc/xdg/reflector/reflector.conf
-sudo sed -i 's/--sort age/--sort rate/g' /etc/xdg/reflector/reflector.conf
-sudo systemctl enable reflector
-sudo systemctl start reflector
-sudo systemctl enable reflector.timer
-sudo systemctl start reflector.service
-
-wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 
 sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
 
@@ -261,16 +247,39 @@ else
 	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
 fi
 
+### Configurando para uso de Swap/ZRAM.
+sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+
+### Melhorias do Pacman.
+sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
+sudo sed -i '/#VerbosePkgLists/a ILoveCandy' /etc/pacman.conf
+sudo sed -i 's/#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
+
+### Mirror de downloads das atualizações.
+sudo sed -i "s/France,Germany/'United States',Brazil/g" /etc/xdg/reflector/reflector.conf
+sudo sed -i 's/--sort age/--sort rate/g' /etc/xdg/reflector/reflector.conf
+sudo systemctl enable reflector
+sudo systemctl start reflector
+sudo systemctl enable reflector.timer
+sudo systemctl start reflector.service
+
+### Configuração da extensão/app Gamemode.
+wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 sudo groupadd gamemode
 
+### Adição do usuário a alguns grupos.
 sudo usermod -aG lp "$(whoami)"
 sudo usermod -aG gamemode "$(whoami)"
 sudo usermod -aG docker $(whoami)
 sudo usermod -a -G libvirt "$(whoami)"
 
+### Ativando o comando Trim.
 sudo systemctl enable fstrim.timer
 sudo systemctl start fstrim.timer
 
+### Configurações do QEMU.
 sudo sed -i '/unix_sock_group/s/^#//g' /etc/libvirt/libvirtd.conf
 sudo sed -i '/unix_sock_rw_perms/s/^#//g' /etc/libvirt/libvirtd.conf
 
@@ -278,7 +287,7 @@ sudo systemctl start libvirtd
 sudo systemctl enable libvirtd
 
 ### Aplicando Plymouth
-#sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
+sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R arch-charge-big
 #sudo mkinitcpio -p linux
 
