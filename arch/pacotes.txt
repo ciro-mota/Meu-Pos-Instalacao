@@ -1,0 +1,1 @@
+pacman -S btrfs-progs dosfstools efibootmgr gnome-shell gnome-control-center gdm gnome-terminal mtools networkmanager nautilus network-manager-applet os-prober pipewire wireless_tools wireplumber wpa_supplicant xdg-user-dirs xorg

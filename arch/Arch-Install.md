@@ -166,10 +166,10 @@ passwd ciromota
 
 ## Instalação do sistema:
 
-No meu caso escolhi uma instalação mínima do GNOME. Caso escolha outro Ambiente Desktop, verifique a lista de pacotes necessários. Aqui também são instalados alguns utilitários de sistema:
+No meu caso escolhi uma instalação mínima do GNOME. Caso escolha outro Ambiente Desktop, verifique a lista de pacotes necessários para a instalação. Aqui também são instalados alguns utilitários de sistema, você pode verificar no arquivo `pacotes.txt` neste repositório quais pacotes estão sendo instalados. Abaixo utilizo um link encurtado para facilitar a instalação em um ambiente de terminal:
 
 ```
-pacman -S btrfs-progs dosfstools efibootmgr gnome-shell gnome-control-center gdm gnome-terminal mtools networkmanager nautilus network-manager-applet os-prober pipewire wireless_tools wireplumber wpa_supplicant xdg-user-dirs xorg
+bash <(curl -s https://raw.githubusercontent.com/ciro-mota/Meu-Pos-Instalacao/main/arch/pacotes.txt)
 ```
 
 ## Configurando parâmetros:
