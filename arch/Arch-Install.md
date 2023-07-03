@@ -197,11 +197,10 @@ bootctl --path=/boot install
 ```
 
 ```
-echo "default arch.conf" >> /boot/loader/loader.conf
-```
-
-```
-echo "editor no" >> /boot/loader/loader.conf
+cat <<EOF >> /boot/loader/loader.conf
+default arch.conf
+editor no
+EOF
 ```
 
 ```
