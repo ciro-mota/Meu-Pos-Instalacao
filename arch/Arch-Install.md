@@ -169,7 +169,7 @@ passwd ciromota
 No meu caso escolhi uma instalação mínima do GNOME. Caso escolha outro Ambiente Desktop, verifique a lista de pacotes necessários para a instalação. Aqui também são instalados alguns utilitários de sistema, você pode verificar no arquivo `pacotes.txt` neste repositório quais pacotes estão sendo instalados. Abaixo utilizo um link encurtado para facilitar a instalação em um ambiente de terminal:
 
 ```
-bash <(curl -s https://raw.githubusercontent.com/ciro-mota/Meu-Pos-Instalacao/main/arch/pacotes.txt)
+bash <(curl -s https://bit.ly/motarchpkg)
 ```
 
 ## Configurando parâmetros:
