@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 03/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 16/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -33,6 +33,7 @@ apps=(amd-ucode
 	baobab 
 	containerd 
 	cowsay 
+	cups 
 	curl 
 	dialog 
 	docker 
@@ -56,11 +57,13 @@ apps=(amd-ucode
 	gimp 
 	gnome-calculator 
 	gnome-characters 
+	gnome-disk-utility 
 	gnome-icon-theme-symbolic 
 	gnome-keyring 
 	gnome-logs 
 	gnome-system-monitor 
 	gnome-tweaks
+	gnome-weather 
 	gparted 
 	gsfonts 
 	gst-libav 
@@ -100,10 +103,12 @@ apps=(amd-ucode
 	simplescreenrecorder 
 	snap-pac 
 	steam 
+	system-config-printer 
 	systemd-swap 
 	telegram-desktop 
 	terminator 
 	ttf-caladea 
+	ttf-croscore 
 	ttf-dejavu 
 	ttf-liberation 
 	ttf-roboto 
@@ -122,6 +127,8 @@ apps=(amd-ucode
 apps_do_aur=(brave-bin 
 	dracut-hook 
 	gnome-browser-connector 
+	gradience 
+	goverlay-bin 
 	heroic-games-launcher-bin 
 	lib32-mangohud-git 
 	mangohud-git 
@@ -133,8 +140,8 @@ apps_do_aur=(brave-bin
 	unrar-free 
 	vscodium-bin)
 	
-flatpak=(com.github.GradienceTeam.Gradience 
-	nl.hjdskes.gcolor3)
+flatpak=(nl.hjdskes.gcolor3
+		org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark)
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
@@ -204,7 +211,23 @@ done
 sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-default.conf
 sudo systemctl enable --now systemd-swap
 
+### Melhorias de performance.
+### wiki.archlinux.org/title/improving_performance#Changing_I/O_scheduler
+
+sudo tee -a /etc/udev/rules.d/60-ioschedulers.rules << 'EOF'
+# HDD
+ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+
+# SSD
+ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="bfq"
+
+# NVMe SSD
+ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
+EOF
+
+
 ### Configurações do Dracut (Flags).
+### wiki.archlinux.org/title/Dracut
 sudo tee -a /etc/dracut.conf.d/myflags.conf << 'EOF' 
 i18n_vars="/usr/share/kbd/consolefonts /usr/share/kbd/keymaps"
 i18n_install_all="yes"
@@ -221,14 +244,8 @@ hostonly_cmdline="no"
 early_microcode="yes"
 EOF
 
-ln -sf /dev/null /etc/pacman.d/hooks/90-mkinitcpio-install.hook
-ln -sf /dev/null /etc/pacman.d/hooks/60-mkinitcpio-remove.hook
-
 ### Correções de fontes.
-sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
-sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
 sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
-
 sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
 
 if [ -d "$HOME/".config/gtk-4.0 ]
@@ -248,9 +265,12 @@ else
 fi
 
 ### Configurando para uso de Swap/ZRAM.
+### wiki.archlinux.org/title/sysctl#Virtual_memory
 sudo echo -e "# Menor uso de Swap" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.dirty_ratio=6" | sudo tee -a /etc/sysctl.conf
+sudo echo -e "vm.dirty_background_ratio=6" | sudo tee -a /etc/sysctl.conf
 
 ### Melhorias do Pacman.
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
@@ -275,9 +295,17 @@ sudo usermod -aG gamemode "$(whoami)"
 sudo usermod -aG docker $(whoami)
 sudo usermod -a -G libvirt "$(whoami)"
 
+### Ativando serviço do CUPS.
+sudo systemctl enable cups.service
+sudo systemctl start cups.service
+
 ### Ativando o comando Trim.
 sudo systemctl enable fstrim.timer
 sudo systemctl start fstrim.timer
+
+### Ativando trim do Snapper.
+sudo systemctl enable snapper-cleanup.timer
+sudo systemctl start snapper-cleanup.timer
 
 ### Configurações do QEMU.
 sudo sed -i '/unix_sock_group/s/^#//g' /etc/libvirt/libvirtd.conf
