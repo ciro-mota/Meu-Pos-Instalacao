@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 16/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 20/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -36,6 +36,7 @@ apps=(amd-ucode
 	cups 
 	curl 
 	dialog 
+	dnsmasq 
 	docker 
 	docker-compose 
 	dracut 
@@ -43,7 +44,7 @@ apps=(amd-ucode
 	eog 
 	evince 
 	exfat-utils 
-	ttf-fantasque-sans-mono 
+	ttf-fantasque-nerd 
 	ffmpeg 
 	ffmpegthumbnailer 
 	file-roller 
@@ -56,6 +57,7 @@ apps=(amd-ucode
 	gedit 
 	gimp 
 	gnome-calculator 
+	gnome-calendar 
 	gnome-characters 
 	gnome-disk-utility 
 	gnome-icon-theme-symbolic 
@@ -92,10 +94,11 @@ apps=(amd-ucode
 	mesa-vdpau 
 	neofetch 
 	noto-fonts 
+	noto-fonts-cjk 
+	noto-fonts-extra 
 	pass 
 	qbittorrent 
-	qemu-kvm 
-	qemu-system-x86 
+	qemu-full 
 	reflector 
 	remmina 
 	sdl_image 
@@ -216,7 +219,7 @@ sudo systemctl enable --now systemd-swap
 
 sudo tee -a /etc/udev/rules.d/60-ioschedulers.rules << 'EOF'
 # HDD
-ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+ACTION=="add|change", KERNEL=="sd[a-b]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
 
 # SSD
 ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="bfq"
@@ -285,6 +288,11 @@ sudo systemctl start reflector
 sudo systemctl enable reflector.timer
 sudo systemctl start reflector.service
 
+### Ativando o Docker.
+sudo usermod -aG docker "$(whoami)"
+sudo systemctl enable docker
+sudo systemctl start docker
+
 ### Configuração da extensão/app Gamemode.
 wget -q https://github.com/FeralInteractive/gamemode/blob/master/example/gamemode.ini -O /home/"$(id -nu 1000)"/.config/gamemode.ini
 sudo groupadd gamemode
@@ -292,7 +300,6 @@ sudo groupadd gamemode
 ### Adição do usuário a alguns grupos.
 sudo usermod -aG lp "$(whoami)"
 sudo usermod -aG gamemode "$(whoami)"
-sudo usermod -aG docker $(whoami)
 sudo usermod -a -G libvirt "$(whoami)"
 
 ### Ativando serviço do CUPS.
@@ -310,9 +317,9 @@ sudo systemctl start snapper-cleanup.timer
 ### Configurações do QEMU.
 sudo sed -i '/unix_sock_group/s/^#//g' /etc/libvirt/libvirtd.conf
 sudo sed -i '/unix_sock_rw_perms/s/^#//g' /etc/libvirt/libvirtd.conf
-
 sudo systemctl start libvirtd
 sudo systemctl enable libvirtd
+sudo virsh net-start default
 
 ### Aplicando Plymouth
 sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
@@ -390,6 +397,7 @@ gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
 gsettings set org.gnome.desktop.default-applications.terminal exec terminator
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'br')]"
+xdg-mime default org.gnome.Nautilus.desktop inode/directory 
 
 ### Finalização e limpeza.
 sudo pacman -Qtdq | sudo pacman -Rns - --noconfirm
