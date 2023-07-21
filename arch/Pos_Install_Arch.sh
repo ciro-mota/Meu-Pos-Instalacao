@@ -108,6 +108,8 @@ apps=(amd-ucode
 	systemd-swap 
 	telegram-desktop 
 	terminator 
+	terraform 
+	texlive-latexrecommended 
 	ttf-caladea 
 	ttf-croscore 
 	ttf-dejavu 
