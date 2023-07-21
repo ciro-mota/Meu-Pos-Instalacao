@@ -22,7 +22,6 @@
 ### Links de download dinâmicos.
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
-url_font_config="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/fonts.conf"
 url_neofetch="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config.conf"
 url_terminator="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config"
 
@@ -39,7 +38,6 @@ apps=(amd-ucode
 	dnsmasq 
 	docker 
 	docker-compose 
-	dracut 
 	edk2-ovmf 
 	eog 
 	evince 
@@ -211,6 +209,7 @@ done
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
 
 ### Ativando ZRAM.
+### github.com/Nefelim4ag/systemd-swap
 sudo sed -i "s/zram_enabled=0/zram_enabled=1/g" /usr/share/systemd-swap/swap-default.conf
 sudo systemctl enable --now systemd-swap
 
@@ -219,37 +218,14 @@ sudo systemctl enable --now systemd-swap
 
 sudo tee -a /etc/udev/rules.d/60-ioschedulers.rules << 'EOF'
 # HDD
-ACTION=="add|change", KERNEL=="sd[a-b]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+ACTION=="add|change", KERNEL=="sdb", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
 
 # SSD
-ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="bfq"
-
-# NVMe SSD
-ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
-EOF
-
-
-### Configurações do Dracut (Flags).
-### wiki.archlinux.org/title/Dracut
-sudo tee -a /etc/dracut.conf.d/myflags.conf << 'EOF' 
-i18n_vars="/usr/share/kbd/consolefonts /usr/share/kbd/keymaps"
-i18n_install_all="yes"
-
-kernel_cmdline="quiet"
-
-add_dracutmodules+=" plymouth "
-
-compress="zstd"
-stdloglvl=3
-sysloglvl=5
-hostonly="yes"
-hostonly_cmdline="no"
-early_microcode="yes"
+ACTION=="add|change", KERNEL=="sda", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="bfq"
 EOF
 
 ### Correções de fontes.
-sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
-sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
+### discussion.fedoraproject.org/t/fonts-in-gtk-4-apps-look-different-more-blurry/66778
 
 if [ -d "$HOME/".config/gtk-4.0 ]
 then
@@ -259,13 +235,45 @@ else
 	echo -e "gtk-hint-font-metrics=1" | tee -a "$HOME/".config/gtk-4.0/settings.ini
 fi
 
-if [ -d "$HOME/".config/fontconfig ]
-then
-	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
-else
-	mkdir -p "$HOME"/.config/fontconfig
-	wget -cq --show-progress "$url_font_config" -P "$HOME"/.config/fontconfig
-fi
+### wiki.manjaro.org/index.php/Improve_Font_Rendering
+
+sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
+sudo sed -i 's/#export/export/g' /etc/profile.d/freetype2.sh
+
+sudo tee -a /etc/fonts/local.conf << 'EOF'
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="font">
+    <edit name="antialias" mode="assign">
+      <bool>true</bool>
+    </edit>
+    <edit name="hinting" mode="assign">
+      <bool>true</bool>
+    </edit>
+    <edit mode="assign" name="rgba">
+      <const>rgb</const>
+    </edit>
+    <edit mode="assign" name="hintstyle">
+      <const>hintslight</const>
+    </edit>
+    <edit mode="assign" name="lcdfilter">
+      <const>lcddefault</const>
+    </edit>
+  </match>
+</fontconfig>
+EOF
+
+sudo tee -a "$HOME"/.Xresources << 'EOF'
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.rgba: rgb
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+EOF
+
+xrdb -merge ~/.Xresources
+sudo fc-cache -fv 
 
 ### Configurando para uso de Swap/ZRAM.
 ### wiki.archlinux.org/title/sysctl#Virtual_memory
@@ -324,7 +332,7 @@ sudo virsh net-start default
 ### Aplicando Plymouth
 sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R arch-charge-big
-#sudo mkinitcpio -p linux
+sudo mkinitcpio -p linux
 
 ### Instalação de ícones, temas, fonte e configurações básicas.
 theme (){
