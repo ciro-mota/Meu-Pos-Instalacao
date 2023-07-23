@@ -266,10 +266,10 @@ Após a conclusão de todos os passos, execute o script [Pos_Install_Arch.sh](/a
 ==> WARNING: Possibly missing firmware for module: xhci_pci
 ```
 
-Não se trata necessariamente de um problema conforme pode ser [lido aqui](https://lists.archlinux.org/pipermail/arch-dev-public/2013-May/024864.html). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `paru` conforme indicado acima.
+Não se trata necessariamente de um problema conforme pode ser [lido aqui](https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX). Contudo caso deseje "resolver" o que essas mensagens indicam, execute as linhas abaixo, supondo que já instalou o `paru` conforme indicado acima.
 
 ```
-paru -S wd719x-firmware aic94xx-firmware upd72020x-fw
+yay -S aic94xx-firmware ast-firmware upd72020x-fw wd719x-firmware
 ```
 
 ```
