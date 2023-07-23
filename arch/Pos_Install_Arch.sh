@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 20/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 23/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -82,6 +82,7 @@ apps=(amd-ucode
 	ksnip 
 	lame 
 	libva-mesa-driver 
+	libva-utils 
 	lib32-gamemode 
 	lib32-vulkan-icd-loader 
 	lib32-vulkan-radeon 
