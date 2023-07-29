@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 23/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 29/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -129,7 +129,6 @@ apps=(amd-ucode
 	zsh)
 
 apps_do_aur=(brave-bin 
-	dracut-hook 
 	gnome-browser-connector 
 	gradience 
 	goverlay-bin 
@@ -285,6 +284,8 @@ sudo echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.dirty_ratio=6" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.dirty_background_ratio=6" | sudo tee -a /etc/sysctl.conf
+### wiki.archlinux.org/title/gaming#Game_environments
+sudo echo -e "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/80-gamecompatibility.conf
 
 ### Melhorias do Pacman.
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
