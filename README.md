@@ -2,24 +2,26 @@
 
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)
 ![Shell Script](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)
-![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
+![Debian](https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white)
 
-Este script foi desenvolvido com o objetivo de demonstrar a parametrização do meu PC com o **Fedora Workstation** que é a minha distro principal no momento. O intuito é construir uma instalação mínima e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
+Este script foi desenvolvido com o objetivo de demonstrar um pós instalação e a parametrização do meu PC com o **Arch Linux** que é a minha distro principal no momento. O intuito é construir uma instalação mínima e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
 
-Este script conta também com uma versão "backup" caso eu opte em algum momento migrar para o Arch Linux. Para instalação do Arch Linux, seguir recomendações de instalação em [anexo](/arch/Arch-Install.md).
+Para instalação do Arch Linux, verifique como foi feita a minha instalação em [anexo](/arch/README.md). 
 
-### Observações:
+Este script conta também com uma versão "backup" do **Debian Sid**, caso eu opte em algum momento migrar para ele e segue o mesmo perfil de programas instalados.
 
-É inteiramente livre a cópia e execução dos scripts contidos neste repositório contudo, você deverá **acima de tudo ler e entender** o que cada passo faz caso opte por executá-lo de forma integral sabendo que meu perfil de uso é seguramente diferente do seu, ou **adaptá-lo (melhor opção) para sua necessidade** antes da execução, modificando programas que serão instalados nas etapas de repositório, .rpm, Flatpak, extensões do Codium e AUR caso opte pelo Arch Linux. O intuito além de demostrar é de servir de inspiração para a construção do seu próprio script de pós instalação.
+### ⚠️ Observações:
 
-### Isenção de Responsabilidade:
+É inteiramente livre a cópia e execução dos scripts contidos neste repositório contudo, você deverá **acima de tudo ler e entender** o que cada passo faz, caso opte por executá-lo de forma integral sabendo que meu perfil de uso é seguramente diferente do seu, ou **adaptá-lo (melhor opção) para sua necessidade** antes da execução, modificando programas que serão instalados nas etapas de repositório, .rpm, Flatpak, extensões do Codium e AUR no caso Arch Linux. O intuito além de demostrar é de servir de inspiração para a construção do **seu próprio script** de pós instalação.
 
-Os scripts disponibilizados são seguramente **testados** por mim antes de serem publicados contudo devido a natureza da diferença entre hardwares e o período quando ocorre as atualizações do script e as atualizações dos sistemas e pacotes, erros poderão ocorrer na execução. Em sendo, não há garantias plenas do total funcionamento deste script de modo que não me responsabilizo caso haja algum dano material ou de perda de dados.
+### ✋ Isenção de Responsabilidade:
 
-Peço **gentilmente** que em caso de erros reporte-os na guia [Issues](https://github.com/ciro-mota/Meu-Pos-Instalacao/issues) que tentarei o possível para ajudar.
+Os scripts disponibilizados são seguramente **testados por mim** antes de serem publicados, contudo devido a natureza da diferença entre hardwares e o período quando ocorre as atualizações do script e as atualizações dos sistemas e pacotes, erros poderão ocorrer na execução. Em sendo, **não há garantias plenas do total funcionamento deste script** de modo que **não me responsabilizo caso haja algum dano material ou de perda de dados**.
 
-### Extensões GNOME:
+Peço **gentilmente** que em caso de erros reporte-os na guia [Issues](https://github.com/ciro-mota/Meu-Pos-Instalacao/issues) que tentarei o máximo possível para ajudar.
+
+### 🔧 Extensões GNOME:
 
 - [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
 - [Date Menu Formatter](https://extensions.gnome.org/extension/4655/date-menu-formatter/) (String: dd MMMM y | k:mm)
@@ -29,7 +31,11 @@ Peço **gentilmente** que em caso de erros reporte-os na guia [Issues](https://g
 - [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/)
 - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/)
 
-### Tema
+### ⚫ Dots
+
+Há também uma pasta chamada `dots` na qual alguns arquivos de configuração são hospedados e importados na execução do script e conta com minhas configurações para o `Terminator` e `neofetch`. Outros apps deverão ser adicionados no futuro.
+
+### 🎨 Tema
 
 Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceTeam.Gradience) para aplicação de esquema de cores Dracula com cor de destaque azul ao invés do rosa/roxo padrão deste tema. Importe meu esquema de cores caso desejar:
 
@@ -146,7 +152,13 @@ Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceT
 ```
 </details>
 
-É possível também aplicar uma transparência sem o uso de extensões na barra de tarefas do GNOME, para isso edite o arquivo `gnome-shell.css` do seu tema favorito, localize o conjunto de linhas abaixo:
+É possível também aplicar uma transparência sem o uso de extensões na barra de tarefas do GNOME. Para isso você deve inicialmente exportar o arquivo de temas do sistema para o seu usuário:
+
+```bash
+gresource extract /usr/share/gnome-shell/gnome-shell-theme.gresource /org/gnome/shell/theme/gnome-shell.css > ~/.themes/gnome-shell.css
+```
+
+Em seguida edite o arquivo `gnome-shell.css` do seu tema, localize o conjunto de linhas abaixo:
 
 ```css
 /* Top Bar */
@@ -154,12 +166,12 @@ Utilize o app [Gradience](https://flathub.org/apps/details/com.github.GradienceT
   background-color: rgba(0, 0, 0, 0.7);
 ```
 
-E modifique o último valor do campo. No meu caso há uma transparência de 0.7, equivalente a 70% e na cor preta.
+E modifique o último valor do campo (0.7). No meu caso há uma transparência de 0.7, equivalente a 70% e na cor preta.
 
-### Aparência final:
+### 💻 Aparência final:
 
 ![](imgs/screenshot.png)
 
-### Ultima Modificação:
+### 📅 Ultima Modificação:
 
-> 07 Mai 2023
+> 08 Ago 2023
