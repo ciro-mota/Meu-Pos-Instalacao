@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 29/07/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 08/08/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -22,8 +22,8 @@
 ### Links de download dinâmicos.
 url_flathub="https://flathub.org/repo/flathub.flatpakrepo"
 url_jopplin="https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh"
-url_neofetch="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config.conf"
-url_terminator="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/downloads/config"
+url_neofetch="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/dots/config.conf"
+url_terminator="https://github.com/ciro-mota/Meu-Pos-Instalacao/raw/main/dots/config"
 
 ### Programas para instalação e desinstalação.
 
@@ -47,6 +47,7 @@ apps=(amd-ucode
 	ffmpegthumbnailer 
 	file-roller 
 	firefox 
+	firefox-i18n-pt-br 
 	flameshot 
 	flatpak 
 	font-manager 
