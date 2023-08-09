@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 08/08/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 09/08/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -96,7 +96,6 @@ apps=(amd-ucode
 	noto-fonts 
 	noto-fonts-cjk 
 	noto-fonts-extra 
-	pass 
 	qbittorrent 
 	qemu-full 
 	reflector 
@@ -125,7 +124,7 @@ apps=(amd-ucode
 	vulkan-radeon 
 	vulkan-tools 
 	wget 
-	xdg-user-dirs
+	xdg-user-dirs 
 	xf86-video-amdgpu 
 	zsh)
 
@@ -145,7 +144,7 @@ apps_do_aur=(brave-bin
 	vscodium-bin)
 	
 flatpak=(nl.hjdskes.gcolor3
-		org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark)
+	org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark)
 
 code_extensions=(dendron.dendron-markdown-shortcuts 
 	eamodio.gitlens
