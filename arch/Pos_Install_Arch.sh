@@ -343,7 +343,7 @@ theme (){
 
 curl -s https://api.github.com/repos/lassekongo83/adw-gtk3/releases/latest | grep "browser_download_url.*tar.xz" | \
 cut -d : -f 2,3 | tr -d \" | \
-wget -P "$diretorio_downloads" -i - | \
+wget -P "$diretorio_downloads" -i-
 tar xf "$diretorio_downloads"/*.tar.xz -C "$HOME"/.local/share/themes
 
 gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
