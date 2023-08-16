@@ -294,6 +294,7 @@ sudo sed -i '/#VerbosePkgLists/a ILoveCandy' /etc/pacman.conf
 sudo sed -i 's/#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
 
 ### Mirror de downloads das atualizações.
+### wiki.archlinux.org/title/reflector
 sudo sed -i "s/France,Germany/'United States',Brazil/g" /etc/xdg/reflector/reflector.conf
 sudo sed -i 's/--sort age/--sort rate/g' /etc/xdg/reflector/reflector.conf
 sudo systemctl enable reflector
@@ -335,6 +336,7 @@ sudo systemctl enable libvirtd
 sudo virsh net-start default
 
 ### Aplicando Plymouth
+### wiki.archlinux.org/title/plymouth
 sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R arch-charge-big
 sudo mkinitcpio -p linux
