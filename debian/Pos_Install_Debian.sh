@@ -82,6 +82,7 @@ apps=(brave-browser
 	libreoffice-l10n-pt-br 
 	lolcat
 	lutris 
+	micro 
 	nala 
 	neofetch 
 	network-manager-gnome 

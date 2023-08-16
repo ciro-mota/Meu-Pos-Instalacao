@@ -92,6 +92,7 @@ apps=(amd-ucode
 	lolcat 
 	lutris 
 	mesa-vdpau 
+	micro 
 	neofetch 
 	noto-fonts 
 	noto-fonts-cjk 
