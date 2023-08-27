@@ -38,7 +38,7 @@ Layout final das partições:
 
 ## Formatação:
 
-Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` para o `/` e `xfs` para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
+Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` para o `/` e para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
 
 ```
 mkfs.vfat -F32 /dev/nvme0n1p1
@@ -49,7 +49,7 @@ mkfs.btrfs -L ROOT /dev/nvme0n1p2
 ```
 
 ```
-mkfs.xfs /dev/sda1
+mkfs.btrfs /dev/sda1
 ```
 
 ## Pontos de montagem:
