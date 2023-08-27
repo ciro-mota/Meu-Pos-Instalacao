@@ -1,9 +1,11 @@
 # Script de Pós Instalação
 
-![License](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)
-![Shell Script](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)
-![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
-![Debian](https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white)
+<p align="center">
+    <img alt="License" src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge">
+    <img alt="Shell Script" src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white">
+    <img alt="Arch Linux" src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white">
+    <img alt="Debian" src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white">
+</p>
 
 Este script foi desenvolvido com o objetivo de demonstrar um pós instalação e a parametrização do meu PC com o **Arch Linux** que é a minha distro principal no momento. O intuito é construir uma instalação mínima e ir personalizando à medida da necessidade de uso, com instalações de apps apenas via terminal.
 
