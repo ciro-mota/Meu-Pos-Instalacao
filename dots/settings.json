@@ -1,0 +1,10 @@
+{
+    "autosu": true,
+    "pluginchannels": [
+        "https://raw.githubusercontent.com/micro-editor/plugin-channel/master/channel.json"
+    ],
+    "pluginrepos": [],
+    "savecursor": true,
+    "softwrap": true,
+    "wordwrap": true
+}
