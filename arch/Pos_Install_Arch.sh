@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 16/08/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 01/09/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -75,6 +75,7 @@ apps=(amd-ucode
 	gtk2 
 	gstreamer 
 	gstreamer-vaapi 
+	gvfs-smb 
 	gufw 
 	haskell-gnutls 
 	hplip 
@@ -337,7 +338,7 @@ sudo virsh net-start default
 
 ### Aplicando Plymouth
 ### wiki.archlinux.org/title/plymouth
-sudo sed -i 's/fsck)/fsck plymouth shutdown)/g' /etc/mkinitcpio.conf
+sudo sed -i 's/fsck)/fsck plymouth)/g' /etc/mkinitcpio.conf
 sudo plymouth-set-default-theme -R arch-charge-big
 sudo mkinitcpio -p linux
 
