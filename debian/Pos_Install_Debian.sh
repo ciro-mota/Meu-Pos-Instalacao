@@ -20,8 +20,8 @@
 export DEBIAN_FRONTEND=noninteractive
 
 ### PPA's e links de download dinâmicos.
-url_lutris="http://download.opensuse.org/repositories/home:/strycore/Debian_11/"
-url_ppa_lutris="https://download.opensuse.org/repositories/home:/strycore/Debian_11/Release.key"
+url_lutris="https://download.opensuse.org/repositories/home:/strycore/Debian_12/"
+url_ppa_lutris="https://download.opensuse.org/repositories/home:/strycore/Debian_12/Release.key"
 url_dck_key="https://download.docker.com/linux/debian/gpg"
 url_ppa_dck="https://download.docker.com/linux/debian"
 url_key_brave="https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
@@ -169,6 +169,7 @@ sudo apt update && sudo apt full-upgrade -y
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------ APLICANDO REQUISITOS --------------------------------------------- #
 ### Adicionando/Confirmando arquitetura de 32 bits.
+### wiki.debian.org/Multiarch/HOWTO
 sudo dpkg --add-architecture i386
 
 ### Instalando requerimentos.
@@ -182,8 +183,8 @@ sudo apt install \
 
 ### Adicionando repositórios de terceiros.
 ### Lutris.
-echo "deb $url_lutris ./" | sudo tee /etc/apt/sources.list.d/lutris.list
-wget -q "$url_ppa_lutris" -O- | sudo tee /etc/apt/trusted.gpg.d/lutris.asc -
+echo "deb $url_lutris ./" | sudo tee /etc/apt/sources.list.d/lutris.list > /dev/null
+wget -q -O- "$url_ppa_lutris" | gpg --dearmor | sudo tee /etc/apt/keyrings/lutris.gpg > /dev/null
 
 ### Docker.
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -195,7 +196,7 @@ echo \
 
 ### Brave Browser.
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg "$url_key_brave"
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] \
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] \
 	$url_ppa_brave stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list > /dev/null
 
 ### Ulauncher.
