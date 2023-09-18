@@ -1,5 +1,9 @@
 {
     "autosu": true,
+    "colorcolumn": 100,
+    "hlsearch": true,
+    "indentchar": "",
+    "mkparents": true,
     "pluginchannels": [
         "https://raw.githubusercontent.com/micro-editor/plugin-channel/master/channel.json"
     ],
