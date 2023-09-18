@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 01/09/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 18/09/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -265,6 +265,9 @@ heroic
 for code_ext in "${code_extensions[@]}"; do
     codium --install-extension "$code_ext" 2> /dev/null
 done
+
+### Instalação do Node.
+nvm install "$(nvm ls-remote | grep "Latest LTS" | grep v18 | awk '{ print $1 }')"
 
 # ------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------- PÓS-INSTALAÇÃO -------------------------------------------- #
