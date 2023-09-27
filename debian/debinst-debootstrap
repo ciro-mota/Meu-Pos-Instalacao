@@ -1,0 +1,68 @@
+====== EM CONSTRUÇÃO - NÃO EXECUTE SEM SABER O QUE ESTÁ FAZENDO ======
+
+setxkbmap -layout br
+
+cfdisk /dev/nvme0n1
+
+Tipo da partição /boot de 512MB como EFI System.
+
+cfdisk /dev/sda
+
+mkfs.vfat -F32 /dev/nvme0n1p1
+mkfs.btrfs -L ROOT /dev/nvme0n1p2
+mkfs.btrfs /dev/sda1
+
+mkdir /debian
+mount /dev/nvme0n1p2 /debian
+btrfs su cr /mnt/@
+umount /debian
+
+mount -o rw,relatime,ssd,subvol=@  /dev/nvme0n1p2 /debian
+
+mount --bind /dev /debian/dev
+mount --bind /proc /debian/proc
+mount --bind /sys /debian/sys
+
+sed -e '/deb/ s/^#*/#/' -i /etc/apt/sources.list
+
+apt update && apt install debootstrap arch-install-scripts
+
+debootstrap sid /debian http://deb.debian.org/debian
+
+chroot /debian
+
+mount /dev/sda1 /home
+mkdir -p /boot/efi
+mount /dev/nvme0n1p1 /boot/efi
+
+apt install linux-image-amd64 grub-efi-amd64 systemd-boot network-manager
+
+grub-install /dev/nvme0n1
+
+cat <<EOF >> /boot/loader/loader.conf
+default debian.conf
+editor no
+EOF
+
+cat <<EOF > /boot/loader/entries/arch.conf
+title	Debian
+linux	/vmlinuz
+initrd	/initrd.img
+options root=LABEL=ROOT rootflags=subvol=@ rw quiet splash
+EOF
+
+adduser ciromota
+
+apt install locales
+dpkg reconfigure locales = pt_BR.UTF-8 UTF-8
+
+echo "k6-2-500" >> /etc/hostname
+
+systemctl enable NetworkManager
+
+exit
+umount -R /debian
+
+genfstab -U /debian > /debian/etc/fstab
+
+reboot
