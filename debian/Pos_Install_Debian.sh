@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 18/09/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 28/09/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -42,7 +42,8 @@ apps_remover=(firefox-esr
 	yelp)
 
 ### Programas para instalação.
-apps=(brave-browser 
+apps=(amd64-microcode 
+	brave-browser 
 	codium 
 	containerd 
 	cowsay 
