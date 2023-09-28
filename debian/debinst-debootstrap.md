@@ -1,5 +1,3 @@
-====== EM CONSTRUÇÃO - NÃO EXECUTE SEM SABER O QUE ESTÁ FAZENDO ======
-
 Esta instalação do Debian consiste em um conjunto mínimo de pacotes semelhante ao que é feito com o Arch Linux. Com a ajuda do [debootstrap](https://wiki.debian.org/Debootstrap) será possível replicar quase que totalmente uma instalação parecida com o Arch Linux a exceção do `systemd-boot`, contando com sistema de arquivos `btrfs` e subvolumes.
 
 Você **deverá** utilizar um liveCD de qualquer distro para iniciar o procedimento. Caso utilize o Linux Mint ou distribuições base `.deb` e o terminal não esteja com caracteres em pt_BR, execute o comando abaixo.
@@ -130,7 +128,7 @@ E por fim montar a partição `efi` nessa pasta.
 mount /dev/nvme0n1p1 /boot/efi
 ```
 
-Agora vamos finalmente instalar o sistema base. 
+Agora vamos finalmente instalar o sistema base.
 
 ```
 apt install firmware-linux-free grub-efi-amd64 linux-image-amd64 linux-headers-amd64 locales network-manager python3 sudo
@@ -233,6 +231,7 @@ default debian.conf
 editor no
 EOF
 ```
+
 ```
 cat <<EOF > /boot/efi/loader/entries/debian.conf
 title	Debian
