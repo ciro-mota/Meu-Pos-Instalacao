@@ -32,7 +32,7 @@ Defina o tipo da partição `/boot` de 512MB como `EFI System`.
 cfdisk /dev/sda
 ```
 
-Layout final das partições:
+Layout final das minhas partições:
 
 ![imagem](/arch/arch-install1.png)
 
