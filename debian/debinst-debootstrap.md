@@ -8,9 +8,9 @@ setxkbmap -layout br
 
 ## Particionamento:
 
-Para o meu caso, segue o exemplo do particionamento de um NVME com duas partições (o `/` e o `/boot`) e um disco secundário para a partição `/home`. Utilizei o `cfdisk` por mera preferência. Adapte para seu cenário.
+Para o meu caso segue o exemplo do particionamento de um NVME com duas partições (o `/` e o `/boot`) e um disco secundário para a partição `/home`. Utilizei o `cfdisk` por mera preferência. Adapte para seu cenário.
 
-Se não tiver certeza do nome dos discos, use o comando `fdisk -l` para listá-los.
+Se não tiver certeza do nome dos discos use o comando `fdisk -l` para listá-los.
 
 Inicie uma nova tabela de partições escolhendo o formato `gpt`.
 
@@ -20,7 +20,7 @@ Defina o layout de partições como desejar, sendo uma partição de 512MB ou 1G
 cfdisk /dev/nvme0n1
 ```
 
-Tipo da partição /boot de 512MB como EFI System.
+Defina o tipo da partição `/boot` de 512MB ou 1GB como `EFI System`.
 
 ![imagem](/arch/arch-install1b.png)
 
@@ -34,7 +34,7 @@ Layout final das minhas partições:
 
 ## Formatação:
 
-Para melhor aproveitamento com unidades flash e snapshots, utilizo o formato de particionamento em `brtfs` para o `/` e para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
+Para melhor aproveitamento com unidades flash e snapshots eu utilizo o formato de particionamento em `brtfs` para o `/` e para meu `/home`. A primeira partição será formatada em FAT32 necessário para o setor de inicialização.
 
 ```
 mkfs.vfat -F32 /dev/nvme0n1p1
@@ -50,13 +50,13 @@ mkfs.btrfs /dev/sda1
 
 ## Pontos de montagem:
 
-Aqui iremos começar de fato a construção do sistema começando pelos pontos de montagem. Vamos montar inicialmente a segunda partição, criar nela um subvolume e por fim desmontá-la. O subvolume é necessário e essencial para os snapshots. Você pode inclusive criar vários para melhor controle, no meu caso optei por somente criar um para toda a partição `/`. Porém antes de iniciar precisamos criar uma pasta específica para armazenagem dos arquivos de instalação e que eu nomeei como `debian`.
+Aqui iremos começar de fato a construção do sistema começando pelos pontos de montagem. Vamos montar inicialmente a segunda partição, criar nela um subvolume e por fim desmontá-la. O subvolume é necessário e essencial para os snapshots. Você pode inclusive criar vários para melhor controle, no meu caso optei por somente criar um para toda a partição `/`. Porém antes de iniciar precisamos criar um diretório específico para armazenagem dos arquivos de instalação e que eu nomeei como `debian`.
 
 ```
 mkdir /debian
 ```
 
-Montagem da partição na pasta `/debian`.
+Montagem da partição no diretório `/debian`.
 
 ```
 mount /dev/nvme0n1p2 /debian
@@ -78,19 +78,19 @@ mount -o rw,relatime,ssd,subvol=@ /dev/nvme0n1p2 /debian
 
 ## Instalação do sistema base:
 
-No caso do Linux Mint é feita uma varredura no repositório da mídia de instalação, o comando abaixo irá desabilitar a busca no CD e manter apenas os repositórios online. Execute somente se tiver algum problema ao utilizar o `apt`.
+No caso do Linux Mint é feita uma varredura do repositório da mídia de instalação, o comando abaixo irá desabilitar a busca no CD e manter apenas os repositórios online. Execute somente se tiver algum problema ao utilizar o `apt`.
 
 ```
 sed -e '/deb/ s/^#*/#/' -i /etc/apt/sources.list
 ```
 
-Aqui vamos instalar alguns pacotes que serão necessários para a instalação.
+Aqui vamos instalar, no liveCD mesmo, alguns pacotes que serão necessários para a instalação.
 
 ```
 apt update && apt install debootstrap arch-install-scripts
 ```
 
-Neste ponto o `debootstrap` entrará em ação e fará a instalação do sistema base. Você poderá trocar o `sid` pelo `testing` ou `stable`, dependendo de qual versão do sistema você deseje instalar. Deverá ser informada a pasta que criamos para realizar o ponto de montagem e o endereço do repositório do Debian.
+Neste ponto o `debootstrap` entrará em ação e fará a instalação do sistema base. Você poderá trocar o `sid` pelo `testing` ou `stable`, dependendo de qual versão do sistema você deseje instalar. Deverá ser informada o diretório que criamos para realizar o ponto de montagem e o endereço do repositório do Debian.
 
 ```
 debootstrap sid /debian http://deb.debian.org/debian
@@ -110,19 +110,19 @@ Finalmente executar o `chroot` (que é semelhante ao `arch-chroot`).
 chroot /debian
 ```
 
-Após entrar no `chroot` vamos montar a segunda partição pasta `/home`.
+Após entrar no `chroot` vamos montar a segunda partição no diretório `/home`.
 
 ```
 mount /dev/sda1 /home
 ```
 
-Agora devemos preparar o sistema para inicialização. Para isso devemos criar a pasta `efi` dentro de `/boot`.
+Agora devemos preparar o sistema para inicialização. Para isso devemos criar o diretório `efi` dentro de `/boot`.
 
 ```
 mkdir -p /boot/efi
 ```
 
-E por fim montar a partição `efi` nessa pasta.
+E por fim montar a partição `efi` nesse diretório.
 
 ```
 mount /dev/nvme0n1p1 /boot/efi
@@ -131,7 +131,7 @@ mount /dev/nvme0n1p1 /boot/efi
 Agora vamos finalmente instalar o sistema base.
 
 ```
-apt install firmware-linux-free grub-efi-amd64 linux-image-amd64 linux-headers-amd64 locales network-manager python3 sudo
+apt install btrfs-progs dosfstools firmware-linux-free grub-efi-amd64 linux-image-amd64 linux-headers-amd64 locales network-manager pipewire python3 sudo
 ```
 
 ## Configurando parâmetros:
@@ -215,7 +215,7 @@ reboot
 
 ## Instalando o systemd-boot
 
-No Debian é necessário alguns passos a mais para instalação e ativação do `systemd-boot` (eu segui [este guia](https://p5r.uk/blog/2020/using-systemd-boot-on-debian-bullseye.html) e o adaptei) e esse processo deverá ser feito após a primeira inicialização. Recomendo que o processo seja executado como root.
+No Debian é necessário alguns passos a mais para instalação e ativação do `systemd-boot` (eu segui [este guia](https://p5r.uk/blog/2020/using-systemd-boot-on-debian-bullseye.html) e o adaptei) e esse processo deverá ser feito após a primeira inicialização. Recomendo que o processo seja executado como root. Você deve desabilitar o Secure Boot para funcionar.
 
 Primeiramente instale o pacote `systemd-boot`:
 
@@ -241,13 +241,13 @@ options root=LABEL=ROOT rootflags=subvol=@ rw quiet splash
 EOF
 ```
 
-Em seguida realizaremos a instalação (em si o script já executa este procedimento porém vejo necessidade de repetir após a inserção das entradas acima):
+Em seguida realizaremos a instalação (em si após a instalação do pacote o script já executa este procedimento porém vejo necessidade de repetir após a inserção das entradas acima):
 
 ```
 bootctl --path=/boot/efi install
 ```
 
-Os scripts abaixo farão os ganchos de adição e remoção dos novos kenels à estrutura do `systemd-boot`:
+Os scripts abaixo farão os ganchos de adição e remoção dos novos kenels após atualizações à estrutura do `systemd-boot`:
 
 ```
 cat <<EOF > /etc/kernel/postinst.d/zz-update-systemd-boot

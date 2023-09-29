@@ -74,7 +74,7 @@ Realizamos novamente a montagem da partição principal, porém dessa vez com a 
 mount -o rw,relatime,ssd,subvol=@  /dev/nvme0n1p2 /mnt
 ```
 
-Crie a seguinte estrutura de pasta:
+Crie a seguinte estrutura de diretórios:
 
 ```
 mkdir -p /mnt/{boot,home}
