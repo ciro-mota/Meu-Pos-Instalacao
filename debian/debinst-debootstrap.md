@@ -217,7 +217,9 @@ reboot
 
 No Debian é necessário alguns passos a mais para instalação e ativação do `systemd-boot` (eu segui [este guia](https://p5r.uk/blog/2020/using-systemd-boot-on-debian-bullseye.html) e o adaptei) e esse processo deverá ser feito após a primeira inicialização. Recomendo que o processo seja executado como root. Você deve desabilitar o Secure Boot para funcionar.
 
-Primeiramente instale o pacote `systemd-boot`:
+Primeiramente devemos editar o arquivo `fstab` para alterar algumas permissões. Para a partição de inicialização `/boot/efi  vfat` altere as permissões de `fmask` e `dmask` para `fmask=0137,dmask=0027`.
+
+Agora devemos instalar instale o pacote `systemd-boot`:
 
 ```
 apt install systemd-boot
