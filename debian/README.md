@@ -315,6 +315,12 @@ Edite o arquivo e mantenha somente como conteúdo deste arquivo a identificaçã
 root=UUID=<id-da-sua-partição> ro rootflags=subvol=@ quiet splash systemd.machine_id=<id-da-sua-máquina>
 ```
 
+Agora devemos montar esse diretório:
+
+```
+mount -n --bind -o ro /root/cmdline /proc/cmdline
+```
+
 Aplique o tema padrão do Plymouth do Debian:
 
 ```
