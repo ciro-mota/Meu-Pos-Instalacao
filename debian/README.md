@@ -240,13 +240,19 @@ editor no
 EOF
 ```
 
+Necessário criar o diretório que conterá os arquivos de configuração das imagens do kernel instaladas.
+
+```
+mkdir -p /boot/efi/loader/entries
+```
+
 Em seguida realizaremos a instalação (em si após a instalação do pacote o script já executa este procedimento porém vejo necessidade de repetir após a inserção das entradas acima):
 
 ```
 bootctl --path=/boot/efi install
 ```
 
-Os scripts abaixo farão os ganchos de adição e remoção dos novos kenels após atualizações à estrutura do `systemd-boot`:
+Os scripts abaixo farão os ganchos de adição e remoção dos novos kernels após atualizações à estrutura do `systemd-boot`:
 
 ```
 cat <<EOF > /etc/kernel/postinst.d/zz-update-systemd-boot
