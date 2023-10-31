@@ -32,6 +32,8 @@ Peço **gentilmente** que em caso de erros reporte-os na guia [Issues](https://g
 - [User Themes](https://extensions.gnome.org/extension/19/user-themes/)
 - [Desktop Icons NG (DING)](https://extensions.gnome.org/extension/2087/desktop-icons-ng-ding/)
 - [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/)
+- [Steal my focus window](https://extensions.gnome.org/extension/6385/steal-my-focus-window/)
+- [Window title is back](https://extensions.gnome.org/extension/6310/window-title-is-back/)
 
 ### ⚫ Dots
 
@@ -176,4 +178,4 @@ E modifique o último valor do campo (0.7). No meu caso há uma transparência d
 
 ### 📅 Ultima Modificação:
 
-> 08 Ago 2023
+> 31 Set 2023
