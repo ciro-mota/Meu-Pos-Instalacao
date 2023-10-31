@@ -59,6 +59,7 @@ apps=(amd-ucode
 	gnome-calendar 
 	gnome-characters 
 	gnome-disk-utility 
+	gnome-firmware 
 	gnome-icon-theme-symbolic 
 	gnome-keyring 
 	gnome-logs 
@@ -144,7 +145,6 @@ apps_do_aur=(brave-bin
 	teamviewer 
 	ulauncher 
 	unrar-free 
-	virtio-win 
 	vscodium-bin)
 	
 flatpak=(nl.hjdskes.gcolor3

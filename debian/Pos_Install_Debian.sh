@@ -67,6 +67,7 @@ apps=(amd64-microcode
 	gimp 
 	gir1.2-gtop-2.0 
 	gnome-browser-connector 
+	gnome-firmware 
 	gnome-tweaks 
 	goverlay 
 	gparted 
