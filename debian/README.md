@@ -334,3 +334,37 @@ Aplique o tema padrão do Plymouth do Debian:
 ```
 
 Feito isso ao iniciar o sistema já contará com um tema de Plymouth.
+
+## Snapshots com o Snapper
+
+Como construímos nossa instalação com subvolumes `@` nós podemos utilizar o `Snapper` para criação de snapshots automáticos. Precisamos de algumas configurações:
+
+Instalar o `Snapper`:
+
+```
+sudo apt install snapper
+```
+
+Criar a configuração:
+
+```
+sudo snapper -c root create-config /
+```
+
+Assim como no Arch Linux nós podemos definir o gatilho para que os snapshots sejam criados durante o processo de operação do `apt`, contudo não de forma nativa. Com a ajuda [deste projeto](https://github.com/xhess/apt-btrfs-snapper) isso é possível e funciona adequadamente.
+
+Baixe os arquivos `80snapper` e `apt-btrfs-snapper`.
+
+Mova o arquivo `80snapper` para a pasta `/etc/apt/apt.conf.d`.
+
+Mova o arquivo `apt-btrfs-snapper` para a pasta `/usr/local/bin`.
+
+Aplique permissão de execução no arquivo `apt-btrfs-snapper`.
+
+```
+sudo chmod +x /usr/local/bin/apt-btrfs-snapper
+```
+
+Feito isso seus snapshots já estarão funcionando ao utilizar o `apt`.
+
+![imagem](/debian/snapper.png)
