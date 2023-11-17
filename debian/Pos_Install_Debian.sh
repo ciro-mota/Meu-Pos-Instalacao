@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 28/09/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 17/11/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -55,6 +55,7 @@ apps=(amd64-microcode
 	file-roller 
 	firefox 
 	firefox-l10n-pt-pt 
+	firmware-amd-graphics 
 	firmware-linux-nonfree 
 	flameshot 
 	font-manager 
