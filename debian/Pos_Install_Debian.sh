@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 17/11/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/01/2024. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Debian.sh".
 
@@ -371,6 +371,15 @@ sudo echo -e "vm.dirty_ratio=6" | sudo tee -a /etc/sysctl.conf
 sudo echo -e "vm.dirty_background_ratio=6" | sudo tee -a /etc/sysctl.conf
 ### wiki.archlinux.org/title/gaming#Game_environments
 sudo echo -e "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/80-gamecompatibility.conf
+
+### Melhorias de segurança.
+### wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization
+sudo tee -a /etc/NetworkManager/conf.d/wifi_rand_mac.conf << 'EOF'
+[connection-mac-randomization]
+ match-device=type:wifi
+ wifi.cloned-mac-address=stable-ssid
+ ethernet.cloned-mac-address=stable
+EOF
 
 ### Ativando o Docker.
 sudo usermod -aG docker "$(whoami)"

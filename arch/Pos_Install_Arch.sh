@@ -11,7 +11,7 @@
 ## LICENÇA:
 ###		  GPLv3. <https://github.com/ciro-mota/Meu-Pos-Instalacao/blob/main/LICENSE>
 ## CHANGELOG:
-### 		Última edição 17/11/2023. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
+### 		Última edição 06/01/2024. <https://github.com/ciro-mota/Meu-Pos-Instalacao/commits/main>
 
 ### Para calcular o tempo gasto na execução do script, use o comando "time ./Pos_Install_Arch.sh".
 
@@ -300,6 +300,15 @@ sudo echo -e "vm.max_map_count=2147483642" | sudo tee -a /etc/sysctl.d/80-gameco
 sudo sed -i 's/#Color/Color/g' /etc/pacman.conf
 sudo sed -i '/#VerbosePkgLists/a ILoveCandy' /etc/pacman.conf
 sudo sed -i 's/#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
+
+### Melhorias de segurança.
+### wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization
+sudo tee -a /etc/NetworkManager/conf.d/wifi_rand_mac.conf << 'EOF'
+[connection-mac-randomization]
+ match-device=type:wifi
+ wifi.cloned-mac-address=stable-ssid
+ ethernet.cloned-mac-address=stable
+EOF
 
 ### Mirror de downloads das atualizações.
 ### wiki.archlinux.org/title/reflector
