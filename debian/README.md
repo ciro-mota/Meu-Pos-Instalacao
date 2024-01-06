@@ -188,7 +188,7 @@ grub-install: warning: EFI variables cannot be set on this system.
 grub-install: warning: You will have to complete the GRUB setup manually.
 ```
 
-Basta usar o ponto de montagem do `efivars` abaixo:
+Basta usar o ponto de montagem do `efivars` abaixo e repetir os dois passos acima:
 
 ```
 mount -t efivarfs none /sys/firmware/efi/efivars
@@ -306,7 +306,7 @@ Se tudo deu certo ao reiniciar você já poderá inicializar através do `system
 Instale os pacotes abaixo:
 
 ```
-apt install plymouth plymouth-themes
+apt install plymouth plymouth-themes debian-edu-artwork-emerald
 ```
 
 O script de instalação no Debian usa como base o conteúdo de `/proc/cmdline` e este diretório é somente leitura. Precisamos aqui usar um ponto de montagem para [mascarar essa restrição](https://wiki.archlinux.org/title/Kernel_parameters#Hijacking_cmdline). Crie o arquivo `cmdline` dentro do diretório `/root`:
